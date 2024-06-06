@@ -3,12 +3,17 @@ Integrative spatiotemporal modeling in IMP {#mainpage}
 
 [TOC]
 
-# Introduction
+# Introduction {#introduction}
 
 Biomolecules are constantly in motion; therefore, a complete depiction of their function must include their dynamics instead of just static structures.
 We have developed an integrative spatiotemporal approach to model dynamic systems.
 Our approach begins by computing a series of static "snapshot models" at discrete time points, which is a set of structural models with the same composition, with each subcomplex assigned to a specific location in the fully assembled complex.
 Then, we connect snapshots at neighboring time points to produce trajectories. These trajectories can be scored based on both the scores of static structures and the transitions between them, allowing for the creation of trajectories that are in agreement with the input information by construction.
+
+If you use this tutorial or its accompanying method, please site the corresponding publications:
+
+- Latham et al. (methods)
+- Latham et al. (tutorial)
 
 # Integrative spatiotemporal modeling workflow {#steps}
 

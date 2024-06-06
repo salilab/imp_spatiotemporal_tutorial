@@ -1,5 +1,7 @@
 # IMP spatiotemporal tutorial
-Tutorial for computing spatiotemporal integrative models in IMP. For more information please check out our publication:
+Tutorial for computing spatiotemporal integrative models in IMP. For more information please check out the related publications:
+* Latham et al. in preparation. (methods paper)
+* Latham et al. in preparation. (tutorial paper)
 
 ### This tutorial explores scripts that:
 * Generates snapshot models at various timepoints along a dynamic process

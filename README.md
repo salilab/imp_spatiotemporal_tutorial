@@ -9,5 +9,5 @@ Tutorial for computing spatiotemporal integrative models in IMP. For more inform
 * Score and assess these trajectory models to evaluate their accuracy and precision
 
 ### Running the Tutorial
-See [the IMP website](https://integrativemodeling.org/tutorials/XXX/) for the tutorial text.
+See [the IMP website](https://integrativemodeling.org/tutorials/spatiotemporal/) for the tutorial text.
 Finally, please note that the tutorial is based on synthetically generated data, and is not meant to be indicative of the true assembly process of this protein complex.

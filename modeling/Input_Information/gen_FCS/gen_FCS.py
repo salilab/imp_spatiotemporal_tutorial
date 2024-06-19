@@ -121,7 +121,7 @@ def prepare_for_IMP(means_stds,fn):
 # run main
 S1,S2,S3=make_random_samples()
 S1_v2,S2_v2,S3_v2=compute_sample_mean_and_std(S1,S2,S3)
-prepare_for_IMP(S1_v2,'exp_compA.txt')
-prepare_for_IMP(S2_v2,'exp_compB.txt')
-prepare_for_IMP(S3_v2,'exp_compC.txt')
+prepare_for_IMP(S1_v2,'exp_compA.csv')
+prepare_for_IMP(S2_v2,'exp_compB.csv')
+prepare_for_IMP(S3_v2,'exp_compC.csv')
 

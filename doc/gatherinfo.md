@@ -1,7 +1,7 @@
 Step 1: gather information for both snapshot and trajectory modeling {#gatherinfo}
 ====================================
 
-# Gathering Information {#gather}
+# Gathering Information
 
 This is text to explain gathering information.
 

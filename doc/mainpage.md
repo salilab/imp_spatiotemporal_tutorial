@@ -13,7 +13,7 @@ Then, we connect snapshots at neighboring time points to produce trajectories. T
 If you use this tutorial or its accompanying method, please site the corresponding publications:
 
 - Latham et al. (methods)
-- Latham et al. (tutorial)
+- Rožič et al. (tutorial)
 
 # Integrative spatiotemporal modeling workflow {#steps}
 
@@ -24,30 +24,13 @@ In general, integrative modeling proceeds through five steps. In integrative spa
 This tutorial will walk you through the links below, which contain a breakdown of each of these modeling steps.
 
 - \subpage gatherinfo
-  Gather information for both snapshot and trajectory modeling.
 
-- \subpage snapshot_representation
-  Representation of static snapshot models.
-
-- \subpage snapshot_scoring
-  Scoring of static snapshot models.
-
-- \subpage snapshot_search
-  Search process to find good scoring snapshot models. 
+- \subpage snapshot1
 
 - \subpage snapshot_assess
-  Assessment of snapshot models.
 
-- \subpage trajectory_representation
-  Representation of trajectory models.
-
-- \subpage trajectory_scoring
-  Scoring of trajectory models.
-
-- \subpage trajectory_search
-  Search process to find good scoring trajectory models.       
+- \subpage trajectory1
 
 - \subpage trajectory_assess
-  Assessment of trajectory models.
 
 First, we begin by [gathering information for both snapshot and trajectory modeling.] (@ref gatherinfo)

@@ -3,7 +3,7 @@ NOTE: This tutorial is still in progress of being completed. Please do not use y
 
 Tutorial for computing spatiotemporal integrative models in IMP. For more information please check out the related publications:
 * Latham et al. in preparation. (methods paper)
-* Latham et al. in preparation. (tutorial paper)
+* Rožič et al. in preparation. (tutorial paper)
 
 ### This tutorial explores scripts that:
 * Generates snapshot models at various timepoints along a dynamic process

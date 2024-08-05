@@ -24,18 +24,13 @@ In general, integrative modeling proceeds through five steps. In integrative spa
 This tutorial will walk you through the links below, which contain a breakdown of each of these modeling steps.
 
 - \subpage gatherinfo
-  Gather information for both snapshot and trajectory modeling.
 
 - \subpage snapshot1
-  Representation, scoring, and search process for static snapshot models.
 
 - \subpage snapshot_assess
-  Assessment of snapshot models.
 
 - \subpage trajectory1
-  Representation, scoring, and search process for trajectory models.     
 
 - \subpage trajectory_assess
-  Assessment of trajectory models.
 
 First, we begin by [gathering information for both snapshot and trajectory modeling.] (@ref gatherinfo)

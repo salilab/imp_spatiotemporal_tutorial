@@ -9,4 +9,6 @@ For this tutorial, we used the X-ray crystal structure of the complete Bmi1/Ring
 
 \image html Input.png width=600px
 
-In addition to the four types of data used here, a variety of data could be useful for the spatiotemporal modeling of protein complexes. IMP currently features  restraints for a variety of experimental data or prior models,18,19,29,30CITE including chemical cross-links, Förster resonance energy transfer, comparative structural models, and deep-learning structural models, all of which could inform spatiotemporal modeling through a procedure similar to the one presented here.
+In addition to the four types of data used here, a variety of data could be useful for the spatiotemporal modeling of protein complexes. IMP currently features  restraints for a variety of experimental data or prior models, including chemical cross-links, Förster resonance energy transfer, comparative structural models, and deep-learning structural models, all of which could inform spatiotemporal modeling through a procedure similar to the one presented here.
+
+Next, we will review \subpage snapshot1

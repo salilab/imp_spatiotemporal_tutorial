@@ -32,7 +32,7 @@ This tutorial will walk you through the links below, which contain a breakdown o
 - \subpage snapshot_assess
   Assessment of snapshot models.
 
-- \subpage trajectory_representation
+- \subpage trajectory1
   Representation, scoring, and search process for trajectory models.     
 
 - \subpage trajectory_assess

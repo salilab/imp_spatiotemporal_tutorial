@@ -367,7 +367,7 @@ def append_rmf_coordinates(coord_list, rmf_hierarchy, rmf_fh):
 
     :param coord_list (list): empty list set in RMSD function where all the coords dictionaries should be saved
     :param rmf_hierarchy (str): hierarchy of certain rmf file from where coordinates are extracted
-    :param rmf_fh (str): rmf file open in read only
+    :param rmf_fh (str): rmf file opened in read only
     :return: ?? Why this code returns coord_list (which is input parameter)? I used same approach as in NPC code ??
     '''
     coords = {}
@@ -407,7 +407,7 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
     For clear plot, it is suggested to have less than 1000 RMSD values plotted.
     :param custom_output_directory (optional - str): If desired, different name of output directory (where plots and .txt
     files are saved) can be set. Default name: "RMSD_calculation_output"
-    :param custom_base_path: Custom path to the directory where snapshot{state}_{time} with start_sim.py
+    :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with start_sim.py are.
     :return: ?? (maybe return should be here rmsd_results, but I am not sure)
     '''
     # create output directory where all RMSD output is gathered

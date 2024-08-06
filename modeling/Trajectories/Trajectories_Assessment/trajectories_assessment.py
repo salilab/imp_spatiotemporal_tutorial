@@ -182,7 +182,7 @@ def write_mrc(scoring_path, mrc_file, MRCresolution=10.0,voxel=5.0):
             print(f"{sample_path} is empty, invalid or path is incorrect")
     return dmap2
 
-
+## 3 - comparison of the model to data used in modeling (EM)
 
 def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = None):
     '''
@@ -704,6 +704,11 @@ if __name__ == "__main__":
     print("Step 2: calculation of precision of the model IS COMPLETED")
     print("")
     print("")
+
+    # 3 - comparison of the model to data used in modeling (EM)
+    exp_mrc_base_path = "../../data/ET_data/experimental"
+    ccEM(exp_mrc_base_path)
+
 
     ## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
     # 4a - SAXS

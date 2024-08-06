@@ -19,13 +19,8 @@ from IMP.spatiotemporal import analysis
 import numpy as np
 import matplotlib.pyplot as plt
 
-# state_dict - universal parameter
-state_dict = {'0min': 3, '1min': 3, '2min': 1}
 
-# current directory
-main_dir=os.getcwd()
-
-# 1 - calculation of temporal precision
+## 1 - calculation of temporal precision
 '''
 To calculate temporal precision, two independent trajectory models (A and B) should be generated from two separate 
 samples (SampleA and SampleB) obtained from each snapshot. This is done most simply by referencing two 
@@ -37,7 +32,7 @@ Temporal precision is calculated by using the sequence of three functions:
 -create_DAG (from IMP.spatiotemporal)
 -analysis (from IMP.spatiotemporal)
 '''
-## 1 - copy_files_for_data (copy all relevant files into 'data' directory)
+# 1 - copy_files_for_data (copy all relevant files into 'data' directory)
 def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir2 = None):
     '''
     Copies three types of files important to generate two independent trajectory models (A and B):
@@ -109,51 +104,165 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
     except Exception as e:
         print(f"scoresA.txt and scoresB.txt cannot be copied. Try do do it manually. Reason for Error: {e}")
 
-## 1 - create_DAG
-# create 2 different trajectories (for sampleA and sampleB independently) to calculate trajectory precision
-expected_subcomplexes = ['A','B','C']
-exp_comp = {'A': 'exp_compA.csv', 'B': 'exp_compB.csv', 'C': 'exp_compC.csv'}
-input = "./data/"
-outputA = "../output_modelA/"
-outputB = "../output_modelB/"
 
-# Output from sampling precision and model precision to be saved in united dir: analysis_output
-analysis_output = "./output_trajectories_precision/"
-os.makedirs(analysis_output, exist_ok=True)
+##
+def extract_coordinates(rmf_hierarchy,rmf_fh):
+    '''
+    This function extracts coordinates from the rmf hierarchy.
 
-nodesA,graphA,graph_probA,graph_scoresA=spatiotemporal.create_DAG(state_dict,out_pdf=True,npaths=3,input_dir=input,scorestr ='_scoresA.log',output_dir=outputA,spatio_temporal_rule=False,expected_subcomplexes=expected_subcomplexes,score_comp=True,exp_comp_map=exp_comp,draw_dag=False)
+    :param rmf_hierarchy (str): hierarchy of certain rmf file from where coordinates are extracted
+    :param rmf_fh (str): rmf file opened in read only
+    :return (list): list of extracted coordinates
+    '''
+    coords = []
+    IMP.rmf.load_frame(rmf_fh, RMF.FrameID(0)) # in each rmf there is only one frame
+    for molecule in rmf_hierarchy.get_children()[0].get_children():
+        for leaf in IMP.core.get_leaves(molecule):
+            coords.append(leaf)
 
-os.chdir(main_dir)
-nodesB,graphB,graph_probB,graph_scoresB=spatiotemporal.create_DAG(state_dict,out_pdf=True,npaths=3,input_dir=input,scorestr ='_scoresB.log',output_dir=outputB,spatio_temporal_rule=False,expected_subcomplexes=expected_subcomplexes,score_comp=True,exp_comp_map=exp_comp,draw_dag=False)
+    return coords
 
-## 1 - analysis
-analysis.temporal_precision(outputA+'labeled_pdf.txt',outputB+'labeled_pdf.txt', output_fn= '.' + analysis_output + 'temporal_precision.txt')
-# here is some difficulty accessing this directory (additional dot for output_fn should be added as described above)
-os.chdir(main_dir) # it is crucial that after each step, directory is changed back to main
-print("Step 1: calculation of temporal precision IS COMPLETED")
-print("")
-print("")
 
-# 2 - calculation of precision of the model
+# for each snapshot separately it creates mrc
+def write_mrc(scoring_path, mrc_file, MRCresolution=10.0,voxel=5.0):
+    '''
+    This function accesses rmfs from both samples (sample_A and sample_B) for each snapshot{state}_{time}, opens them in
+    read only and extracts hierarchy. After that, helper function extract_coordinates is called to convert hierarchy to coordinates.
+    Based on coordinates, density maps are calculated (using IMP.em.SampledDensityMap) and added in .mrc file (IMP.em.write_map).
 
-# precision is calculated from .labeled_pdf.txt in Trajectories_Modeling dir
-trajectories_modeling_input_dir = "../Trajectories_Modeling/output/"
+    :param scoring_path (str): path to rmfs
+    :param mrc_file (str): path to created mrc file
+    :param MRCresolution (float): set MRC resolution
+    :param voxel (float): set voxel for .mrc
+    :return dmap2: ?? what type of value is density map (dmap2) ?? Cumulative density map for certain snapshot{state}_{time}
+    '''
+    count_frames = 0
+    for sample in ['sample_A', 'sample_B']:
+        sample_path = os.path.join(scoring_path, sample)
+        if os.path.exists(sample_path):
+            for file in os.listdir(sample_path):
+                if file.endswith('.rmf3'):
+                    sim_rmf = os.path.join(sample_path, file)
 
-analysis.precision(trajectories_modeling_input_dir+'labeled_pdf.txt', output_fn = analysis_output + 'precision.txt')
+                    rmf_fh = RMF.open_rmf_file_read_only(sim_rmf)
+                    model = IMP.Model()
+                    rmf_hierarchy = IMP.rmf.create_hierarchies(rmf_fh, model)[0]
 
-os.chdir(main_dir) # it is crucial that after each step, directory is changed back to main
-print("Step 2: calculation of precision of the model IS COMPLETED")
-print("")
-print("")
+                    ps = extract_coordinates(rmf_hierarchy, rmf_fh)
+                    number_of_leaves = len(ps)
+                    print(f'Number of leafs: {number_of_leaves}')
+                    # calculate density map
+                    dmap = IMP.em.SampledDensityMap(ps, MRCresolution, voxel)
+                    dmap.calcRMS()
+                    dmap.set_was_used(True)
+                    # dmap2 stores the overall density map for the snapshot{state}_{time}
+                    # dmap is the density map for current rmf
+                    # dmap3 is a temporary variable for combining the current dmap with dmap2
 
-# 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
-## 4a - SAXS
+                    if count_frames == 0:
+                        dmap2 = dmap
+
+                    else:
+                        bbox1 = IMP.em.get_bounding_box(dmap2)
+                        bbox2 = IMP.em.get_bounding_box(dmap)
+                        bbox1 += bbox2
+                        dmap3 = IMP.em.create_density_map(bbox1, voxel)
+                        dmap3.set_was_used(True)
+                        dmap3.add(dmap)
+                        dmap3.add(dmap2)
+                        dmap2 = dmap3
+                    count_frames = count_frames + 1
+
+                if count_frames == 0:
+                    print('Warning: RMF empty, no frames were read')
+                else:
+                    # density normalization and write overall density map
+                    dmap2.multiply(1. / count_frames)
+                    IMP.em.write_map(dmap2, mrc_file, IMP.em.MRCReaderWriter())
+        else:
+            print(f"{sample_path} is empty, invalid or path is incorrect")
+    return dmap2
+
+
+
+def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = None):
+    '''
+    This function construct paths to experimental .mrc and to 'good_scoring_models' directory for each snapshot{state}_{time},
+    where rmfs are saved in two independent samples (sample_A and sample_B). Density map (mrc) for certain snapshot{state}_{time}
+    is calculated by calling write_mrc function. After that, cross-correlation between experimental density map and
+    calculated density map of each snapshot is calculated. All calculations are gathered in combined .txt file, which is
+    saved together with all the calculated .mrc files in output_directory. Calculated .mrc files and experimental .mrc files
+    can be also visually compared in one "overlapping" ChimeraX session.
+
+    :param exp_mrc_base_path (str): path to directory with time-dependent EM data
+    :param custom_output_directory (optional - str): If desired, different name of output directory (where plots and .txt
+    files are saved) can be set. Default name: ccEM_output
+    :param custom_base_path (optional -str): Custom path to the directory where snapshot{state}_{time} created with start_sim.py are.
+    :return: ??
+    '''
+
+    # create output directory
+    if custom_output_directory:
+        output_directory = custom_output_directory
+    else:
+        output_directory = "./ccEM_output"
+
+    os.makedirs(output_directory, exist_ok=True)
+
+    for time in state_dict.keys():
+        for state in range(1, state_dict[time] + 1):
+            # Construct directory path
+            if custom_base_path:
+                base_path = custom_base_path
+            else:
+                base_path = "../../Snapshots/Snapshots_Modeling"
+
+            snapshot = f"snapshot{state}_{time}"  # directory snapshot{state}_{time} is created with start_sim.py
+            print(f"Now we are extracting from {snapshot}")
+
+            # Creating .mrc file for each snapshot, where average density map should be saved
+            sim_mrc_file = f"MRC_{state}_{time}.mrc"
+            sim_mrc_path = os.path.join(output_directory, sim_mrc_file)
+
+            # construct path to the experimental .mrc files for each time point
+            exp_mrc_file = f'{time}_noisy.mrc' # name can be changed, but it is important that time variable is included
+            exp_mrc_path = os.path.join(exp_mrc_base_path, exp_mrc_file)
+
+            # Continue path to rmf3 files
+            directory_path = os.path.join(base_path, snapshot)
+            good_scoring_path = os.path.join(directory_path, 'good_scoring_models') # rmfs from sample_A and sample_B should be extracted
+
+            # preparing .mrc for CC calculation
+            model_density = write_mrc(good_scoring_path, sim_mrc_path) # calling a function to write a .mrc file for each snapshot
+            exp_density = IMP.em.read_map(exp_mrc_path, IMP.em.MRCReaderWriter())
+
+            # calculation of cross-correlation between experimental density map and calculated density map of each snapshot
+            cc = IMP.em.get_coarse_cc_coefficient(exp_density, model_density, 0, True)
+
+            # Create a .txt file to save all ccEM calculations together with mrc files
+            txt_file = 'ccEM_calculations.txt'
+            txt_file_path = os.path.join(output_directory, txt_file)
+            header = 'snapshot, cc EM value\n'
+
+            # Check if the file already exists
+            try:
+                with open(txt_file_path, 'x') as file:
+                    file.write(header)
+            except FileExistsError:
+                pass  # File already exists, so we don't need to write the header again
+
+            with open(txt_file_path, 'a') as file:
+                file.write(f'{snapshot}, {cc}\n')
+                print(f"Data for {snapshot} is saved: {txt_file_path}")
+
+
+## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
+# 4a - SAXS
 '''
 Comparing center models of the most dominant cluster for each snapshot (rmfs) to the SAXS data for each time point can be done in two steps:
 -converting rmfs to pdb files
 -comparing pdbs of each snapshot to experimental SAXS profile using FoXS
 '''
-
 
 def convert_rmfs(state_dict, model, custom_path=None):
     '''
@@ -283,11 +392,6 @@ def process_foxs(state_dict, custom_dat_file = None):
         except Exception as e:
             print(f"FoXS can not be executed properly due to following problem: {e}")
 
-
-model = IMP.Model()
-convert_rmfs(state_dict, model)
-copy_SAXS_dat_files()
-process_foxs(state_dict)
 
 ## 4b - RMSD calculation between filtered rmfs and native pdb of final complex
 
@@ -538,8 +642,86 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
                 print(f"Cannot calculate statistics, rmsd_results is empty: {e}")
 
 
-# call the function (example)
-pdb_path = "../../snapshots/PDB/3rpg.pdb"
-output_directory = "./RMSD_calculation_output1"
-base_path = "../../snapshots/"
-RMSD(pdb_path=pdb_path, custom_n_plot=20, custom_output_directory=output_directory, custom_base_path=base_path)
+
+
+if __name__ == "__main__":
+    # state_dict - universal parameter
+    state_dict = {'0min': 3, '1min': 3, '2min': 1}
+    # model
+    model = IMP.Model()
+    # current directory
+    main_dir = os.getcwd()
+
+    # start calling codes
+    ## 1 - calculation of temporal precision
+    # copy all the relevant files
+    copy_files_for_data(state_dict)
+
+    # create two independent DAGs
+    expected_subcomplexes = ['A', 'B', 'C']
+    exp_comp = {'A': 'exp_compA.csv', 'B': 'exp_compB.csv', 'C': 'exp_compC.csv'}
+    input = "./data/"
+    outputA = "../output_modelA/"
+    outputB = "../output_modelB/"
+
+    # Output from sampling precision and model precision to be saved in united dir: analysis_output
+    analysis_output = "./output_trajectories_precision/"
+    os.makedirs(analysis_output, exist_ok=True)
+
+    nodesA, graphA, graph_probA, graph_scoresA = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
+                                                                           input_dir=input, scorestr='_scoresA.log',
+                                                                           output_dir=outputA,
+                                                                           spatio_temporal_rule=False,
+                                                                           expected_subcomplexes=expected_subcomplexes,
+                                                                           score_comp=True, exp_comp_map=exp_comp,
+                                                                           draw_dag=False)
+
+    os.chdir(main_dir)
+    nodesB, graphB, graph_probB, graph_scoresB = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
+                                                                           input_dir=input, scorestr='_scoresB.log',
+                                                                           output_dir=outputB,
+                                                                           spatio_temporal_rule=False,
+                                                                           expected_subcomplexes=expected_subcomplexes,
+                                                                           score_comp=True, exp_comp_map=exp_comp,
+                                                                           draw_dag=False)
+
+    ## 1 - analysis
+    analysis.temporal_precision(outputA + 'labeled_pdf.txt', outputB + 'labeled_pdf.txt',
+                                output_fn='.' + analysis_output + 'temporal_precision.txt')
+    # here is some difficulty accessing this directory (additional dot for output_fn should be added as described above)
+    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
+    print("Step 1: calculation of temporal precision IS COMPLETED")
+    print("")
+    print("")
+
+    ## 2 - calculation of precision of the model
+
+    # precision is calculated from .labeled_pdf.txt in Trajectories_Modeling dir
+    trajectories_modeling_input_dir = "../Trajectories_Modeling/output/"
+
+    analysis.precision(trajectories_modeling_input_dir + 'labeled_pdf.txt', output_fn=analysis_output + 'precision.txt')
+
+    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
+    print("Step 2: calculation of precision of the model IS COMPLETED")
+    print("")
+    print("")
+
+    ## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
+    # 4a - SAXS
+    convert_rmfs(state_dict, model)
+    copy_SAXS_dat_files()
+    process_foxs(state_dict)
+    print("Step 4a: SAXS validation IS COMPLETED")
+    print("")
+    print("")
+
+    #4b - RMSD
+    pdb_path = "../../snapshots/PDB/3rpg.pdb"
+    RMSD(pdb_path=pdb_path, custom_n_plot=20)
+    print("Step 4a: SAXS validation IS COMPLETED")
+    print("")
+    print("")
+
+
+
+

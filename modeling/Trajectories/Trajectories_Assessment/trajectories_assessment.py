@@ -149,8 +149,7 @@ def write_mrc(scoring_path, mrc_file, MRCresolution=10.0,voxel=5.0):
                     rmf_hierarchy = IMP.rmf.create_hierarchies(rmf_fh, model)[0]
 
                     ps = extract_coordinates(rmf_hierarchy, rmf_fh)
-                    number_of_leaves = len(ps)
-                    print(f'Number of leafs: {number_of_leaves}')
+
                     # calculate density map
                     dmap = IMP.em.SampledDensityMap(ps, MRCresolution, voxel)
                     dmap.calcRMS()
@@ -715,7 +714,7 @@ if __name__ == "__main__":
     print("")
     print("")
 
-    #4b - RMSD
+    # 4b - RMSD
     pdb_path = "../../snapshots/PDB/3rpg.pdb"
     RMSD(pdb_path=pdb_path, custom_n_plot=20)
     print("Step 4a: SAXS validation IS COMPLETED")

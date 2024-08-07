@@ -48,7 +48,7 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
            correspond to the number of possible states at that timepoint.
     :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config files
     and scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
-    :param custom_source_dir2: (optional - str): Custom path to stoichiometry data dir
+    :param custom_source_dir2 (optional - str): Custom path to stoichiometry data dir
     '''
     # Create the destination directory for all the data copied in this function
     destination_dir = './data/'

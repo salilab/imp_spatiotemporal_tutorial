@@ -38,7 +38,7 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
     Copies three types of files important to generate two independent trajectory models (A and B):
     -.config files created with start_sim.py in Snapshot_Modeling (source_dir1)
     -time-dependent stoichiometry data for each timepoint. Data should be presented in .csv file. With this function all
-    csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary for create_DAG function
+    csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary in create_DAG function
     -scoresA and scoresB for each snapshot created with imp sampcon exhaust (source_dir1 + snapshot + good_scoring_models)
 
     :param state_dict (dict): state_dict: dictionary that defines the spatiotemporal model.

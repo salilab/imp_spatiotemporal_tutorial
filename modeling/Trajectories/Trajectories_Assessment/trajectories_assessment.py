@@ -663,8 +663,8 @@ if __name__ == "__main__":
     outputA = "../output_modelA/"
     outputB = "../output_modelB/"
 
-    # Output from sampling precision and model precision to be saved in united dir: analysis_output
-    analysis_output = "./output_trajectories_precision/"
+    # Output from sampling precision and model precision to be saved in united dir: analysis_output_precision
+    analysis_output = "./analysis_output_precision/"
     os.makedirs(analysis_output, exist_ok=True)
 
     nodesA, graphA, graph_probA, graph_scoresA = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,

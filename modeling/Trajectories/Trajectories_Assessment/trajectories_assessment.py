@@ -648,8 +648,7 @@ if __name__ == "__main__":
     state_dict = {'0min': 3, '1min': 3, '2min': 1}
     # model
     model = IMP.Model()
-    # current directory
-    main_dir = os.getcwd()
+
 
     # start calling codes
     ## 1 - calculation of temporal precision

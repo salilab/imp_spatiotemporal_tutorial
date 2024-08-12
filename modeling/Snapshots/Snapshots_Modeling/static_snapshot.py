@@ -18,17 +18,21 @@ import IMP.saxs
 import os
 import sys
 
-# Running parameters to access correct path of ET_data for EM restraint and topology file for certain {state}_{time}_topol.txt
+# Running parameters to access correct path of ET_data for EM restraint
+# and topology file for certain {state}_{time}_topol.txt
 state = sys.argv[1]
 time = sys.argv[2]
 
 # Topology file
 topology_file = f"../{state}_{time}_topol.txt"
 # Paths to input data for topology file
-pdb_dir = "../../Input_Information/PDB"
-fasta_dir = "../../Input_Information/FASTA"
-# Path where output .gmm created with BuildSystem (based ont topology file) and execute_macro are saved for each snapshot{state}_{time}
-gmm_dir = "../ET_data/"
+pdb_dir = "../../../../Input_Information/PDB"
+fasta_dir = "../../../../Input_Information/FASTA"
+# Path where forward gmms are created with BuildSystem (based ont topology file)
+# If gmms exist, they will be used from this folder
+forward_gmm_dir = "../ET_data/"
+# Path to experimental gmms
+exp_gmm_dir= '../../../../Input_Information/ET_data/add_noise'
 
 # Setting model
 mdl = IMP.Model()
@@ -58,20 +62,21 @@ for m in root_hier.get_children()[0].get_children():
     cr.add_to_model()
     output_objects.append(cr)
 
-
+# Add excluded volume
 evr = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(
                                      included_objects=[root_hier],
                                      resolution=1000)
 output_objects.append(evr)
 
-# Applying time-dependent EM restraint
+# Applying time-dependent EM restraint. Point to correct gmm / mrc file at each time point
 # Path to corresponding .gmm file (and .mrc file)
-em_map = f"../ET_data/experimental/{time}_noisy.gmm" #Path to .gmm file
+em_map = exp_gmm_dir + f"/{time}_noisy.gmm"
 
 # Create artificial densities from hierarchy
 densities = IMP.atom.Selection(root_hier,
                  representation_type=IMP.atom.DENSITIES).get_selected_particles()
 
+# Create EM restraint based on these densities
 emr = IMP.pmi.restraints.em.GaussianEMRestraint(
         densities,
         target_fn=em_map, #
@@ -81,15 +86,16 @@ emr = IMP.pmi.restraints.em.GaussianEMRestraint(
 output_objects.append(emr)
 
 
-# ReplicaExchange and sampling
+# Generate random configuration
 IMP.pmi.tools.shuffle_configuration(root_hier,
-                                    max_translation=50)  #Is this optimal?
+                                    max_translation=50)
 
+# Add EM restraint and excluded volume restraint to the model
 evr.add_to_model()
 emr.add_to_model()
 
 
-
+# Perform replica exchange sampling
 rex=IMP.pmi.macros.ReplicaExchange(mdl,
         root_hier=root_hier,
         monte_carlo_sample_objects=dof.get_movers(),
@@ -97,8 +103,7 @@ rex=IMP.pmi.macros.ReplicaExchange(mdl,
         output_objects=output_objects,
         monte_carlo_steps=200, # Number of MC steps between writing frames.
         number_of_best_scoring_models=0,
-        number_of_frames=500)
-# It is optimal for pmi analysis that up to cca 30000 frames are generated otherwise analysis may take to long
+        number_of_frames=500) # number of frames to be saved
 # In our case, for each snapshot we generated 25000 frames altogether (50*500)
 rex.execute_macro()
 

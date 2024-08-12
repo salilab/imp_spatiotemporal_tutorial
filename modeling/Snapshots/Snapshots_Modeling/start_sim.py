@@ -27,23 +27,19 @@ import shutil
 def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, number_of_runs):
     '''
     NOTE: Before running generate_all_snapshots function, main_dir should contain:
-    -ET_data: This directory should be manually created based on desired time-dependent EM restraint for pmi representation.
-    For example: For our system, from ../../Input_Information/ET_data only 'noisy' experimental data (.gmm and .rmc)
-    was copied into ./experimental directory. This ./experimental subdirectory is created as .gmm densities generated
-    can be stored here for each snapshot{state}_{time}.
-    -{state}_{time}_topol.txt topology files created with IMP.spatiotemporal.prepare_protein_library.prepare_protein_library
-    (for this function ./gen_FCS directory should be copied from Input_Information directory and 'spatiotemporal_topology.txt'
-    should be written)
+    -{state}_{time}_topol.txt topology files created with
+    IMP.spatiotemporal.prepare_protein_library.prepare_protein_library
     -static_snapshot.py
     For more information regarding static_snapshot.py and spatiotemporal_topology.txt check this tutorial:
     https://integrativemodeling.org/tutorials/actin/pmidesign.html
 
     The purpose of this function is that it can automatically create pmi and run model representation script for each
-    of the snapshots by incorporating corresponding EM data and topology file at once. This can be achieved with following
-    steps:
-    a) Copy all three directories/files to each snapshot{state}_{time} directory and Job.sh is generated
-    b) Create run directories and copy files in each "child" run directory inside "parent" snapshot{state}_{time} directory
-    c) The last step is to submit Job.sh using qsub inside each run directory <state
+    of the snapshots by incorporating corresponding EM data and topology file at once.
+    This can be achieved with following steps:
+    a) Copy all necessary files to each snapshot{state}_{time} directory and Job.sh is generated
+    b) Create run directories and copy files in each "child" run directory inside "parent"
+    snapshot{state}_{time} directory
+    c) The last step is to submit Job.sh using qsub inside each run directory <state>
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
@@ -55,9 +51,8 @@ def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, nu
     :param job_template (str - text): Job.sh that allows to run desired number of runs for all the snapshots across
     all timepoints simultaneously. The purpose of Job.sh is to submit static_snapshot.py for each snapshot{state}_{time}
     with running parameters <state> <time>. In this way snapshots (static_snapshot.py) are generated with corresponding
-    EM restraint (ET_data) and topology file ({state}_{time}_topol.txt).
+    EM restraint and topology file ({state}_{time}_topol.txt).
     :param number_of_runs (int): Desired number of runs for each snapshot{state}_{time}.
-    :return: qsub Job.sh - to run desired number of runs for all the snapshots across all timepoints (snapshot{state}_{time})
     '''
 
     for time in state_dict.keys():
@@ -73,7 +68,10 @@ def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, nu
                     shutil.copytree(item_path, os.path.join(new_dir, item))
                 else:
                     shutil.copy2(item_path, new_dir)
+            # Make directory for forward densities
+            os.mkdir(os.path.join(new_dir, "forward_densities"))
 
+            # find topology file
             topol_file = f"{state}_{time}_topol.txt"
             shutil.copy2(os.path.join(main_dir, topol_file), new_dir)
 
@@ -100,8 +98,8 @@ def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, nu
 
                 # c) The last step is to submit Job.sh using qsub inside each run directory
                 os.system(f"cd {run_dir} && qsub Job.sh")
-                print(f"All Job.sh for snapshot{state}_{time} have been successfully submitted")
-                # Check then qstat what is running
+            print(f"All Job.sh for snapshot{state}_{time} have been successfully submitted")
+            # Check then qstat what is running
 
 
 if __name__ == "__main__":
@@ -110,8 +108,9 @@ if __name__ == "__main__":
 
     # 1a - parameters for prepare_protein_library:
     times = ["0min", "1min", "2min"]
-    exp_comp = {'A': './gen_FCS/exp_compA.csv', 'B': './gen_FCS/exp_compB.csv',
-                'C': './gen_FCS/exp_compC.csv'}
+    exp_comp = {'A': '../../Input_Information/gen_FCS/gen_FCS/exp_compA.csv',
+                'B': '../../Input_Information/gen_FCS/gen_FCS/exp_compB.csv',
+                'C': '../../Input_Information/gen_FCS/gen_FCS/exp_compC.csv'}
     expected_subcomplexes = ['A', 'B', 'C']
     template_topology = 'spatiotemporal_topology.txt'
     template_dict = {'A': ['Ubi-E2-D3'], 'B': ['BMI-1'], 'C': ['E3-ubi-RING2']}
@@ -125,7 +124,7 @@ if __name__ == "__main__":
     # 2a - parameters for generate_all_snapshots
 
     main_dir = os.getcwd()
-    items_to_copy = ['ET_data', 'static_snapshot.py']  # additionally we need to copy only specific topology file
+    items_to_copy = ['static_snapshot.py']  # additionally we need to copy only specific topology file
     job_template = """#!/bin/bash
     #$ -S /bin/bash
     #$ -cwd

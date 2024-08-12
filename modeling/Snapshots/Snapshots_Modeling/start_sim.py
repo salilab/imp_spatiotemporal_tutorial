@@ -5,7 +5,8 @@ time - dependent stoichiometry data this function calculates configurations of p
 each time together with corresponding pmi topology file.
 For example: for our system for first two time points we calculated three most possible configurations
 (check state_dict - important dictionary that describe our snapshot model).
-For more information regarding prepare_protein_library check: (add link!)
+For more information regarding prepare_protein_library check:
+https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html
 
 -generate_all_snapshots: (after configuration and topology files are created) this function automatically creates pmi
  model representation script for each of the snapshots by incorporating corresponding EM data and topology file

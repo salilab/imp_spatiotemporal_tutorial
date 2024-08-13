@@ -38,16 +38,18 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
     Copies three types of files important to generate two independent trajectory models (A and B):
     -.config files created with start_sim.py in Snapshot_Modeling (source_dir1)
     -time-dependent stoichiometry data for each timepoint. Data should be presented in .csv file. With this function all
-    csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary in create_DAG function
-    -scoresA and scoresB for each snapshot created with imp sampcon exhaust (source_dir1 + snapshot + good_scoring_models)
+    csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary in create_DAG
+    function
+    -scoresA and scoresB for each snapshot created with imp sampcon exhaust
+    (source_dir1 + snapshot + good_scoring_models)
 
     :param state_dict (dict): state_dict: dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
            stepwise temporal process. Keys should be ordered according to the
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
-    :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config files
-    and scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
+    :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config
+    files and scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
     :param custom_source_dir2 (optional - str): Custom path to stoichiometry data dir
     """
     # Create the destination directory for all the data copied in this function
@@ -127,14 +129,16 @@ def extract_coordinates(rmf_hierarchy,rmf_fh):
 def write_mrc(scoring_path, mrc_file, MRCresolution=10.0,voxel=5.0):
     """
     This function accesses rmfs from both samples (sample_A and sample_B) for each snapshot{state}_{time}, opens them in
-    read only and extracts hierarchy. After that, helper function extract_coordinates is called to convert hierarchy to coordinates.
-    Based on coordinates, density maps are calculated (using IMP.em.SampledDensityMap) and added in .mrc file (IMP.em.write_map).
+    read only and extracts hierarchy. After that, helper function extract_coordinates is called to convert hierarchy to
+    coordinates. Used by ccEM function.
+    Based on coordinates, density maps are calculated (using IMP.em.SampledDensityMap) and added in .mrc file
+    (IMP.em.write_map).
 
     :param scoring_path (str): path to rmfs
     :param mrc_file (str): path to created mrc file
     :param MRCresolution (float): set MRC resolution
     :param voxel (float): set voxel for .mrc
-    :return dmap2: ?? what type of value is density map (dmap2) ?? Cumulative density map for certain snapshot{state}_{time}
+    :return dmap2: (IMP DensityMap class) Cumulative density map for certain snapshot{state}_{time}
     """
     count_frames = 0
     for sample in ['sample_A', 'sample_B']:
@@ -186,18 +190,19 @@ def write_mrc(scoring_path, mrc_file, MRCresolution=10.0,voxel=5.0):
 
 def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = None):
     """
-    This function construct paths to experimental .mrc and to 'good_scoring_models' directory for each snapshot{state}_{time},
-    where rmfs are saved in two independent samples (sample_A and sample_B). Density map (mrc) for certain snapshot{state}_{time}
-    is calculated by calling write_mrc function. After that, cross-correlation between experimental density map and
-    calculated density map of each snapshot is calculated. All calculations are gathered in combined .txt file, which is
-    saved together with all the calculated .mrc files in output_directory. Calculated .mrc files and experimental .mrc files
-    can be also visually compared in one "overlapping" ChimeraX session.
+    This function constructs paths to experimental .mrc and to 'good_scoring_models' directory for each
+    snapshot{state}_{time}, where rmfs are saved in two independent samples (sample_A and sample_B). Density map (mrc)
+    for certain snapshot{state}_{time} is calculated by calling write_mrc function. After that, cross-correlation
+    between experimental density map and calculated density map of each snapshot is calculated. All calculations are
+    gathered in combined .txt file, which is saved together with all the calculated .mrc files in output_directory.
+    Calculated .mrc files and experimental .mrc files can be also visually compared in one "overlapping" ChimeraX
+    session.
 
     :param exp_mrc_base_path (str): path to directory with time-dependent EM data
-    :param custom_output_directory (optional - str): If desired, different name of output directory (where plots and .txt
-    files are saved) can be set. Default name: ccEM_output
-    :param custom_base_path (optional -str): Custom path to the directory where snapshot{state}_{time} created with start_sim.py are.
-    :return: ??
+    :param custom_output_directory (optional - str): If desired, different name of output directory
+    (where plots and .txt files are saved) can be set. Default name: ccEM_output
+    :param custom_base_path (optional -str): Custom path to the directory where snapshot{state}_{time} created with
+    start_sim.py are.
     """
 
     # create output directory
@@ -229,13 +234,16 @@ def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = N
 
             # Continue path to rmf3 files
             directory_path = os.path.join(base_path, snapshot)
-            good_scoring_path = os.path.join(directory_path, 'good_scoring_models') # rmfs from sample_A and sample_B should be extracted
+            # rmfs from sample_A and sample_B should be extracted
+            good_scoring_path = os.path.join(directory_path, 'good_scoring_models')
 
             # preparing .mrc for CC calculation
-            model_density = write_mrc(good_scoring_path, sim_mrc_path) # calling a function to write a .mrc file for each snapshot
+            # calling a function to write a .mrc file for each snapshot
+            model_density = write_mrc(good_scoring_path, sim_mrc_path)
             exp_density = IMP.em.read_map(exp_mrc_path, IMP.em.MRCReaderWriter())
 
-            # calculation of cross-correlation between experimental density map and calculated density map of each snapshot
+            # calculation of cross-correlation between experimental density map and
+            # calculated density map of each snapshot
             cc = IMP.em.get_coarse_cc_coefficient(exp_density, model_density, 0, True)
 
             # Create a .txt file to save all ccEM calculations together with mrc files
@@ -258,16 +266,17 @@ def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = N
 ## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
 # 4a - SAXS
 """
-Comparing center models of the most dominant cluster for each snapshot (rmfs) to the SAXS data for each time point can be done in two steps:
+Comparing center models of the most dominant cluster for each snapshot (rmfs) to the SAXS data for each time point
+ can be done in two steps:
 -converting rmfs to pdb files
 -comparing pdbs of each snapshot to experimental SAXS profile using FoXS
 """
 
 def convert_rmfs(state_dict, model, custom_path=None):
     """
-    The purpose of this function is to automate the conversion of RMF files into PDB files for all the states from state_dict.
-    Created PDBs are further used in comparison of SAXS profiles using FoXS. Additionally, they can be used for comparison to native
-    PDB if available.
+    The purpose of this function is to automate the conversion of RMF files into PDB files for all the states from
+    state_dict. Created PDBs are further used in comparison of SAXS profiles using FoXS. Additionally, they can be
+    used for comparison to native PDB if available.
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
@@ -275,7 +284,8 @@ def convert_rmfs(state_dict, model, custom_path=None):
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
     :param model (str): An IMP (Integrative Modeling Platform) model object.
-    :param custom_path (optional - str): A custom path for the RMF file, allowing for flexibility in file location (should be compliant with stat_dict).
+    :param custom_path (optional - str): A custom path for the RMF file, allowing for flexibility in file location
+    (should be compliant with stat_dict).
     """
 
     for time in state_dict.keys():
@@ -338,7 +348,6 @@ def process_foxs(state_dict, custom_dat_file = None):
            correspond to the number of possible states at that timepoint.
     :param custom_dat_file (optional - str)): A custom name of SAXS files for each time point (should be
     compliant with stat_dict)
-    :return: ??
     """
 
 
@@ -443,16 +452,20 @@ def create_pdb_coordinates(coord_list, pdb_hierarchy, chains_to_include):
     coords = {}
     for pdb_molecule in pdb_hierarchy.get_children():
         pdb_molecule_names = pdb_molecule.get_name()
-        # print(f"Names of molecules in pdb file are: {pdb_molecule_names}") # use this to understand naming of proteins in pdb file
-        if pdb_molecule_names in chains_to_include:  # it should select only the chains from configuration file created
+        # use this to understand naming of proteins in pdb file
+        # print(f"Names of molecules in pdb file are: {pdb_molecule_names}")
+        # it should select only the chains from configuration file created
+        if pdb_molecule_names in chains_to_include:
             for pdb_leaf in IMP.core.get_leaves(pdb_molecule):
                 pdb_leaf_name = pdb_leaf.get_name()
                 if pdb_leaf_name.startswith(f"Atom CA of residue"):
                     leaf_coords = IMP.core.XYZ(pdb_leaf).get_coordinates()
                     pdb_combined_name = f"{pdb_molecule_names} leaf: {pdb_leaf_name}"
-                    # print(f"Understanding hierarchy. Combined name is: {pdb_combined_name}") # use this to understand naming and hierarchy of pdb
+                    # use this to understand naming and hierarchy of pdb
+                    # print(f"Understanding hierarchy. Combined name is: {pdb_combined_name}")
                     coords[pdb_combined_name] = leaf_coords
-                    # print(f"Coords pdb list: {coords}") # use this to understand how coordinates are extracted from pdb
+                    # use this to understand how coordinates are extracted from pdb
+                    # print(f"Coords pdb list: {coords}")
     coord_list.append(coords)
     return coord_list
 
@@ -462,27 +475,32 @@ def append_rmf_coordinates(coord_list, rmf_hierarchy, rmf_fh):
     This function extract name:coordinate dictionary from rmf hierarchy for certain snapshot{state}_{time}.
     This dictionary is later used in the RMSD_from_dict function, which calculates RMSD.
     NOTE: This function is specifically designed to work with the rmf hierarchy for the provided tutorial example.
-    For different systems, alternative "hierarchical loops"  may be required to access the desired coordinates from the hierarchy.
-    Use muted (#) 'print statements' to explore and understand the hierarchy for your specific system.
+    For different systems, alternative "hierarchical loops"  may be required to access the desired coordinates from the
+    hierarchy. Use muted (#) 'print statements' to explore and understand the hierarchy for your specific system.
 
-    :param coord_list (list): empty list set in RMSD function where all the coords dictionaries should be saved
+    :param coord_list (list): list of list of dictionaries, where each item in the list is a dictionary for a
+    structural state, the keys in that dictionary are the names of proteins and the values are the coordinates for the
+    corresponding protein.
     :param rmf_hierarchy (str): hierarchy of certain rmf file from where coordinates are extracted
     :param rmf_fh (str): rmf file opened in read only
-    :return: ?? Why this code returns coord_list (which is input parameter)? I used same approach as in NPC code ??
+    :return:  coord_list (list): Updated coordinate list, with coordinates for the loaded state.
     """
     coords = {}
     IMP.rmf.load_frame(rmf_fh, RMF.FrameID(0))  # there is only one frame in each rmf3
     for molecule in rmf_hierarchy.get_children()[0].get_children():
         molecule_names = molecule.get_name()
-        # print(f"Names of molecules in pdb file are: {molecule_names}") # use this to understand naming of proteins in rmf files
+        # use this to understand naming of proteins in rmf files
+        # print(f"Names of molecules in pdb file are: {molecule_names}")
         # Naming should be same as it was set in topology file
         for leaf in IMP.core.get_leaves(molecule):
             leaf_name = leaf.get_name()
             leaf_coords = IMP.core.XYZ(leaf).get_coordinates()
             combined_name = f"{molecule_names} leaf:{leaf_name}"
-            # print(f"Understanding hierarchy. Combined name is: {combined_name}") # use this to understand naming and hierarchy of rmf
+            # use this to understand naming and hierarchy of rmf
+            # print(f"Understanding hierarchy. Combined name is: {combined_name}")
             coords[combined_name] = leaf_coords
-            # print(f"Coords pdb list: {coords}") # use this to understand how coordinates are extracted from rmf
+            # use this to understand how coordinates are extracted from rmf
+            # print(f"Coords pdb list: {coords}")
 
     coord_list.append(coords)
     return coord_list
@@ -560,7 +578,8 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
                                     # Read in native rmf
                                     rmf_coord_list = []  # for each snapshot separately
                                     rmf_fh = RMF.open_rmf_file_read_only(sim_rmf)
-                                    # model = IMP.Model() # Where do I need to set the model? Here or at the beginning?
+                                    # Where do I need to set the model? Here or at the beginning?
+                                    # model = IMP.Model()
                                     rmf_hierarchy = IMP.rmf.create_hierarchies(rmf_fh, model)[0]
                                     rmf_coord_list = append_rmf_coordinates(rmf_coord_list, rmf_hierarchy, rmf_fh)
                                 except Exception as e:
@@ -582,7 +601,8 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
                                 for l in range(len(rmf_coord_list)):
                                     rmsd_value = RMSD_from_dict(rmf_coord_list[l], pdb_native_list[0])
                                     rmsd_results.append(rmsd_value)
-                                    # print(rmf_coord_list) # use this if you want to check how the rmf coordinates are extracted
+                                    # use this if you want to check how the rmf coordinates are extracted
+                                    # print(rmf_coord_list)
 
             print(f"Extracting rmsd for {snapshot} is finished ")
 

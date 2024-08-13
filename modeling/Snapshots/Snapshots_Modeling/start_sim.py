@@ -9,7 +9,8 @@ For more information regarding prepare_protein_library check:
 https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html
 
 -generate_all_snapshots: (after configuration and topology files are created) this function automatically creates pmi
- model representation script for each of the snapshots by incorporating corresponding EM data and topology file
+ model representation script for each of the snapshots by incorporating corresponding EM data and topology file.
+ The current job script is currently configured for our cluster and will need to be edited for other systems.
 '''
 import IMP
 import numpy as np

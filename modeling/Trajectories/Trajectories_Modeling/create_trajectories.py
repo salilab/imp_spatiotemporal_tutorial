@@ -1,9 +1,9 @@
-'''
+"""
 This function has two main parts:
 -first all the required data is copied to created ./data/ repository
 -then by using create_DAG trajectory model is generated.
 Follow this for more examples how to use create_DAG code: https://github.com/salilab/imp/tree/develop/modules/spatiotemporal/examples/toy
-'''
+"""
 import IMP.spatiotemporal as spatiotemporal
 import os
 import shutil
@@ -11,7 +11,7 @@ import shutil
 state_dict = {'0min': 3, '1min': 3, '2min': 1}
 
 def merge_scores(fileA, fileB, outputFile):
-    '''
+    """
     For each function merges scoresA.txt and scoresB.txt into {state}_{time}_scores.log
 
     :param fileA: path to scoresA.txt
@@ -19,7 +19,7 @@ def merge_scores(fileA, fileB, outputFile):
     :param outputFile: path to output merged .log file named {state}_{time}_scores.log for each snapshot.
     This type of .log file is used in crete_DAG to generate trajectory model.
     :return: ??
-    '''
+    """
     # open both files, so data can be extracted
     with open(fileA, 'r') as file_a:
         data_a = file_a.readlines()
@@ -35,7 +35,7 @@ def merge_scores(fileA, fileB, outputFile):
         output.writelines(merged_data)
 
 def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_source_dir2 = None): # maybe this is the best way to write introducion of each function
-    '''
+    """
     Copies three types of files important to generate trajectory models:
     -.config files created with start_sim.py in Snapshot_Modeling (source_dir1)
     -time-dependent stoichiometry data for each timepoint. Data should be presented in .csv file. With this function all
@@ -54,7 +54,7 @@ def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_sou
     and to access scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
     :param custom_source_dir2 (optional - str): Custom path to stoichiometry data dir
     :return: ??
-    '''
+    """
 
     # Create the destination directory if it does not exist (./data/). Here all the
     destination_dir = './data/'

@@ -37,29 +37,31 @@ CNC=0.5+0.5*tanh(eta*(time-(1+shift)));
 
 % Plot true distribution ---------------------------------
 
-figure;
+fig=figure('Renderer', 'painters', 'Position', [0 0 1000 525]);
 hold on;
-plot(time,CNA,'Linewidth',4,'Color',color1);
-plot(time,CNB,'Linewidth',4,'Color',color2);
-plot(time,CNC,'Linewidth',4,'Color',color4);
+plot(time,CNA,'Linewidth',3,'Color',color1);
+plot(time,CNB,'Linewidth',3,'Color',color2);
+plot(time,CNC,'Linewidth',3,'Color',color4);
 legend({' A',' B',' C'},'location','northwest');
-set(gca,'FontSize',56,'FontName','Helvetica','Linewidth',4);
+set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3);
 axis([-1 2.5 0 1])
 % box on;
 legend boxoff;
+print(fig,'true.png','-dpng');
 
 % Plot sampled data ---------------------------------------
 
-figure;
+fig=figure('Renderer', 'painters', 'Position', [0 0 1000 525]);
 hold on;
-plot(expA(:,1),expA(:,2),'Linewidth',4,'Color',color1);
-plot(expB(:,1),expB(:,2),'Linewidth',4,'Color',color2);
-plot(expC(:,1),expC(:,2),'Linewidth',4,'Color',color4);
-errorbar(expA(:,1),expA(:,2),expA(:,3),'Linewidth',4,'Color',color1);
-errorbar(expB(:,1),expB(:,2),expB(:,3),'Linewidth',4,'Color',color2);
-errorbar(expC(:,1),expC(:,2),expC(:,3),'Linewidth',4,'Color',color4);
+plot(expA(:,1),expA(:,2),'Linewidth',3,'Color',color1);
+plot(expB(:,1),expB(:,2),'Linewidth',3,'Color',color2);
+plot(expC(:,1),expC(:,2),'Linewidth',3,'Color',color4);
+errorbar(expA(:,1),expA(:,2),expA(:,3),'Linewidth',3,'Color',color1);
+errorbar(expB(:,1),expB(:,2),expB(:,3),'Linewidth',3,'Color',color2);
+errorbar(expC(:,1),expC(:,2),expC(:,3),'Linewidth',3,'Color',color4);
 legend({' A',' B',' C'},'location','north');
-set(gca,'FontSize',56,'FontName','Helvetica','Linewidth',4);
+set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3);
 axis([-0.1 2.6 -1 3])
 legend boxoff;
+print(fig,'sampled.png','-dpng');
 

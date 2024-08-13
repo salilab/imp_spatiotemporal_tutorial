@@ -27,17 +27,18 @@ min2=min2.data;
 
 % Plot SAXS data ----------------------------------------------------------
 
-figure;
+fig=figure('Renderer', 'painters', 'Position', [0 0 1000 525]);
 hold on;
-plot(min0(:,1),min0(:,2),'Linewidth',4,'Color',color5);
-plot(min1(:,1),min1(:,2),'Linewidth',4,'Color',color6);
-plot(min2(:,1),min2(:,2),'Linewidth',4,'Color',color7);
-errorbar(min0(:,1),min0(:,2),min0(:,3),'Linewidth',4,'Color',color5);
-errorbar(min1(:,1),min1(:,2),min1(:,3),'Linewidth',4,'Color',color6);
-errorbar(min2(:,1),min2(:,2),min2(:,3),'Linewidth',4,'Color',color7);
+plot(min0(:,1),min0(:,2),'Linewidth',3,'Color',color5);
+plot(min1(:,1),min1(:,2),'Linewidth',3,'Color',color6);
+plot(min2(:,1),min2(:,2),'Linewidth',3,'Color',color7);
+errorbar(min0(:,1),min0(:,2),min0(:,3),'Linewidth',3,'Color',color5);
+errorbar(min1(:,1),min1(:,2),min1(:,3),'Linewidth',3,'Color',color6);
+errorbar(min2(:,1),min2(:,2),min2(:,3),'Linewidth',3,'Color',color7);
 legend({' 0 min',' 1 min',' 2 min'},'location','northeast');
-set(gca,'FontSize',56,'FontName','Helvetica','Linewidth',4,'YScale', 'log');
+set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3,'YScale', 'log');
 % axis([-1 2.5 0 1])
 % box on;
 legend boxoff;
+print(fig,'SAXS_exp.png','-dpng');
 

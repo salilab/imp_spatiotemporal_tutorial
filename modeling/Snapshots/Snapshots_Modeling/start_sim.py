@@ -1,4 +1,4 @@
-'''
+"""
 This code has two main functions:
 -prepare_protein_library (IMP.spatiotemporal.prepare_protein_library.prepare_protein_library): based on
 time - dependent stoichiometry data this function calculates configurations of possible snapshot models for
@@ -11,7 +11,7 @@ https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1
 -generate_all_snapshots: (after configuration and topology files are created) this function automatically creates pmi
  model representation script for each of the snapshots by incorporating corresponding EM data and topology file.
  The current job script is currently configured for our cluster and will need to be edited for other systems.
-'''
+"""
 import IMP
 import numpy as np
 import itertools
@@ -26,7 +26,7 @@ import shutil
 
 
 def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, number_of_runs):
-    '''
+    """
     NOTE: Before running generate_all_snapshots function, main_dir should contain:
     -{state}_{time}_topol.txt topology files created with
     IMP.spatiotemporal.prepare_protein_library.prepare_protein_library
@@ -54,7 +54,7 @@ def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, nu
     with running parameters <state> <time>. In this way snapshots (static_snapshot.py) are generated with corresponding
     EM restraint and topology file ({state}_{time}_topol.txt).
     :param number_of_runs (int): Desired number of runs for each snapshot{state}_{time}.
-    '''
+    """
 
     for time in state_dict.keys():
         for state in range(1,state_dict[time]+1):

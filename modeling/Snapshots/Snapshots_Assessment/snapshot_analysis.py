@@ -1,21 +1,22 @@
-'''
-Analyzing pathway consists of series of different functions:
+"""
+Analyzing snapshots consists of series of different functions:
 - extracting_stat_files: extracts and collects all the relevant scores from all the runs
-- general_rule_calculation: median value calculation of EM cross correlation for each snapshot (general rule for filtering)
-- general_rule_filter_independent_samples: filtering frames based on general rule and creating two independent samples
-for each snapshot from filtered frames
-- create_histogram: create different "score histograms" to visualize score distributions after filtering based on general rule
+- general_rule_calculation: median value calculation of EM cross correlation for each snapshot
+(general rule for filtering good scoring snapshots)
+- general_rule_filter_independent_samples: filtering frames based on general rule (median value of EM cross correlation)
+ and creating two independent samples for each snapshot from filtered frames
+- create_histogram: create different "score histograms" to visualize score distributions after filtering
 - count_rows_and_generate_report: counts number of rmfs in each of two independent samples to check if distribution is
 similar
 - !! create_density_dictionary (still needs to be written): based on .config file, it creates density dictionaries used
 in exhaust function
 - exhaust (most important part of this code): based on all filtered frames for each snapshot it checks if sampling of
-snapshots is exhaustive (output plots) and generate center models of the most dominant cluster for each snapshot
+snapshots is exhaustive (output plots) and generate centroid models of the most dominant cluster for each snapshot
 - extract_exhaust_data: from exhaust output for each snapshot KS values and sampling precision (two most important
 parameters) are gathered in one .txt file
 - save_exhaust_data_as_png: convert output .txt file generated with extract_exhaust_data function into .png table for
 better visualization
-'''
+"""
 
 import pandas as pd
 import os
@@ -25,15 +26,16 @@ import matplotlib.pyplot as plt
 
 
 def extract_values_from_file(file_path, keys):
-    '''
-    This function is a helper function which extract from stat file (stat.X.out) all the required values associated with keys provided
-    in the 'keys_to_extract' parameter.
+    """
+    This function is a helper function which extract from stat file (stat.X.out) all the required values associated
+    with keys provided in the 'keys_to_extract' parameter.
 
     :param file_path (str): path to each stat.X.out from which data should be extracted
-    :param keys (list): 'keys_to_extract' parameter from the extracting_stat_files function
+    :param keys (list of int): 'keys_to_extract' parameter from the extracting_stat_files function.
+    Look at the header of stat.X.out file to find which dictionary key corresponds to which variable.
     :return (dict): for each stat.X.out dictionary is created (keys and corresponding list of values). For our example
     there is only one key that we are interested in (key 3 - 'GaussianEMRestraint_None_CCC')
-    '''
+    """
 
     # Open the file and reads all the frames into "content"
     with open(file_path, 'r') as file:
@@ -75,10 +77,10 @@ def extract_values_from_file(file_path, keys):
 
 
 def extracting_stat_files(state_dict, runs_nr, replica_nr, replica_output_name, keys_to_extract, decimals_nr, custom_base_path = None):
-    '''
+    """
     This function extracts and collects all the relevant scores from all the runs. To understand this function, it is
-    important to understand stat files (stat.X.out) created with pmi snapshot.py and IMP.pmi.macros.ReplicaExchange command
-    in snapshot.py.
+    important to understand stat files (stat.X.out) created with pmi snapshot.py and IMP.pmi.macros.ReplicaExchange
+    command in snapshot.py.
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
@@ -87,15 +89,18 @@ def extracting_stat_files(state_dict, runs_nr, replica_nr, replica_output_name, 
            correspond to the number of possible states at that timepoint.
     :param runs_nr (int): number of runs generated with start_sim.py for each snapshot{state}_{time}
     :param replica_nr (int): number of processor required for ReplicaExchange set in Job.sh
-    :param replica_output_name (str): name of output file set in IMP.pmi.macros.ReplicaExchange command in pmi snapshot.py
+    :param replica_output_name (str): name of output file set in IMP.pmi.macros.ReplicaExchange command
+    in pmi snapshot.py
     :param keys_to_extract (list): List of strings which represents keys in stat file dictionary. For example: number 3
-    corresponds to 'GaussianEMRestraint_None_CCC' (use Ctrl + F) in first dictionary. Therefor, in each further dictionary
-    in stat.X.out values related to key '3' corresponds to GaussianEMRestraint_None_CCC for certain frame.
+    corresponds to 'GaussianEMRestraint_None_CCC' in first dictionary of our model.
+    Therefore, in each further dictionary in stat.X.out values related to key '3' corresponds to
+    GaussianEMRestraint_None_CCC for certain frame.
     :param decimals_nr (int): Number of decimals that should be extracted from dictionaries of stat.X.out.
     For example: GaussianEMRestraint_None_CCC values have 16 decimals
-    :param base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with start_sim.py are
+    :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with
+    start_sim.py are
     :return: {state}_{time}_stat.txt is created in each snapshot{state}_{time} directory
-    '''
+    """
     if custom_base_path:
         base_path = custom_base_path
     else:
@@ -146,7 +151,7 @@ def extracting_stat_files(state_dict, runs_nr, replica_nr, replica_output_name, 
 
 
 def general_rule_calculation(state_dict, general_rule_column, custom_general_rule_file = None, custom_base_path = None):
-    '''
+    """
     From each {state}_{time}_stat.txt created with extracting_stat_files function median value of desired column is
     calculated and results are gathered in general_rule_file.
 
@@ -156,14 +161,14 @@ def general_rule_calculation(state_dict, general_rule_column, custom_general_rul
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
     :param general_rule_column (int): Column from {state}_{time}_stat.txt on which general rule should be applied.
-    For example: column '3' corresponds to 'GaussianEMRestraint_None_CCC' values.
+    For example: column '3' corresponds to 'GaussianEMRestraint_None_CCC' values in our example.
     :param custom_general_rule_file (optional - str): Custom name of output file created with this function
     :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with
     start_sim.py are
     :return: general_rule_file .txt saved in the directory where this code is
 
     NOTE: if desired, name 'Median_Value_ccEM' can be manually changed in the 'columns' list
-    '''
+    """
 
     # optional parameters
     if custom_base_path:
@@ -198,15 +203,16 @@ def general_rule_calculation(state_dict, general_rule_column, custom_general_rul
 
 
 def general_rule_filter_independent_samples(state_dict, main_dir, custom_general_rule_file = None, custom_base_path = None):
-    '''
-    This function has two main roles: (i) filtering frames based on general rule and (ii) creating two independent samples
-    for each snapshot from filtered frames. Both steps can be achieved by submitting imp_sampcon select_good 'command'
-    in each snapshot{state}_{time} directory. More about imp_sampcon select_good can be found here:
+    """
+    This function has two main roles: (i) filtering frames based on general rule and (ii) creating two independent
+    samples for each snapshot from filtered frames. Both steps can be achieved by submitting the imp_sampcon select_good
+    command in each snapshot{state}_{time} directory. More about imp_sampcon select_good can be found here:
     https://integrativemodeling.org/tutorials/actin/analysis.html
     (i) median value calculated in general_rule_file .txt is set as a lower filtering threshold. Filtered frames (rmfs)
-    are then saved in the each snapshot{state}_{time} directory,where new directory 'good_scoring_models' is created.
-    (ii) adding flag -e at the end of imp_sampcon select_good command results in creating 'good_scoring_models'. Data from
-    this directory is later used for exahust function as well as in the 'Trajectories_Assessment' step.
+    are then saved in  each snapshot{state}_{time} directory, where new directory 'good_scoring_models' is created.
+    (ii) The flag -e in imp_sampcon select_good command results in creating 'good_scoring_models', a folder with the
+    models that passed through our filtering criteria. Data from this directory is later used for exahust function as
+    well as in the 'Trajectories_Assessment' step.
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
@@ -217,8 +223,7 @@ def general_rule_filter_independent_samples(state_dict, main_dir, custom_general
     :param custom_general_rule_file (optional - str): Custom name of output file created with this function
     :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with
     start_sim.py are
-    :return: creation of 'good_scoring_models' in each snapshot{state}_{time} directory
-    '''
+    """
     # optional parameters
     if custom_base_path:
         base_path = custom_base_path
@@ -258,7 +263,7 @@ def general_rule_filter_independent_samples(state_dict, main_dir, custom_general
 
 
 def create_histograms(state_dict, main_dir, score_list, custom_base_path = None):
-    '''
+    """
     This function creates different "score histograms" to visualize score distributions after filtering based on
     general rule. Histograms are created in each newly created histograms{state}_{time} directory by submitting
     imp_sampcon plot_score command there. More about imp_sampcon plot_score can be found here:
@@ -270,13 +275,12 @@ def create_histograms(state_dict, main_dir, score_list, custom_base_path = None)
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
     :param main_dir (str): directory where this code is
-    :param score_list: columns in 'model_ids_scores.txt' for which histograms should be created.
-    For example: for this tutorial we created histograms for all scores defined in the imp_sampcon select_good (inside the
-    general_rule_filter_independent_samples function)
+    :param score_list (list of str): columns in 'model_ids_scores.txt' for which histograms should be created.
+    For example: for this tutorial we created histograms for all scores defined in the imp_sampcon select_good
+    (inside the general_rule_filter_independent_samples function)
     :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with
     start_sim.py are
-    :return: histograms{state}_{time} directories with histograms from score_list
-    '''
+    """
 
     # optional parameter
     if custom_base_path:
@@ -301,10 +305,11 @@ def create_histograms(state_dict, main_dir, score_list, custom_base_path = None)
             os.chdir(main_dir) # Change back to the universal directory to restart the loop after all the histograms are created
 
 def count_rows_and_generate_report(state_dict, custom_output_file_path = None, custom_base_path = None):
-    '''
-    This function counts number of rmfs in each of two independent samples to check if distribution is similar. Such brief
-    check can predict if we can expect some problems (especially with K-S test) in achieving sampling exhaustiveness
-    in the next step (exhaust function).
+    """
+    This function counts number of rmfs in each of two independent samples to check if distribution is similar. Such
+    brief check can predict if we can expect some problems (especially with K-S test) in achieving sampling
+    exhaustiveness in the next step (exhaust function). Writes a file to output_file_path.txt with the number of
+    samples that passed filtering in each independent set of sampling runs.
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
@@ -314,8 +319,7 @@ def count_rows_and_generate_report(state_dict, custom_output_file_path = None, c
     :param custom_output_file_path: Custom name of output_file_path .txt
     :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with
     start_sim.py are
-    :return: output_file_path .txt
-    '''
+    """
 
     # optional parameters
     if custom_base_path:
@@ -370,12 +374,13 @@ def count_rows_and_generate_report(state_dict, custom_output_file_path = None, c
 # !! create_density_dictionary function (still needs to be written)
 
 def exhaust(state_dict, main_dir, custom_base_path = None):
-    '''
-    Based on all filtered frames for each snapshot this function runs 'imp_sampcon exhaust' command in each newly created
-    exhaust_{state}_{time} directory. This command 'checks' if sampling of snapshots is exhaustive  (output plots) and
-    generate center models of the most dominant cluster for each snapshot. More about imp_sampcon exhaust can be found here:
+    """
+    Based on all filtered frames for each snapshot this function runs 'imp_sampcon exhaust' command in each newly
+    created exhaust_{state}_{time} directory. This command checks if independently sampled runs come from the same
+    distribution, uses clustering to determine the precision at which sampling is exhaustive,
+    generates centroid models of the most dominant cluster for each snapshot, and writes these outputs out to files.
+    More about imp_sampcon exhaust can be found here:
     https://integrativemodeling.org/tutorials/actin/analysis.html
-    Check this tutorial also to understand outputs better.
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
@@ -385,8 +390,7 @@ def exhaust(state_dict, main_dir, custom_base_path = None):
     :param main_dir (str): directory where this code is
     :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with
     start_sim.py are
-    :return: exhaust_{state}_{time} directories with all the corresponding data
-    '''
+    """
 
     # optional parameter
     if custom_base_path:
@@ -401,7 +405,8 @@ def exhaust(state_dict, main_dir, custom_base_path = None):
             full_path = os.path.join(main_dir, dir_name)
             os.makedirs(full_path, exist_ok=True)
 
-            #  # command is executed in newly created exhaust_{state}_{time} directory, therefore additional '../' should be added
+            # command is executed in newly created exhaust_{state}_{time} directory,
+            # therefore additional '../' should be added
             command = f"imp_sampcon exhaust \
        -n snapshot_{state}_{time} -p ../{base_path}/snapshot{state}_{time}/good_scoring_models/ -d ../{state}_{time}_density_ranges.txt \
        -m cpu_omp -c 8 -a -g 1.0 -gp"
@@ -414,9 +419,9 @@ def exhaust(state_dict, main_dir, custom_base_path = None):
 
 
 def extract_exhaust_data(state_dict, custom_KS_sampling_precision_output = None):
-    '''
-    This function gathers from exhaust output for each snapshot KS values and sampling precision (two most important
-    parameters) into one .txt file. This .txt file (together with output plots) can serve as an overview for determining
+    """
+    This function gathers from exhaust output for each snapshot KS values and sampling precision into one .txt file.
+    This .txt file (together with output plots) can serve as an overview for determining
     sampling exhaustiveness.
 
     :param state_dict (dict): dictionary that defines the spatiotemporal model.
@@ -424,9 +429,8 @@ def extract_exhaust_data(state_dict, custom_KS_sampling_precision_output = None)
            stepwise temporal process. Keys should be ordered according to the
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
-    :param custom_KS_sampling_precision_output (optional -str): Custom namme of output KS_sampling_precision_output .txt
-    :return: KS_sampling_precision_output .txt
-    '''
+    :param custom_KS_sampling_precision_output (optional -str): Custom name of output KS_sampling_precision_output .txt
+    """
 
     if custom_KS_sampling_precision_output:
         KS_sampling_precision_output = custom_KS_sampling_precision_output
@@ -466,15 +470,12 @@ def extract_exhaust_data(state_dict, custom_KS_sampling_precision_output = None)
 
 
 def save_exhaust_data_as_png(custom_input_file = None, custom_output_png = None):
-    '''
+    """
     This function converts output .txt file generated with extract_exhaust_data function into .png table for
     better visualization. Created .png is saved in the running directory next to KS_sampling_precision_output .txt.
     :param custom_input_file:
     :param custom_output_png:
-    :return:
-    NOTE: Also alternatively approaches for visualization of KS_sampling_precision_output .txt could be tried.
-    For example: table in the tutorial was generated with LaTex after converting KS_sampling_precision_output .txt to .csv
-    '''
+    """
     # Custom parameters
     if custom_input_file:
         input_file = custom_input_file

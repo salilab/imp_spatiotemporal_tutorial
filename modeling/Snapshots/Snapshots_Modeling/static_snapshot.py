@@ -1,8 +1,8 @@
-'''
+"""
 This code creates snapshot models (.rmf frames) using pmi. More about model representation with pmi and running
 ReplicaExchange can be found here:
 https://integrativemodeling.org/tutorials/actin/pmidesign.html
-'''
+"""
 import IMP
 import IMP.pmi
 import IMP.pmi.io

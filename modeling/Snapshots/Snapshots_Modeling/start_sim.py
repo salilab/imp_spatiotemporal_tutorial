@@ -109,9 +109,9 @@ if __name__ == "__main__":
 
     # 1a - parameters for prepare_protein_library:
     times = ["0min", "1min", "2min"]
-    exp_comp = {'A': '../../Input_Information/gen_FCS/gen_FCS/exp_compA.csv',
-                'B': '../../Input_Information/gen_FCS/gen_FCS/exp_compB.csv',
-                'C': '../../Input_Information/gen_FCS/gen_FCS/exp_compC.csv'}
+    exp_comp = {'A': '../../Input_Information/gen_FCS/exp_compA.csv',
+                'B': '../../Input_Information/gen_FCS/exp_compB.csv',
+                'C': '../../Input_Information/gen_FCS/exp_compC.csv'}
     expected_subcomplexes = ['A', 'B', 'C']
     template_topology = 'spatiotemporal_topology.txt'
     template_dict = {'A': ['Ubi-E2-D3'], 'B': ['BMI-1'], 'C': ['E3-ubi-RING2']}
@@ -126,22 +126,9 @@ if __name__ == "__main__":
 
     main_dir = os.getcwd()
     items_to_copy = ['static_snapshot.py']  # additionally we need to copy only specific topology file
-    job_template = """#!/bin/bash
-    #$ -S /bin/bash
-    #$ -cwd
-    #$ -r n
-    #$ -j y
-    #$ -N test1
-    #$ -pe smp 16
-    #$ -l h_rt=48:00:00
-
-    module load Sali
-    module load mpi/openmpi-x86_64
-    module load imp
-    module load python3/scikit/0.21.3
-
-    mpirun -np $NSLOTS python3 static_snapshot.py {state} {time}
-    """
+    job_template = ("#!/bin/bash\n#$ -S /bin/bash\n#$ -cwd\n#$ -r n\n#$ -j y\n#$ -N Tutorial\n#$ -pe smp 16\n"
+                    "#$ -l h_rt=48:00:00\n\nmodule load Sali\nmodule load imp\nmodule load mpi/openmpi-x86_64\n\n"
+                    "mpirun -np $NSLOTS python3 static_snapshot.py {state} {time}")
     number_of_runs = 50
 
     # 2b - calling generate_all_snapshots

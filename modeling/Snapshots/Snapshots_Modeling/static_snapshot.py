@@ -30,7 +30,7 @@ pdb_dir = "../../../../Input_Information/PDB"
 fasta_dir = "../../../../Input_Information/FASTA"
 # Path where forward gmms are created with BuildSystem (based ont topology file)
 # If gmms exist, they will be used from this folder
-forward_gmm_dir = "../ET_data/"
+forward_gmm_dir = "../forward_densities/"
 # Path to experimental gmms
 exp_gmm_dir= '../../../../Input_Information/ET_data/add_noise'
 
@@ -38,7 +38,7 @@ exp_gmm_dir= '../../../../Input_Information/ET_data/add_noise'
 mdl = IMP.Model()
 
 # Read the topology file
-t = IMP.pmi.topology.TopologyReader(topology_file, pdb_dir=pdb_dir, fasta_dir=fasta_dir, gmm_dir=gmm_dir)
+t = IMP.pmi.topology.TopologyReader(topology_file, pdb_dir=pdb_dir, fasta_dir=fasta_dir, gmm_dir=forward_gmm_dir)
 
 
 # Create a system from a topology file. Resolution is set on 1.

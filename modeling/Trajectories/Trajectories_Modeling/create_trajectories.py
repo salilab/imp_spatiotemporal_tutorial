@@ -2,7 +2,8 @@
 This function has two main parts:
 -first all the required data is copied to created ./data/ repository
 -then by using create_DAG trajectory model is generated.
-Follow this for more examples how to use create_DAG code: https://github.com/salilab/imp/tree/develop/modules/spatiotemporal/examples/toy
+Follow this for more examples how to use create_DAG code:
+https://github.com/salilab/imp/tree/develop/modules/spatiotemporal/examples/toy
 """
 import IMP.spatiotemporal as spatiotemporal
 import os
@@ -18,7 +19,6 @@ def merge_scores(fileA, fileB, outputFile):
     :param fileB: path to scoresB.txt
     :param outputFile: path to output merged .log file named {state}_{time}_scores.log for each snapshot.
     This type of .log file is used in crete_DAG to generate trajectory model.
-    :return: ??
     """
     # open both files, so data can be extracted
     with open(fileA, 'r') as file_a:
@@ -34,15 +34,17 @@ def merge_scores(fileA, fileB, outputFile):
     with open(outputFile, 'w') as output:
         output.writelines(merged_data)
 
-def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_source_dir2 = None): # maybe this is the best way to write introducion of each function
+def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_source_dir2 = None):
     """
     Copies three types of files important to generate trajectory models:
     -.config files created with start_sim.py in Snapshot_Modeling (source_dir1)
     -time-dependent stoichiometry data for each timepoint. Data should be presented in .csv file. With this function all
-    csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary in create_DAG function
-    -scoresA and scoresB for each snapshot created with imp sampcon exhaust (source_dir1 + snapshot + good_scoring_models)
-    are merged into total score .txt using merge_scores helper function.
-    All copied files are gathered in newly created './data/' directory, where everything is prepared for create_DAG function.
+    csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary in create_DAG
+    function
+    -scoresA and scoresB for each snapshot created with imp sampcon exhaust
+    (source_dir1 + snapshot + good_scoring_models) are merged into total score .txt using merge_scores helper function.
+    All copied files are gathered in newly created './data/' directory, where everything is prepared for create_DAG
+    function.
 
 
     :param state_dict (dict): state_dict: dictionary that defines the spatiotemporal model.
@@ -50,10 +52,9 @@ def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_sou
            stepwise temporal process. Keys should be ordered according to the
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
-    :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config files
-    and to access scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
+    :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config
+    files and to access scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
     :param custom_source_dir2 (optional - str): Custom path to stoichiometry data dir
-    :return: ??
     """
 
     # Create the destination directory if it does not exist (./data/). Here all the

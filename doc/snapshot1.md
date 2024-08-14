@@ -13,7 +13,11 @@ Here, we will describe the process of modeling a single snapshot model, as perfo
 
 The second step in integrative modeling is representing the data and the model. In general, the *representation* of a system is defined by all the variables that need to be determined.
 
-For models of biological systems, one common representation is a series of *spherical beads*, which can correspond to portions of the biomolecules of interest, such as atoms or groups of atoms.
+For our model of a protein complex, we use a combination of two representations. The first is a series of *spherical beads*, which can correspond to portions of the biomolecules of interest, such as atoms or groups of atoms. The second is a series of *3D Gaussians*, which help calculate the overlap between our model and the density from ET data.
+
+Beads and Gaussians in our model belong to either a *rigid body* or *flexible string*. The positions of all beads and Gaussians in a single rigid body are constrained during sampling and do not move relative to each other. Meanwhile, flexible beads can move freely during sampling, but are restrained by sequence connectivity.
+
+To begin, we built a topology file for the complete system, `spatiotemporal_topology.txt`. Based on our observation of the structure of the complex, we chose to represent each protein with at least 2 separate rigid bodies, and left the first 28 residues of protein C as flexible beads. Rigid bodies were described with 1 bead for every residue, and 10 residues per Gaussian. Flexible beads were described with 1 bead for every residue and 1 residue per Gaussian. A more complete description of the options available in topology files is available in the the [TopologyReader](@ref IMP::pmi::topology::TopologyReader) documentation.
 
 \code{.txt}
 |molecule_name | color | fasta_fn | fasta_id | pdb_fn | chain | residue_range | pdb_offset | bead_size | em_residues_per_gaussian | rigid_body | super_rigid_body | chain_of_super_rigid_bodies | 
@@ -26,15 +30,13 @@ For models of biological systems, one common representation is a series of *sphe
 |E3-ubi-RING2|green|3rpg.fasta.txt|E3-ubi-RING2|3rpg.pdb|C|45,116|-15|1|10|6|3||
 \endcode
 
-Representation of EM data
-
 ## Scoring the model
 
 Restraints:
 Connectivity
 Excluded volume
 Cross-linking
-EM restraint
+EM restraint (Representation of EM data)
 
 ## Searching for good scoring models
 

@@ -17,7 +17,7 @@ For our model of a protein complex, we use a combination of two representations.
 
 Beads and Gaussians in our model belong to either a *rigid body* or *flexible string*. The positions of all beads and Gaussians in a single rigid body are constrained during sampling and do not move relative to each other. Meanwhile, flexible beads can move freely during sampling, but are restrained by sequence connectivity.
 
-To begin, we built a topology file for the complete system, `spatiotemporal_topology.txt`. Based on our observation of the structure of the complex, we chose to represent each protein with at least 2 separate rigid bodies, and left the first 28 residues of protein C as flexible beads. Rigid bodies were described with 1 bead for every residue, and 10 residues per Gaussian. Flexible beads were described with 1 bead for every residue and 1 residue per Gaussian. A more complete description of the options available in topology files is available in the the [TopologyReader](@ref IMP::pmi::topology::TopologyReader) documentation.
+To begin, we built a topology file for the complete system, `spatiotemporal_topology.txt`. Later, we will use this complete topology as a template to build topologies of each snapshot. Based on our observation of the structure of the complex, we chose to represent each protein with at least 2 separate rigid bodies, and left the first 28 residues of protein C as flexible beads. Rigid bodies were described with 1 bead for every residue, and 10 residues per Gaussian. Flexible beads were described with 1 bead for every residue and 1 residue per Gaussian. A more complete description of the options available in topology files is available in the the [TopologyReader](@ref IMP::pmi::topology::TopologyReader) documentation.
 
 \code{.txt}
 |molecule_name | color | fasta_fn | fasta_id | pdb_fn | chain | residue_range | pdb_offset | bead_size | em_residues_per_gaussian | rigid_body | super_rigid_body | chain_of_super_rigid_bodies | 
@@ -29,6 +29,8 @@ To begin, we built a topology file for the complete system, `spatiotemporal_topo
 |E3-ubi-RING2|green|3rpg.fasta.txt|E3-ubi-RING2|BEADS|C|16,44|-15|1|1|5|3||
 |E3-ubi-RING2|green|3rpg.fasta.txt|E3-ubi-RING2|3rpg.pdb|C|45,116|-15|1|10|6|3||
 \endcode
+
+Code to read in topology file
 
 ## Scoring the model
 

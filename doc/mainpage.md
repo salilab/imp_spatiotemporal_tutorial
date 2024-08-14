@@ -33,6 +33,8 @@ This tutorial will walk you through the links below, which contain a breakdown o
 
 - \subpage trajectory_assess
 
+TODO: Software required to do tutorial.
+
 A complete, worked example of the tutorial is available in the `modeling` folder; meanwhile, the necessary code and input information without the resulting model are available in the `modeling_empty` folder, from which the user can run the code for themselves.
 
 Our tutorial begins by [gathering information for both snapshot and trajectory modeling.] (@ref gatherinfo)

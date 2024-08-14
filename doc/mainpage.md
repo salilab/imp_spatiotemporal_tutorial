@@ -33,7 +33,7 @@ This tutorial will walk you through the links below, which contain a breakdown o
 
 - \subpage trajectory_assess
 
-TODO: Software required to do tutorial.
+To work through this example, a variety of python packages will be necessary in addition to [IMP](@ref https://integrativemodeling.org/). These include [numpy](@ref https://numpy.org/), [os](@ref https://docs.python.org/3/library/os.html), [warnings](@ref https://docs.python.org/3/library/warnings.html), [sys](@ref https://docs.python.org/3/library/sys.html), [itertools](@ref https://docs.python.org/3/library/itertools.html), [pandas](@ref https://pandas.pydata.org/), [matplotlib](@ref https://matplotlib.org/), [pyRMSD](@ref https://pypi.org/project/pyRMSD/), and [graphviz](@ref https://graphviz.org/).
 
 A complete, worked example of the tutorial is available in the `modeling` folder; meanwhile, the necessary code and input information without the resulting model are available in the `modeling_empty` folder, from which the user can run the code for themselves.
 

@@ -1,7 +1,7 @@
 Snapshot modeling steps 2-4: representation, scoring, and search process {#snapshot1}
 ====================================
 
-Here, we describe how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials (https://integrativemodeling.org/tutorials/actin/ and https://integrativemodeling.org/tutorials/rnapolii_stalk/).
+Here, we describe how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials of [actin](https://integrativemodeling.org/tutorials/actin/) and [RNA PolII](https://integrativemodeling.org/tutorials/rnapolii_stalk/).
 
 Navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two python scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for models of a single static snapshot. The second, `start_sim.py`, automates the creation of multiple static snapshots at each time point, which score well according to protein copy number data.
 

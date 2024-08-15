@@ -36,6 +36,7 @@ legend boxoff
 
 % Set limit for y-axis
 ylim([0, 25]); 
+box off;
 
 % Print the plot
 print(fig,'rmsd_sampling_precision.png','-dpng')

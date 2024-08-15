@@ -788,7 +788,7 @@ if __name__ == "__main__":
     state_dict = {'0min': 3, '1min': 3, '2min': 1}
     # model
     model = IMP.Model()
-
+    main_dir = os.getcwd()
 
     # start calling codes
     ## 1 - calculation of temporal precision
@@ -859,12 +859,16 @@ if __name__ == "__main__":
 
     ## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
     # 4a - SAXS
+    SAXS_out_dir=os.path.join(main_dir, "SAXS_comparison/")
+    os.makedirs(SAXS_out_dir, exist_ok=True)
+    os.chdir(SAXS_out_dir)
     convert_rmfs(state_dict, model)
     copy_SAXS_dat_files()
     process_foxs(state_dict)
     print("Step 4a: SAXS validation IS COMPLETED")
     print("")
     print("")
+    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
 
     # 4b - RMSD
     pdb_path = "../../snapshots/PDB/3rpg.pdb"

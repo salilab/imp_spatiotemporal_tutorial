@@ -152,7 +152,7 @@ After performing sampling, a variety of outputs will be created. These outputs i
 
 Next, we will describe the process of modeling a multiple static snapshots, as performed by running `start_sim.py`.
 
-We first must select which snapshots to model. Here, we choose only to model snapshots at 0 minutes, 1 minute, and 2 minutes because ET and SAXS data are only available at those time points. We know this complex has three protein chains (A, B, and C), and we choose to model these chains based on their protein stoicheometry data. We then use [prepare_protein_library](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html) to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex to generate a topology file for each of these snapshot models. Here, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the native structure. 
+We first must select which snapshots to model. Here, we choose only to model snapshots at 0 minutes, 1 minute, and 2 minutes because ET and SAXS data are only available at those time points. We know this complex has three protein chains (A, B, and C), and we choose to model these chains based on their protein copy number data. We then use [prepare_protein_library](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html) to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex (`spatiotemporal_topology.txt`) to generate a topology file for each of these snapshot models. Here, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the native structure. 
 
 \code{.py}
 # 1a - parameters for prepare_protein_library:
@@ -189,4 +189,10 @@ number_of_runs = 50
 generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, number_of_runs)
 \endcode
 
-Finally, we note that sometimes errors such as `XXX` can arrise during sampling. These errors are caused by issues generating forward GMM files, which is done stochastically. If such issues arrise, remove all files in the `forward_densities` folder for that snapshot and resubmit the corresponding jobs.
+Finally, we note that sometimes errors such as the one below can arrise during sampling. These errors are caused by issues generating forward GMM files, which is done stochastically. If such issues arrise, remove all files in the `forward_densities` folder for that snapshot and resubmit the corresponding jobs.
+
+\code{.py}
+  File "/imp/main/20240607-af6f9d6a95/lib/release8/IMP/isd/gmm_tools.py", line 35, in decorate_gmm_from_text
+    weight = float(fields[2])
+IndexError: list index out of range
+\endcode

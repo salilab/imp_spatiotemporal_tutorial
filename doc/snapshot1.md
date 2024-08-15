@@ -30,15 +30,99 @@ To begin, we built a topology file for the complete system, `spatiotemporal_topo
 |E3-ubi-RING2|green|3rpg.fasta.txt|E3-ubi-RING2|3rpg.pdb|C|45,116|-15|1|10|6|3||
 \endcode
 
-Code to read in topology file
+Next, we must prepare `static_snapshot.py` to read in this topology file. We begin by defining the input variables, `state` and `time`, which define which topology to use, as well as the paths to other pieces of input information.
+
+\code{.py}
+# Running parameters to access correct path of ET_data for EM restraint
+# and topology file for certain {state}_{time}_topol.txt
+state = sys.argv[1]
+time = sys.argv[2]
+
+# Topology file
+topology_file = f"../{state}_{time}_topol.txt"
+# Paths to input data for topology file
+pdb_dir = "../../../../Input_Information/PDB"
+fasta_dir = "../../../../Input_Information/FASTA"
+# Path where forward gmms are created with BuildSystem (based ont topology file)
+# If gmms exist, they will be used from this folder
+forward_gmm_dir = "../forward_densities/"
+# Path to experimental gmms
+exp_gmm_dir= '../../../../Input_Information/ET_data/add_noise'
+\endcode
+
+Next, we build the system, using the topology tile, described above.
+\code{.py}
+# Create a system from a topology file. Resolution is set on 1.
+bs = IMP.pmi.macros.BuildSystem(mdl, resolutions= 1, name= f'Static_snapshots_{state}_{time}')
+bs.add_state(t)
+\endcode
+
+Then, we prepare for later sampling steps by setting which Monte Carlo moves will be performed. Rotation (`rot`) and translation (`trans`) parameters are separately set for super rigid bodies (`srb`), rigid bodies (`rb`), and beads (`bead`).
+\code{.py}
+#  Macro execution: It gives hierarchy and degrees of freedom (dof).
+# In dof we define how much can each (super) rigid body translate and rotate between two adjacent Monte Carlo steps
+root_hier, dof = bs.execute_macro(max_rb_trans=1.0,
+                                  max_rb_rot=0.5, max_bead_trans=2.0,
+                                  max_srb_trans=1.0, max_srb_rot=0.5)
+\endcode
 
 ## Scoring the model
 
-Restraints:
-Connectivity
-Excluded volume
-Cross-linking
-EM restraint (Representation of EM data)
+After building the model representation, we choose a scoring function to score the model based on input information. This scoring function is represented as a series of restraints that serve as priors.
+
+#### Connectivity
+
+We begin with a connectivity restraint, which restrains beads adjacent in sequence to be close in 3D space.
+
+\code{.py}
+# Adding Restraints
+# Empty list where the data from restraints should be collected
+output_objects=[]
+
+# Two common restraints: ConnectivityRestraint and ExcludedVolumeSphere
+# ConnectivityRestraint is added for each "molecule" separately
+for m in root_hier.get_children()[0].get_children():
+    cr = IMP.pmi.restraints.stereochemistry.ConnectivityRestraint(m)
+    cr.add_to_model()
+    output_objects.append(cr)
+\endcode
+
+#### Excluded volume
+
+Next is an excluded volume restraint, which restrains beads to minimize their spatial overlap.
+
+\code{.py}
+# Add excluded volume
+evr = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(
+                                     included_objects=[root_hier],
+                                     resolution=1000)
+output_objects.append(evr)
+evr.add_to_model()
+\endcode
+
+#### Electron tomography
+
+Finally, we restrain our models based on their fit to ET density maps. Both the experimental map and the forward protein density are represented as Gaussian mixture models (GMMs) to speed up scoring. The score is based on the log of the correlation coefficient between the experimental density and the forward protein density.
+
+\code{.py}
+# Applying time-dependent EM restraint. Point to correct gmm / mrc file at each time point
+# Path to corresponding .gmm file (and .mrc file)
+em_map = exp_gmm_dir + f"/{time}_noisy.gmm"
+
+# Create artificial densities from hierarchy
+densities = IMP.atom.Selection(root_hier,
+                 representation_type=IMP.atom.DENSITIES).get_selected_particles()
+
+# Create EM restraint based on these densities
+emr = IMP.pmi.restraints.em.GaussianEMRestraint(
+        densities,
+        target_fn=em_map,
+        slope=0.000001,
+        scale_target_to_mass=True,
+        weight=1000)
+output_objects.append(emr)
+emr.add_to_model()
+\endcode
 
 ## Searching for good scoring models
 

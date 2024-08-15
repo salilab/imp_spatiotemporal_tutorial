@@ -104,9 +104,6 @@ def generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, nu
 
 
 if __name__ == "__main__":
-    # state_dict - universal parameter
-    state_dict = {'0min': 3, '1min': 3, '2min': 1}
-
     # 1a - parameters for prepare_protein_library:
     times = ["0min", "1min", "2min"]
     exp_comp = {'A': '../../Input_Information/gen_FCS/exp_compA.csv',
@@ -123,9 +120,12 @@ if __name__ == "__main__":
 
 
     # 2a - parameters for generate_all_snapshots
+    # state_dict - universal parameter
+    state_dict = {'0min': 3, '1min': 3, '2min': 1}
 
     main_dir = os.getcwd()
     items_to_copy = ['static_snapshot.py']  # additionally we need to copy only specific topology file
+    # jobs script will likely depend on the user's cluster / configuration
     job_template = ("#!/bin/bash\n#$ -S /bin/bash\n#$ -cwd\n#$ -r n\n#$ -j y\n#$ -N Tutorial\n#$ -pe smp 16\n"
                     "#$ -l h_rt=48:00:00\n\nmodule load Sali\nmodule load imp\nmodule load mpi/openmpi-x86_64\n\n"
                     "mpirun -np $NSLOTS python3 static_snapshot.py {state} {time}")

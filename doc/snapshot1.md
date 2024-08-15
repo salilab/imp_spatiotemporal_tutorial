@@ -196,3 +196,5 @@ Finally, we note that sometimes errors such as the one below can arrise during s
     weight = float(fields[2])
 IndexError: list index out of range
 \endcode
+
+Finally, once sampling is complete, we aim to [assess the snapshot models.] (@ref snapshot_assess)

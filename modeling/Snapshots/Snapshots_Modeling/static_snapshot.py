@@ -91,7 +91,6 @@ emr.add_to_model()
 IMP.pmi.tools.shuffle_configuration(root_hier,
                                     max_translation=50)
 
-
 # Perform replica exchange sampling
 rex=IMP.pmi.macros.ReplicaExchange(mdl,
         root_hier=root_hier,

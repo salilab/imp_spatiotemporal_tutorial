@@ -1,7 +1,7 @@
 Snapshot modeling steps 2-4: representation, scoring, and search process {#snapshot1}
 ====================================
 
-Here, we describe how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials (https://integrativemodeling.org/tutorials/actin/ and https://integrativemodeling.org/tutorials/rnapolii_stalk/).
+Here, we describe how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials of [actin](https://integrativemodeling.org/tutorials/actin/) and [RNA PolII](https://integrativemodeling.org/tutorials/rnapolii_stalk/).
 
 Navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two python scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for models of a single static snapshot. The second, `start_sim.py`, automates the creation of multiple static snapshots at each time point, which score well according to protein copy number data.
 
@@ -126,14 +126,75 @@ emr.add_to_model()
 
 ## Searching for good scoring models
 
-Sampling
+After building a scoring function that scores alternative models based on their fit to the input information, we aim to search for good scoring models. For complicated systems, stochastic sampling techniques such as Monte Carlo (MC) sampling are often the most efficient way to compute good scoring models. Here, we generate a random initial configuration and then perform temperature replica exchange MC sampling with 16 temperatures from different initial configurations. By performing multiple runs of replica exchange MC from different initial configurations, we can later ensure that our sampling is sufficiently converged.
 
-Describe sampling output
+\code{.py}
+# Generate random configuration
+IMP.pmi.tools.shuffle_configuration(root_hier,
+                                    max_translation=50)
+
+# Perform replica exchange sampling
+rex=IMP.pmi.macros.ReplicaExchange(mdl,
+        root_hier=root_hier,
+        monte_carlo_sample_objects=dof.get_movers(),
+        global_output_directory='output', # name 'output' is the best for imp sampcon select_good
+        output_objects=output_objects,
+        monte_carlo_steps=200, # Number of MC steps between writing frames.
+        number_of_best_scoring_models=0,
+        number_of_frames=500) # number of frames to be saved
+# In our case, for each snapshot we generated 25000 frames altogether (50*500)
+rex.execute_macro()
+\endcode
+
+After performing sampling, a variety of outputs will be created. These outputs include `.rmf` files, which contain multi-resolution models output by IMP, and `.out` files which contains a variety of information about the run such as the value of the restraints and the MC acceptance rate.
 
 # Generalizing modeling to all snapshots
 
 Next, we will describe the process of modeling a multiple static snapshots, as performed by running `start_sim.py`.
 
-Selection of snapshots to model
+We first must select which snapshots to model. Here, we choose only to model snapshots at 0 minutes, 1 minute, and 2 minutes because ET and SAXS data are only available at those time points. We know this complex has three protein chains (A, B, and C), and we choose to model these chains based on their protein copy number data. We then use [prepare_protein_library](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html) to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex (`spatiotemporal_topology.txt`) to generate a topology file for each of these snapshot models. Here, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the native structure. 
 
-Run loop above for all snapshots
+\code{.py}
+# 1a - parameters for prepare_protein_library:
+times = ["0min", "1min", "2min"]
+exp_comp = {'A': '../../Input_Information/gen_FCS/exp_compA.csv',
+            'B': '../../Input_Information/gen_FCS/exp_compB.csv',
+            'C': '../../Input_Information/gen_FCS/exp_compC.csv'}
+expected_subcomplexes = ['A', 'B', 'C']
+template_topology = 'spatiotemporal_topology.txt'
+template_dict = {'A': ['Ubi-E2-D3'], 'B': ['BMI-1'], 'C': ['E3-ubi-RING2']}
+nmodels = 3
+
+# 1b - calling prepare_protein_library
+prepare_protein_library.prepare_protein_library(times, exp_comp, expected_subcomplexes, nmodels,
+                                                template_topology=template_topology, template_dict=template_dict)
+\endcode
+
+From the output of prepare_protein_library, we see that there are 3 snapshot models at each time point (it is possible to have more snapshot models than copy numbers if multiple copies of the protein exist in the complex). We then call `generate_all_snapshots`, which creates a directory for each snapshot, copies the necessary files into that directory, and submits a job script to run sampling. The job script will likely need to be customized for the user's computer or cluster.
+
+\code{.py}
+# 2a - parameters for generate_all_snapshots
+# state_dict - universal parameter
+state_dict = {'0min': 3, '1min': 3, '2min': 1}
+
+main_dir = os.getcwd()
+items_to_copy = ['static_snapshot.py']  # additionally we need to copy only specific topology file
+# jobs script will likely depend on the user's cluster / configuration
+job_template = ("#!/bin/bash\n#$ -S /bin/bash\n#$ -cwd\n#$ -r n\n#$ -j y\n#$ -N Tutorial\n#$ -pe smp 16\n"
+                "#$ -l h_rt=48:00:00\n\nmodule load Sali\nmodule load imp\nmodule load mpi/openmpi-x86_64\n\n"
+                "mpirun -np $NSLOTS python3 static_snapshot.py {state} {time}")
+number_of_runs = 50
+
+# 2b - calling generate_all_snapshots
+generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, number_of_runs)
+\endcode
+
+Finally, we note that sometimes errors such as the one below can arrise during sampling. These errors are caused by issues generating forward GMM files, which is done stochastically. If such issues arrise, remove all files in the `forward_densities` folder for that snapshot and resubmit the corresponding jobs.
+
+\code{.py}
+  File "/imp/main/20240607-af6f9d6a95/lib/release8/IMP/isd/gmm_tools.py", line 35, in decorate_gmm_from_text
+    weight = float(fields[2])
+IndexError: list index out of range
+\endcode
+
+Finally, once sampling is complete, we aim to [assess the snapshot models.] (@ref snapshot_assess)

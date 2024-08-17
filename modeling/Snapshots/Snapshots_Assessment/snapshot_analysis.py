@@ -370,6 +370,54 @@ def count_rows_and_generate_report(state_dict, custom_output_file_path = None, c
 
     print(f"Output written to {output_file_path}") # print to check that function is completed
 
+def extract_molecule_names(file_path):
+    '''
+    This function extracts molecule names from corresponding topology files. Used by create_density_dictionary_files.
+
+    :param file_path: Path to corresponding topology files.
+    :return (set): Set of all extracted molecule names.
+    '''
+
+    molecule_names = set()  # set for uniqueness (in topology file there are different (super) rigid bodies
+    with open(file_path, 'r') as file:
+        next(file)  # skip the header
+        for line in file:
+            if not line.strip():  # skip the empty line
+                continue
+            parts = line.split('|')  # split lines based on the |
+            if len(parts) > 1:  # just to be sure we are splitting right lines
+                molecule_name = parts[1].strip()  # Read the first column (index 1 after splitting)
+                molecule_names.add(molecule_name)  # add molecules to the set
+    print(f'Extracted molecule names from {file_path}: {molecule_names}')
+    return molecule_names
+
+def create_density_dict(molecule_names):
+    '''
+    This function creates the density dictionaries ({state}_{time}_density_ranges.txt) based on extracted
+    molecule names. Used by create_density_dictionary_files.
+
+    :param molecule_names (set): Set of all extracted molecule names created with extract_molecule_names function
+    :return (dict): Dictionary that will be used later for the {state}_{time}_density_ranges.txt.
+    '''
+
+    if not molecule_names:
+        print('No molecule names found to create the density dictionary.')
+        return {}
+    # MOST IMPORTANT THING: to create dictionary from molecule_names set. Key and value are the same
+    density_dict = {name: [name] for name in molecule_names}
+    return density_dict
+
+def write_density_file(output_path, density_dict):
+    '''
+    This function converts dictionaries to {state}_{time}_density_ranges.txt that are used in exahust function. Used by
+    create_density_dictionary_files.
+
+    :param output_path (str): Path where {state}_{time}_density_ranges.txt should be saved. For exhaust function to
+    work properly, all {state}_{time}_density_ranges.txt should be saved in this working directory
+    :param density_dict (dict): Density dictionary created with create_density_dict function.
+    '''
+    with open(output_path, 'w') as file:
+        file.write(f'density_custom_ranges={density_dict}')
 
 def create_density_dictionary_files(state_dict, main_dir, custom_base_path = None):
     '''
@@ -391,58 +439,8 @@ def create_density_dictionary_files(state_dict, main_dir, custom_base_path = Non
     (where {state}_{time}_topol.txt are)
     '''
 
-    def extract_molecule_names(file_path):
-        '''
-        This function extracts molecule names from corresponding topology files.
-
-        :param file_path: Path to corresponding topology files.
-        :return (set): Set of all extracted molecule names.
-        '''
-
-        molecule_names = set()  # set for uniqueness (in topology file there are different (super) rigid bodies
-        with open(file_path, 'r') as file:
-            next(file)  # skip the header
-            for line in file:
-                if not line.strip():  # skip the empty line
-                    continue
-                parts = line.split('|')  # split lines based on the |
-                if len(parts) > 1:  # just to be sure we are splitting right lines
-                    molecule_name = parts[1].strip()  # Read the first column (index 1 after splitting)
-                    molecule_names.add(molecule_name)  # add molecules to the set
-        print(f'Extracted molecule names from {file_path}: {molecule_names}')
-        return molecule_names
-
-    def create_density_dict(molecule_names):
-        '''
-        This function creates the density dictionaries ({state}_{time}_density_ranges.txt) based on extracted
-        molecule names.
-
-        :param molecule_names (set): Set of all extracted molecule names created with extract_molecule_names function
-        :return (dict): Dictionary that will be used later for the {state}_{time}_density_ranges.txt.
-        '''
-
-        if not molecule_names:
-            print('No molecule names found to create the density dictionary.')
-            return {}
-        # MOST IMPORTANT THING: to create dictionary from molecule_names set. Key and value are the same
-        density_dict = {name: [name] for name in molecule_names}
-        print(f'Created density dictionary: {density_dict}')  # Debug print
-        return density_dict
-
-    def write_density_file(output_path, density_dict):
-        '''
-        This function converts dictionaries to {state}_{time}_density_ranges.txt that are used in exahust function.
-
-        :param output_path (str): Path where {state}_{time}_density_ranges.txt should be saved. For exhaust function to
-        work properly, all {state}_{time}_density_ranges.txt should be saved in this working directory
-        :param density_dict (dict): Density dictionary created with create_density_dict function.
-        '''
-        with open(output_path, 'w') as file:
-            file.write(f'density_custom_ranges={density_dict}')
-        print(f'Wrote density dictionary to {output_path}')  # Debug print
-
     # optional parameter
-    if custom_base_pathbase_path:
+    if custom_base_path:
         base_path = custom_base_path
     else:
         base_path = "../Snapshots_Modeling"

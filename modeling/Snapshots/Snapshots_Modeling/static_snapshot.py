@@ -67,7 +67,6 @@ evr = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(
                                      included_objects=[root_hier],
                                      resolution=1000)
 output_objects.append(evr)
-evr.add_to_model()
 
 # Applying time-dependent EM restraint. Point to correct gmm / mrc file at each time point
 # Path to corresponding .gmm file (and .mrc file)
@@ -80,16 +79,21 @@ densities = IMP.atom.Selection(root_hier,
 # Create EM restraint based on these densities
 emr = IMP.pmi.restraints.em.GaussianEMRestraint(
         densities,
-        target_fn=em_map,
+        target_fn=em_map, #
         slope=0.000001,
         scale_target_to_mass=True,
         weight=1000)
 output_objects.append(emr)
-emr.add_to_model()
+
 
 # Generate random configuration
 IMP.pmi.tools.shuffle_configuration(root_hier,
                                     max_translation=50)
+
+# Add EM restraint and excluded volume restraint to the model
+evr.add_to_model()
+emr.add_to_model()
+
 
 # Perform replica exchange sampling
 rex=IMP.pmi.macros.ReplicaExchange(mdl,

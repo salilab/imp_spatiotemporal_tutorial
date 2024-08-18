@@ -89,11 +89,8 @@ def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_sou
         for file_name in os.listdir(source_dir2):
             if file_name.endswith('.csv'):
                 full_file_name = os.path.join(source_dir2, file_name)
-                print(f"File name to copy: {full_file_name}")
                 if os.path.isfile(full_file_name):
                     shutil.copy(full_file_name, destination_dir)
-            else:
-                print(".csv file cannot be accessed")
         print(".csv stoichiometry files are copied")
     except Exception as e:
         print(f".csv stoichiometry files cannot be copied. Try do do it manually. Reason for Error: {e}")
@@ -129,10 +126,7 @@ if __name__ == "__main__":
     main_dir = os.getcwd()
     os.chdir(main_dir)
     state_dict = {'0min': 3, '1min': 3, '2min': 1}
-    custom_source_dir1 = '../../snapshots/snapshots'
-    custom_source_dir2 = '../../snapshots/snapshots/stoichiometry_data/'
-
-    create_data_and_copy_files(state_dict, custom_source_dir1 = custom_source_dir1, custom_source_dir2= custom_source_dir2)
+    create_data_and_copy_files(state_dict)
 
     # then trajectory model is created based on the all copied data
     expected_subcomplexes = ['A', 'B', 'C']

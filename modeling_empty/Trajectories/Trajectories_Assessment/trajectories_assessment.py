@@ -666,6 +666,8 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
 if __name__ == "__main__":
     # state_dict - universal parameter
     state_dict = {'0min': 3, '1min': 3, '2min': 1}
+    # current directory
+    main_dir = os.getcwd()
     # model
     model = IMP.Model()
 

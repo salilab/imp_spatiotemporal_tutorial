@@ -107,7 +107,6 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
         print(f"scoresA.txt and scoresB.txt cannot be copied. Try do do it manually. Reason for Error: {e}")
 
 
-##
 def extract_coordinates(rmf_hierarchy,rmf_fh):
     """
     This function extracts coordinates from the rmf hierarchy.
@@ -186,7 +185,7 @@ def write_mrc(scoring_path, mrc_file, MRCresolution=10.0,voxel=5.0):
             print(f"{sample_path} is empty, invalid or path is incorrect")
     return dmap2
 
-## 3 - comparison of the model to data used in modeling (EM and FCS)
+## 3a - comparison of the model to data used in modeling (EM)
 
 def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = None):
     """
@@ -261,6 +260,8 @@ def ccEM(exp_mrc_base_path, custom_output_directory = None, custom_base_path = N
             with open(txt_file_path, 'a') as file:
                 file.write(f'{snapshot}, {cc}\n')
                 print(f"Data for {snapshot} is saved: {txt_file_path}")
+
+## ba - comparison of the model to data used in modeling (copy number)
 
 def read_labeled_pdf(pdf_file):
     """
@@ -413,7 +414,7 @@ def convert_rmfs(state_dict, model, custom_path=None):
             if custom_path:
                 sim_rmf = custom_path # option for custom path
             else:
-                sim_rmf = f"../snapshots/snapshot_analysis/exhaust_{state}_{time}/cluster.0/cluster_center_model.rmf3"
+                sim_rmf = f"../../../Snapshots/Snapshots_Assessment/exhaust_{state}_{time}/cluster.0/cluster_center_model.rmf3"
 
             pdb_output = f"snapshot{state}_{time}.pdb" # define the output of converted .pdb file
 
@@ -436,7 +437,7 @@ def copy_SAXS_dat_files(custom_src_dir = None):
     if custom_src_dir:
         src_dir = custom_src_dir
     else:
-        src_dir = '../../Input_Information/gen_SAXS'
+        src_dir = '../../../Input_Information/gen_SAXS'
     try:
         files = os.listdir(src_dir) # Get the list of all files in the src_dir directory
         dat_files = [f for f in files if f.endswith('.dat')] # Filter out files that end with .dat
@@ -446,7 +447,7 @@ def copy_SAXS_dat_files(custom_src_dir = None):
             full_file_name = os.path.join(src_dir, file_name)
             if os.path.isfile(full_file_name):
                 shutil.copy(full_file_name, os.getcwd())
-                print(f"Copied: {full_file_name} to {main_dir}")
+                # print(f"Copied: {full_file_name} to {main_dir}")
 
         print("All .dat files have been copied successfully...")
 
@@ -646,7 +647,6 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
     :param custom_output_directory (optional - str): If desired, different name of output directory (where plots and .txt
     files are saved) can be set. Default name: "RMSD_calculation_output"
     :param custom_base_path (optional - str): Custom path to the directory where snapshot{state}_{time} created with start_sim.py are.
-    :return: ?? (maybe return should be here rmsd_results, but I am not sure)
     """
     # create output directory where all RMSD output is gathered
     if custom_output_directory:
@@ -682,6 +682,8 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
 
             # for each snapshot separate RMSD should be calculated
             rmsd_results = []
+            # List of coordinates for all structural models for the given snapshot
+            rmf_coord_list = []
 
             scoring_path = os.path.join(directory_path, 'good_scoring_models')
             for sample in ['sample_A',
@@ -696,33 +698,30 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
                             if os.path.exists(sim_rmf):  # continue only in the case that rmfs can be accessed
                                 try:
                                     # Read in native rmf
-                                    rmf_coord_list = []  # for each snapshot separately
+                                    model = IMP.Model()
                                     rmf_fh = RMF.open_rmf_file_read_only(sim_rmf)
-                                    # Where do I need to set the model? Here or at the beginning?
-                                    # model = IMP.Model()
                                     rmf_hierarchy = IMP.rmf.create_hierarchies(rmf_fh, model)[0]
                                     rmf_coord_list = append_rmf_coordinates(rmf_coord_list, rmf_hierarchy, rmf_fh)
                                 except Exception as e:
                                     print(f"{sim_rmf} is empty or invalid: {e}")
 
-                                try:
-                                    # Read pdb
-                                    pdb_native_list = []
-                                    # model = IMP.Model()
-                                    pdb_hierarchy = IMP.atom.read_pdb(pdb_path, model)
-                                    pdb_native_list = create_pdb_coordinates(pdb_native_list, pdb_hierarchy,
-                                                                             chains_to_include)
-                                    # print(pdb_native_list) # this works
-                                except Exception as e:
-                                    print(f"{pdb_path} is empty or invalid: {e}")
+            try:
+                # Read pdb
+                pdb_native_list = []
+                pdb_hierarchy = IMP.atom.read_pdb(pdb_path, model)
+                pdb_native_list = create_pdb_coordinates(pdb_native_list, pdb_hierarchy,
+                                                         chains_to_include)
+                # print(pdb_native_list) # this works
+            except Exception as e:
+                print(f"{pdb_path} is empty or invalid: {e}")
 
-                                    # Call the function to calculate rmsd.
-                                    # Using the loop to calculate RMSD for each rmf separately
-                                for l in range(len(rmf_coord_list)):
-                                    rmsd_value = RMSD_from_dict(rmf_coord_list[l], pdb_native_list[0])
-                                    rmsd_results.append(rmsd_value)
-                                    # use this if you want to check how the rmf coordinates are extracted
-                                    # print(rmf_coord_list)
+                # Call the function to calculate rmsd.
+                # Using the loop to calculate RMSD for each rmf separately
+            for l in range(len(rmf_coord_list)):
+                rmsd_value = RMSD_from_dict(rmf_coord_list[l], pdb_native_list[0])
+                rmsd_results.append(rmsd_value)
+                # use this if you want to check how the rmf coordinates are extracted
+                # print(rmf_coord_list)
 
             print(f"Extracting rmsd for {snapshot} is finished ")
 
@@ -786,9 +785,11 @@ def RMSD(pdb_path, custom_n_plot=None, custom_output_directory=None, custom_base
 if __name__ == "__main__":
     # state_dict - universal parameter
     state_dict = {'0min': 3, '1min': 3, '2min': 1}
+    # current directory
+    main_dir = os.getcwd()
     # model
     model = IMP.Model()
-    main_dir = os.getcwd()
+
 
     # start calling codes
     ## 1 - calculation of temporal precision
@@ -844,34 +845,36 @@ if __name__ == "__main__":
     print("")
     print("")
 
-    # 3 - comparison of the model to data used in modeling (EM and FCS)
-    exp_mrc_base_path = "../../data/ET_data/experimental"
+    # 3a - comparison of the model to data used in modeling (EM)
+    exp_mrc_base_path = "../../Input_Information/ET_data/add_noise"
     ccEM(exp_mrc_base_path)
-    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
     print("Step 3a: ET validation IS COMPLETED")
     print("")
     print("")
-    forward_model_copy_number(expected_subcomplexes)
+    # 3b - comparison of the model to data used in modeling (copy number)
     os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
+    forward_model_copy_number(expected_subcomplexes)
     print("Step 3b: copy number validation IS COMPLETED")
     print("")
     print("")
 
+
     ## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
     # 4a - SAXS
-    SAXS_out_dir=os.path.join(main_dir, "SAXS_comparison/")
-    os.makedirs(SAXS_out_dir, exist_ok=True)
-    os.chdir(SAXS_out_dir)
+    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
+    SAXS_output = "./SAXS_comparison/"
+    os.makedirs(SAXS_output, exist_ok=True)
+    os.chdir(SAXS_output)
     convert_rmfs(state_dict, model)
     copy_SAXS_dat_files()
     process_foxs(state_dict)
     print("Step 4a: SAXS validation IS COMPLETED")
     print("")
     print("")
-    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
 
     # 4b - RMSD
-    pdb_path = "../../snapshots/PDB/3rpg.pdb"
+    os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
+    pdb_path = "../../Input_Information/PDB/3rpg.pdb"
     RMSD(pdb_path=pdb_path, custom_n_plot=20)
     print("Step 4b: RMSD validation IS COMPLETED")
     print("")

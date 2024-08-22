@@ -1,4 +1,4 @@
-### This directory code necessary for generating synthetic data for the integrative spatiotemporal modeling tutorial
+### This directory contains code necessary for generating synthetic data for the integrative spatiotemporal modeling tutorial
 
 #### The tutorial uses 4 types of data:
 1. The PDB structure of the Bmi1/Ring1b-UbcH5c complex (https://www.rcsb.org/structure/3rpg)

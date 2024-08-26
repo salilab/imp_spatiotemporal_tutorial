@@ -99,7 +99,7 @@ print("")
 print("")
 \endcode
 
-\image html Snapshot_Exhaust.png width=600px
+\image html Snapshot_Exhaust.png width=1200px
 
 \code{.py}
 # 9 calling save_exhaust_data_as_png

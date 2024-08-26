@@ -111,7 +111,7 @@ print("")
 
 # Visualizing models
 
-The resulting RMF files and localization densities from this analysis can be viewed in [UCSF Chimera]() (version>=1.13) or [UCSF ChimeraX]().
+The resulting RMF files and localization densities from this analysis can be viewed in [UCSF Chimera](https://www.rbvi.ucsf.edu/chimera/) (version>=1.13) or [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/).
 
 Here, we plotted each centroid model (A - blue, B - orange, and C - purple) from clustering and compared that model to the experimental EM profile (gray).
 

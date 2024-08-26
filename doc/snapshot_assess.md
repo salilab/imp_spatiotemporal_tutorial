@@ -125,7 +125,7 @@ print("")
 
 These codes write a table that include the KS two sample test statistic (D), the KS test p-value, and the sampling precision for each snapshot model, which is replotted below.
 
-\image html Snapshot_sampling.pdf width=600px
+\image html Snapshot_sampling.png width=600px
 
 # Visualizing models
 

@@ -91,7 +91,7 @@ print("")
 print("")
 \endcode
 
-Finally, we run `imp_sampcon exhaust` on each snapshot. This code performs checks on the exhaustiveness of the sampling, specifically it analyzes the convergence of the model score, whether the two model sets were drawn from the same distribution, and whether each structural cluster includes models from each sample proportionally to its size. The output for each snapshot is written out to the `exhaust_{state}_{time}` folder.
+Finally, we run `imp_sampcon exhaust` on each snapshot. This code performs checks on the exhaustiveness of the sampling. Specifically it analyzes the convergence of the model score, whether the two model sets were drawn from the same distribution, and whether each structural cluster includes models from each sample proportionally to its size. The output for each snapshot is written out to the `exhaust_{state}_{time}` folder.
 
 \code{.py}
 # 7 calling exhaust
@@ -101,13 +101,13 @@ print("")
 print("")
 \endcode
 
-Plots for determining the sampling precision are shown below. (a) Tests the convergence convergence of the lowest scoring model (`snapshot_{state}_{time}.Top_Score_Conv.pdf`). Error bars represent standard deviations of the best scores, estimated by selecting different subsets of models 10 times. The light-blue line indicates a lower bound reference on the total score. (b) Tests that the scores of two independently sampled models come from the same distribution (`snapshot_{state}_{time}.Score_Dist.pdf`). The difference between the two distributions, as measured by the KS test statistic (D) and KS test p-value (p) indicates that the difference is both statistically insignificant (p>0.05) and small in magnitude (D<0.3). (c) Determines the structural precision of a snapshot model (`snapshot_{state}_{time}.ChiSquare.pdf`). RMSD clustering is performed at 1 Å intervals until the clustered population (% clustered) is greater than 80%, and either the χ<sup>2</sup> p-value is greater than 0.05 or Cramer’s V is less than 0.1. The sampling precision is indicated by the dashed black line. (d) Populations from sample 1 and sample 2 are shown for each cluster (`snapshot_{state}_{time}.Cluster_Population.pdf`).
+Plots for determining the sampling precision are shown below for a single snapshot, 1_2min. (a) Tests the convergence convergence of the lowest scoring model (`snapshot_{state}_{time}.Top_Score_Conv.pdf`). Error bars represent standard deviations of the best scores, estimated by selecting different subsets of models 10 times. The light-blue line indicates a lower bound reference on the total score. (b) Tests that the scores of two independently sampled models come from the same distribution (`snapshot_{state}_{time}.Score_Dist.pdf`). The difference between the two distributions, as measured by the KS test statistic (D) and KS test p-value (p) indicates that the difference is both statistically insignificant (p>0.05) and small in magnitude (D<0.3). (c) Determines the structural precision of a snapshot model (`snapshot_{state}_{time}.ChiSquare.pdf`). RMSD clustering is performed at 1 Å intervals until the clustered population (% clustered) is greater than 80%, and either the χ<sup>2</sup> p-value is greater than 0.05 or Cramer’s V is less than 0.1. The sampling precision is indicated by the dashed black line. (d) Populations from sample 1 and sample 2 are shown for each cluster (`snapshot_{state}_{time}.Cluster_Population.pdf`).
 
 \image html Snapshot_Exhaust.png width=1200px
 
 Further structural analysis can be calculated by using the `cluster.*` files. The `cluster.*.{sample}.txt` files contain the model number for the models in that cluster, where `{sample}` indicates which round of sampling the models came from. The `cluster.*` folder contains an RMF for centroid model of that cluster, along with the localization densities for each protein. The localization densities of each protein from each independent sampling can be compared to ensure independent samplings produce the same results.
 
-
+Ideally, each of these plots should be checked for each snapshot. As a way to summarize the output of these checks, we can gather the results of the KS test and the sampling precision test for all snapshots. This is done by running `extract_exhaust_data` and `save_exhaust_data_as_png`, which write `KS_sampling_precision_output.txt` and `KS_sampling_precision_output.png`, respectively.
 
 \code{.py}
 # 8 calling extract_exhaust_data
@@ -122,6 +122,10 @@ print("save_exhaust_data_as_png is DONE")
 print("")
 print("")
 \endcode
+
+These codes write a table that include the KS two sample test statistic (D), the KS test p-value, and the sampling precision for each snapshot model, which is replotted below.
+
+\image html Snapshot_sampling.pdf width=600px
 
 # Visualizing models
 

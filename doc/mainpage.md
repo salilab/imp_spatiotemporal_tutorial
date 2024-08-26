@@ -12,12 +12,12 @@ Then, we connect snapshots at neighboring time points to produce trajectories. T
 
 If you use this tutorial or its accompanying method, please site the corresponding publications:
 
-- Latham et al. (methods)
+- Latham, A.P.; Tempkin, J.O.B.; Otsuka, S.; Zhang, W.; Ellenberg, J.; Sali, A. bioRxiv, 2024, https://doi.org/10.1101/2024.08.06.606842.
 - Rožič et al. (tutorial)
 
 # Integrative spatiotemporal modeling workflow {#steps}
 
-In general, integrative modeling proceeds through five steps. In integrative spatiotemporal modeling, these five steps are repeated for each the modeling of static snapshots and the modeling of trajectories.
+In general, integrative modeling proceeds through five steps (i. gathering information, ii. choosing the model representation, iii. scoring alternative models, iv. searching for good scoring models, and v. assessing the models). In integrative spatiotemporal modeling, these five steps are repeated for each the modeling of static snapshots and the modeling of trajectories.
 
 \image html Overview.png width=600px
 

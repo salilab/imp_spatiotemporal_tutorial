@@ -91,6 +91,8 @@ print("")
 print("")
 \endcode
 
+\image html Snapshot_Exhaust.png width=1200px
+
 \code{.py}
 # 8 calling extract_exhaust_data
 extract_exhaust_data(state_dict)
@@ -98,8 +100,6 @@ print("extract_exhaust_data is DONE")
 print("")
 print("")
 \endcode
-
-\image html Snapshot_Exhaust.png width=1200px
 
 \code{.py}
 # 9 calling save_exhaust_data_as_png

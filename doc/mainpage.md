@@ -35,6 +35,6 @@ This tutorial will walk you through the links below, which contain a breakdown o
 
 To work through this example, a variety of python packages will be necessary in addition to [IMP](https://integrativemodeling.org/). These packages are [numpy](https://numpy.org/), [os](https://docs.python.org/3/library/os.html), [warnings](https://docs.python.org/3/library/warnings.html), [sys](https://docs.python.org/3/library/sys.html), [itertools](https://docs.python.org/3/library/itertools.html), [pandas](https://pandas.pydata.org/), [matplotlib](https://matplotlib.org/), [pyRMSD](https://pypi.org/project/pyRMSD/), and [graphviz](https://graphviz.org/).
 
-A complete, worked example of the tutorial is available in the `modeling` folder; meanwhile, the necessary code and input information without the resulting model are available in the `modeling_empty` folder, from which the user can run the code for themselves.
+The tutorial is available through its [GitHub link](https://github.com/salilab/imp_spatiotemporal_tutorial). A complete, worked example of the tutorial is available in the `modeling` folder; meanwhile, the necessary code and input information without the resulting model are available in the `modeling_empty` folder, from which the user can run the code for themselves.
 
 Our tutorial begins by [gathering information for both snapshot and trajectory modeling.] (@ref gatherinfo)

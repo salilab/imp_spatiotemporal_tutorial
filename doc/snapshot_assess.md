@@ -5,7 +5,7 @@ Now, we have a variety of alternative snapshot models. In general, we would like
 
 # Filtering good scoring models
 
-Initially, we want to the various alternative models to select those that meet certain parameter thresholds. In this case, we filter the structural models in each snapshot by the median cross correlation with EM data. This involves three steps. In the first step, we look through the `stat.*.out` files to select the cross correlation with EM data, which, in this case, is labeled column 3, `GaussianEMRestraint_None_CCC`. In other applications, the column that corresponds to each type of experimental data may change, depending on the scoring terms for each model. For each snapshot, a new file is written with this data (`{state}_{time}_stat.txt`).
+Initially, we want to filter the various alternative models to select those that meet certain parameter thresholds. In this case, we filter the structural models in each snapshot by the median cross correlation with EM data. This involves three steps. In the first step, we look through the `stat.*.out` files to select the cross correlation with EM data, which, in this case, is labeled column `3`, `GaussianEMRestraint_None_CCC`. In other applications, the column that corresponds to each type of experimental data may change, depending on the scoring terms for each model. For each snapshot, a new file is written with this data (`{state}_{time}_stat.txt`).
 
 \code{.py}
 # state_dict - universal parameter
@@ -39,7 +39,7 @@ print("")
 print("")
 \endcode
 
-In the third step, we use the `imp_sampcon select_good` tool to filter each snapshot, according to the median value determined previously. More information on `imp_sampcon` is available in the [actin tutorial](https://integrativemodeling.org/tutorials/actin/).
+In the third step, we use the `imp_sampcon select_good` tool to filter each snapshot, according to the median value determined in the previous step. More information on `imp_sampcon` is available in the [actin tutorial](https://integrativemodeling.org/tutorials/actin/).
 
 \code{.py}
 # 3 calling general_rule_filter_independent_samples
@@ -51,4 +51,68 @@ print("")
 
 # Plotting data, clustering models, and determining sampling precision
 
+\code{.py}
+# 4 calling create_histograms and related parameters
+score_list = [
+    'Total_Score',
+    'ConnectivityRestraint_Score',
+    'ExcludedVolumeSphere_Score',
+    'GaussianEMRestraint_None',
+    'GaussianEMRestraint_None_CCC'
+] # list of histograms we want to create in each histograms{state}_{time} directory
+
+create_histograms(state_dict, main_dir, score_list)
+print("create_histograms is DONE")
+print("")
+print("")
+\endcode
+
+\code{.py}
+# 5 calling count_rows_and_generate_report
+count_rows_and_generate_report(state_dict)
+print("count_rows_and_generate_report is DONE")
+print("")
+print("")
+\endcode
+
+\code{.py}
+# 6 calling create_density_dictionary:
+create_density_dictionary_files(state_dict, main_dir)
+print("create_density_dictionary is DONE")
+print("")
+print("")
+\endcode
+
+\code{.py}
+# 7 calling exhaust
+exhaust(state_dict, main_dir)
+print("exhaust is DONE")
+print("")
+print("")
+\endcode
+
+\code{.py}
+# 8 calling extract_exhaust_data
+extract_exhaust_data(state_dict)
+print("extract_exhaust_data is DONE")
+print("")
+print("")
+\endcode
+
+\image html Snapshot_Exhaust.png width=600px
+
+\code{.py}
+# 9 calling save_exhaust_data_as_png
+save_exhaust_data_as_png()
+print("save_exhaust_data_as_png is DONE")
+print("")
+print("")
+\endcode
+
 # Visualizing models
+
+The resulting RMF files and localization densities from this analysis can be viewed in [UCSF Chimera]() (version>=1.13) or [UCSF ChimeraX]().
+
+Here, we plotted each centroid model (A - blue, B - orange, and C - purple) from clustering and compared that model to the experimental EM profile (gray).
+
+\image html static_snapshots_noCC.png width=600px

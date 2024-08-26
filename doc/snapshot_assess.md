@@ -134,3 +134,6 @@ The resulting RMF files and localization densities from this analysis can be vie
 Here, we plotted each centroid model (A - blue, B - orange, and C - purple) from clustering and compared that model to the experimental EM profile (gray).
 
 \image html static_snapshots_noCC.png width=600px
+
+Finally, now that snapshot models have been assessed, we can perform [Trajectory modeling steps 2-4: representation, scoring, and search process.] (@ref trajectory1)
+

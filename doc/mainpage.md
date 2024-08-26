@@ -38,3 +38,4 @@ To work through this example, a variety of python packages will be necessary in 
 The code for this tutorial is available through its [GitHub link](https://github.com/salilab/imp_spatiotemporal_tutorial). A complete, worked example of the tutorial is available in the `modeling` folder; meanwhile, the necessary code and input information without the resulting model are available in the `modeling_empty` folder, from which the user can run the code for themselves.
 
 Our tutorial begins by [gathering information for both snapshot and trajectory modeling.] (@ref gatherinfo)
+

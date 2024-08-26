@@ -21,4 +21,5 @@ The `gen_SAXS` folder contains the time-dependent SAXS data. Experimental SAXS p
 
 In addition to the four types of data used here, a variety of data could be useful for the spatiotemporal modeling of protein complexes. IMP currently features  restraints for a variety of experimental data or prior models, including chemical cross-links, Förster resonance energy transfer, comparative structural models, and deep-learning structural models, all of which could inform spatiotemporal modeling through a procedure similar to the one presented here.
 
-Next, we will demonstrate how to perform \subpage snapshot1
+Next, we will demonstrate how to perform [Snapshot modeling steps 2-4: representation, scoring, and search process](@ref snapshot_assess).
+

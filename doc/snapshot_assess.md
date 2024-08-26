@@ -101,9 +101,13 @@ print("")
 print("")
 \endcode
 
-Plots for determining the sampling precision are shown below. (a) Tests the convergence convergence of the lowest scoring model. Error bars represent standard deviations of the best scores, estimated by selecting different subsets of models 10 times. The light-blue line indicates a lower bound reference on the total score. (b) Tests that the scores of two independently sampled models come from the same distribution. The difference between the two distributions, as measured by the KS test statistic (D) and KS test p-value (p) indicates that the difference is both statistically insignificant (p>0.05) and small in magnitude (D<0.3). (c) Determines the structural precision of a snapshot model. RMSD clustering is performed at 1 Å intervals until the clustered population (% clustered) is greater than 80%, and either the χ^2 p-value is greater than 0.05 or Cramer’s V is less than 0.1. The sampling precision is indicated by the dashed black line. (d) Populations from sample 1 and sample 2 are shown for each cluster.
+Plots for determining the sampling precision are shown below. (a) Tests the convergence convergence of the lowest scoring model (`snapshot_1_2min.Top_Score_Conv.pdf`). Error bars represent standard deviations of the best scores, estimated by selecting different subsets of models 10 times. The light-blue line indicates a lower bound reference on the total score. (b) Tests that the scores of two independently sampled models come from the same distribution (`snapshot_1_2min.Score_Dist.pdf`). The difference between the two distributions, as measured by the KS test statistic (D) and KS test p-value (p) indicates that the difference is both statistically insignificant (p>0.05) and small in magnitude (D<0.3). (c) Determines the structural precision of a snapshot model (`snapshot_1_2min.ChiSquare.pdf`). RMSD clustering is performed at 1 Å intervals until the clustered population (% clustered) is greater than 80%, and either the χ^2 p-value is greater than 0.05 or Cramer’s V is less than 0.1. The sampling precision is indicated by the dashed black line. (d) Populations from sample 1 and sample 2 are shown for each cluster (`snapshot_1_2min.Cluster_Population.pdf`).
 
 \image html Snapshot_Exhaust.png width=1200px
+
+Further structural analysis can be calculated by using the `cluster.*` files. The `cluster.*.{sample}.txt` files contain the model number for the models in that cluster, where `{sample}` indicates which round of sampling the models came from. The `cluster.*` folder contains an RMF for centroid model of that cluster, along with the localization densities for each protein. The localization densities of each protein from each independent sampling can be compared to ensure independent samplings produce the same results.
+
+
 
 \code{.py}
 # 8 calling extract_exhaust_data
@@ -111,9 +115,7 @@ extract_exhaust_data(state_dict)
 print("extract_exhaust_data is DONE")
 print("")
 print("")
-\endcode
 
-\code{.py}
 # 9 calling save_exhaust_data_as_png
 save_exhaust_data_as_png()
 print("save_exhaust_data_as_png is DONE")

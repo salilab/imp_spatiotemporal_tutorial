@@ -5,7 +5,7 @@ Now, we have a variety of alternative snapshot models. In general, we would like
 
 # Filtering good scoring models
 
-Initially, we want to filter the various alternative models to select those that meet certain parameter thresholds. In this case, we filter the structural models in each snapshot by the median cross correlation with EM data. We note that this filtering criteria is subjective, and developing a Bayesian method to objectively way different restraints for filtering remains an interesting future development in integrative model.
+Initially, we want to filter the various alternative models to select those that meet certain parameter thresholds. In this case, we filter the structural models in each snapshot by the median cross correlation with EM data. We note that this filtering criteria is subjective, and developing a Bayesian method to objectively way different restraints for filtering remains an interesting future development in integrative modeling.
 
 The current filtering procedure involves three steps. In the first step, we look through the `stat.*.out` files to write out the cross correlation with EM data for each model, which, in this case, is labeled column `3`, `GaussianEMRestraint_None_CCC`. In other applications, the column that corresponds to each type of experimental data may change, depending on the scoring terms for each model. For each snapshot, a new file is written with this data (`{state}_{time}_stat.txt`).
 
@@ -131,7 +131,7 @@ These codes write a table that include the KS two sample test statistic (D), the
 
 The resulting RMF files and localization densities from this analysis can be viewed in [UCSF Chimera](https://www.rbvi.ucsf.edu/chimera/) (version>=1.13) or [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/).
 
-Here, we plotted each centroid model (A - blue, B - orange, and C - purple) from clustering and compared that model to the experimental EM profile (gray).
+Here, we plotted each centroid model (A - blue, B - orange, and C - purple) from the most populated cluster for each snapshot model and compared that model to the experimental EM profile (gray).
 
 \image html static_snapshots_noCC.png width=600px
 

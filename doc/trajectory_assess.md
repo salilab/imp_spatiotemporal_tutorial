@@ -61,7 +61,7 @@ print("")
 print("")
 \endcode
 
-The output of `analysis.temporal_precision` is written in `analysis_output_precision/temporal_precision.txt`, shown below. The temporal precision can take values between 1.0 and 0.0, and indicates the overlap between the two models in trajectory space. Hence, values close to 1.0 indicate a high sampling precision, while values close to 0.0 indicate a low sampling precision. Here, the value close to 1.0 indicates that sampling does not effect the weights of the trajectory models.
+The output of `analysis.temporal_precision` is written in `analysis_output_precision/temporal_precision.txt`, shown below. The temporal precision can take values between 1.0 and 0.0, and indicates the overlap between the two models in trajectory space. Hence, values close to 1.0 indicate a high sampling precision, while values close to 0.0 indicate a low sampling precision. Here, the value close to 1.0 indicates that sampling does not affect the weights of the trajectory models.
 
 \code{.txt}
 Temporal precision between ../outputA/labeled_pdf.txt and ../outputB/labeled_pdf.txt:
@@ -95,7 +95,7 @@ Precision of ../Trajectories_Modeling/output/labeled_pdf.txt:
 
 # Comparison against data used in model construction
 
-We then evaluate the model against data used in model construction. First, we calculate the cross-correlation between the original EM map and the forward density projected of each snapshot model. We wrote the `ccEM` function to perform this comparison for all snapshots.
+We then evaluate the model against data used in model construction. First, we calculate the cross-correlation between the original EM map and the forward density projected from each snapshot model. We wrote the `ccEM` function to perform this comparison for all snapshots.
 
 \code{.py}
 # 3a - comparison of the model to data used in modeling (EM)
@@ -168,7 +168,7 @@ To quantitatively compare the model to SAXS data, we used the \f$\chi^2\f$ to co
 
 \image html Chi2_Table.png width=600px
 
-Next, we can evaluate the accuracy of the model by comparing the RMSD to the PDB to the sampling precision of each snapshot model. We note that this is generally not possible, because in most biological applications the ground truth is not known. In this case, if the average RMSD to the PDB structure is smaller than the sampling precision, the PDB structure lies within the precision of the model. We note that the RMSD is within 1.5 Å of the sampling precision at all time points, indicating that the modeling is accurate up to this precision.
+Next, we can evaluate the accuracy of the model by comparing the RMSD to the PDB to the sampling precision of each snapshot model. We note that this is generally not possible, because in most biological applications the ground truth is not known. In this case, if the average RMSD to the PDB structure is smaller than the sampling precision, the PDB structure lies within the precision of the model. We find that the RMSD is within 1.5 Å of the sampling precision at all time points, indicating that the modeling is accurate up to this precision.
 
 # Next steps
 

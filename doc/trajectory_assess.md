@@ -95,6 +95,8 @@ Precision of ../Trajectories_Modeling/output/labeled_pdf.txt:
 
 # Comparison against data used in model construction
 
+We then evaluate the model against data used in model construction. First, we calculate the cross-correlation between the original EM map and the forward density projected of each snapshot model. We wrote the `ccEM` function to perform this comparison for all snapshots.
+
 \code{.py}
 # 3a - comparison of the model to data used in modeling (EM)
 exp_mrc_base_path = "../../Input_Information/ET_data/add_noise"
@@ -104,6 +106,10 @@ print("")
 print("")
 \endcode
 
+The output of `ccEM` is written in `ccEM_output/`. It contains forward densities for each snapshot model (`MRC_{state}_{time}.mrc`) and `ccEM_calculations.txt`, which contains the cross-correlation to the experimental EM profile for each snapshot.
+
+After comparing the model to EM data, we aimed to compare the model to copy number data, and wrote the `forward_model_copy_number` function to evaluate the copy numbers from our set of trajectory models.
+
 \code{.py}
 # 3b - comparison of the model to data used in modeling (copy number)
 os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
@@ -112,6 +118,12 @@ print("Step 3b: copy number validation IS COMPLETED")
 print("")
 print("")
 \endcode
+
+The output of `forward_model_copy_number` is written in `forward_model_copy_number/`. The folder contains `CN_prot_{prot}.txt` files for each protein, which have the mean and standard deviation of protein copy number at each time point.
+
+Here, we plot the comparison between the experimental data used in model construction and the set of trajectory models. This analysis includes comparisons between experimental and modeled protein copy numbers for A (a), B (b), and C (c), as well as the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory (d). Here, we see the model is in good agreement with the data used to construct it.
+
+\image html Spatiotemporal_Assessment_Used.png width=1200px
 
 # Validation against data not used in model construction
 
@@ -139,3 +151,7 @@ print("Step 4b: RMSD validation IS COMPLETED")
 print("")
 print("")
 \endcode
+
+\image html Spatiotemporal_Assessment_Unused.png width=1200px
+
+\image html Chi2_Table.png width=600px

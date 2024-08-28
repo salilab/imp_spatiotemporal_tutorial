@@ -14,10 +14,10 @@ We choose to represent dynamic processes as a trajectory of snapshot models, wit
 To score trajectories, we incorporate both the scores of individual snapshots, as well as the scores of transitions between them. Under the assumption that the process is Markovian (*i.e.* memoryless), the weight of a trajectory takes the form:
 
 \f[
-W(\mathcal{X}) \propto   \displaystyle\prod^{T}_{t=0} \mathcal{P}( X_{N,t}, N_{t} | D_{t}) \cdot\\ \displaystyle\prod^{T-1}_{t=0} W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1}),
+W(\Chi) \propto   \displaystyle\prod^{T}_{t=0} P( X_{N,t}, N_{t} | D_{t}) \cdot\\ \displaystyle\prod^{T-1}_{t=0} W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1}),
 \f]
 
-where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$\mathcal{P}(X_{N,t}, N_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1})\f$ is the transition score. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
+where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$P(X_{N,t}, N_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1})\f$ is the transition score. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
 
 ## Searching for good scoring models
 

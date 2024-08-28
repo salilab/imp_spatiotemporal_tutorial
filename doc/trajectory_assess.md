@@ -3,7 +3,7 @@ Trajectory modeling step 5: assessment {#trajectory_assess}
 
 Now that the set of spatiotemporal models has been constructed, we must evaluate these models. We can evaluate these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model.
 
-Navigate to `Trajectories/Trajectories_Assessment` and run `trajectories_assessment.py`. This code will perform the following steps to assess the model:
+Navigate to `Trajectories/Trajectories_Assessment` and run `trajectories_assessment.py`. This code will perform the following steps to assess the model.
 
 # Sampling precision
 

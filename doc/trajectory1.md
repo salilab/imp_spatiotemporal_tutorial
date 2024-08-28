@@ -7,7 +7,7 @@ Now, we have snapshot models for various intermediate states along our process o
 
 ## Representing the model
 
-We choose to represent dynamic processes as a trajectory of snapshot models, with one snapshot at each time point. In this case, we modeled snapshots at 3 time points (0, 1, 2 minutes), so a single trajectory model will consist of 3 snapshots, one at each 0, 1, 2 minutes. The modeling procedure described here will produce a set of scored trajectory models, which can be displayed as a directed acyclic graph, where nodes in the graph represent the snapshot model and edges represent connections between snapshots at neighboring time points.
+We choose to represent dynamic processes as a trajectory of snapshot models, with one snapshot at each time point. In this case, we modeled snapshots at 3 time points (0, 1, and 2 minutes), so a single trajectory model will consist of 3 snapshots, one at each 0, 1, and 2 minutes. The modeling procedure described here will produce a set of scored trajectory models, which can be displayed as a directed acyclic graph, where nodes in the graph represent the snapshot model and edges represent connections between snapshots at neighboring time points.
 
 ## Scoring the model
 
@@ -71,7 +71,7 @@ The inputs we included are:
 After running `spatiotemporal.create_DAG`, a variety of outputs are written:
 - `cdf.txt`: the cumulative distribution function for the set of trajectories.
 - `pdf.txt`: the probability distribution function for the set of trajectories.
-- `labeled_pdf.txt`: This function has 2 columns, and each row represents a different trajectory model. The first column labels a single trajectory as a series of snapshots, each of which is written as `{state}_{time}|`. The second column is the probability distribution function corresponding to that trajectory.
+- `labeled_pdf.txt`: Each row has 2 columns and represents a different trajectory model. The first column labels a single trajectory as a series of snapshots, where each snapshot is written as `{state}_{time}|` in sequential order. The second column is the probability distribution function corresponding to that trajectory.
 - `dag_heatmap.eps` and `dag_heatmap`: image of the directed acyclic graph from the set of models.
 - `path*.txt`: files where each row includes a `{state}_{time}` string, so that rows correspond to the states visited over that trajectory model. Files are numbered from most likely to least likely.
 

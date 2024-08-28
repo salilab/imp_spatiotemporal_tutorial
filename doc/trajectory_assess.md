@@ -121,11 +121,13 @@ print("")
 
 The output of `forward_model_copy_number` is written in `forward_model_copy_number/`. The folder contains `CN_prot_{prot}.txt` files for each protein, which have the mean and standard deviation of protein copy number at each time point.
 
-Here, we plot the comparison between the experimental data used in model construction and the set of trajectory models. This analysis includes comparisons between experimental and modeled protein copy numbers for A (a), B (b), and C (c), as well as the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory (d). Here, we see the model is in good agreement with the data used to construct it.
+Here, we plot the comparison between the experimental data used in model construction and the set of trajectory models. This analysis includes comparisons between experimental and modeled protein copy numbers for proteins A (a), B (b), and C (c), as well as the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory (d). Here, we see the model is in good agreement with the data used to construct it.
 
 \image html Spatiotemporal_Assessment_Used.png width=1200px
 
 # Validation against data not used in model construction
+
+Finally, we aim to compare the model to data not used in model construction. Specifically, we reserved SAXS data for model validation. We aimed to compare the forward scattering profile from the centroid model of each snapshot to the experimental profile. To make this comparison, we wrote functions that converted each centroid RMF to a PDB (`convert_rmfs`), copied the experimental SAXS profiles to the appropriate folder (`copy_SAXS_dat_files`), and ran [FoXS](https://integrativemodeling.org/tutorials/foxs/foxs.html) on each PDB to evaluate its agreement to the experimental profile (`process_foxs`).
 
 \code{.py}
 ## 4 - comparison of the model to data used in modeling (SAXS, native pdb of final complex)
@@ -142,6 +144,10 @@ print("")
 print("")
 \endcode
 
+The output of this analysis is written to `SAXS_comparison`. Standard FoXS outputs are available for each snapshot (`snapshot{state}_{time}.*`). In particular, the `.fit` files include the forward and experimental profiles side by side, with the \f$\chi^2\f$ for the fit. Further, the `{time}_FoXS.*` files include the information for all snapshots at that time point, including plots of each profile in comparison to the experimental profile (`{time}_FoXS.png`).
+
+As our model was generated from synthetic data, the ground truth structure is known at each time point. In addition to validating the model by assessing its comparison to SAXS data, we could approximate the model accuracy by comparing the model to the ground truth. To do so, we wrote a function (`RMSD`) that calculates the RMSD between each structural model and the orignal PDB.
+
 \code{.py}
 # 4b - RMSD
 os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
@@ -152,9 +158,17 @@ print("")
 print("")
 \endcode
 
+The output of this function is written in `RMSD_calculation_output`. The function outputs `rmsd_{state}_{time}.png` files, which plots the RMSD for each model within each snapshot. This data is then summarized in `RMSD_analysis.txt`, which includes the minimum RMSD, average RMSD, and number of snapshots in each snapshot model.
+
+Here, we plot the results for assessing the spatiotemporal model with data not used to construct it. Comparisons are made between the centroid structure of the most populated cluster in each snapshot at each time point and the experimental SAXS profile for 0 (a), 1 (b), and 2 (c) minutes. Further, we plot both the sampling precision (dark red) and the RMSD to the PDB structure (light red) for each snapshot in the highest trajectory model (d).
+
 \image html Spatiotemporal_Assessment_Unused.png width=1200px
 
+To quantitatively compare the model to SAXS data, we used the \f$\chi^2\f$ to compare each snapshot model to the experimental profile. We note that the \f$\chi^2\f$ are substantially lower for the models along the highest trajectory (1_0min, 1_1min, and 1_2min) than for other models, indicating that the highest weighted trajectory is in better agreement with the experimental SAXS data than other possible trajectories.
+
 \image html Chi2_Table.png width=600px
+
+Next, we can evaluate the accuracy of the model by comparing the RMSD to the PDB to the sampling precision of each snapshot model. We note that this is generally not possible, because in most biological applications the ground truth is not known. In this case, if the average RMSD to the PDB structure is smaller than the sampling precision, the PDB structure lies within the precision of the model. We note that the RMSD is within 1.5 Å of the sampling precision at all time points, indicating that the modeling is accurate up to this precision.
 
 # Next steps
 

@@ -81,7 +81,7 @@ print("")
 print("")
 \endcode
 
-Next, we calculate the density range dictionaries, which are output as `{state}_{time}_density_ranges.txt`. These dictionaries label each protein in each snapshot model, which will be passed into `imp_sampcon` to calculate the localization density of each protein.
+Next, we write the density range dictionaries, which are output as `{state}_{time}_density_ranges.txt`. These dictionaries label each protein in each snapshot model, which will be passed into `imp_sampcon` to calculate the localization density of each protein.
 
 \code{.py}
 # 6 calling create_density_dictionary:

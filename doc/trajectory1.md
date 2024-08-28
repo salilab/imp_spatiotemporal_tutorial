@@ -9,6 +9,4 @@ Now, we have snapshot models for various intermediate states along our process o
 
 # Searching for good scoring models
 
- \f[
- W(\mathcal{X}) \propto   \displaystyle&\prod^{T}_{t=0} \mathcal{P}( X_{N,t}, N_{t} | D_{t}) \cdot\\ \displaystyle&\prod^{T-1}_{t=0} W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1}),
- \f]
+The LaTeX and Tex logos are: \f(\LaTeX \f) and \f(\TeX \f).

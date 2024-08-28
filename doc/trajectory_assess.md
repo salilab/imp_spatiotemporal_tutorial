@@ -146,7 +146,7 @@ print("")
 
 The output of this analysis is written to `SAXS_comparison`. Standard FoXS outputs are available for each snapshot (`snapshot{state}_{time}.*`). In particular, the `.fit` files include the forward and experimental profiles side by side, with the \f$\chi^2\f$ for the fit. Further, the `{time}_FoXS.*` files include the information for all snapshots at that time point, including plots of each profile in comparison to the experimental profile (`{time}_FoXS.png`).
 
-As our model was generated from synthetic data, the ground truth structure is known at each time point. In addition to validating the model by assessing its comparison to SAXS data, we could approximate the model accuracy by comparing the model to the ground truth. To do so, we wrote a function (`RMSD`) that calculates the RMSD between each structural model and the orignal PDB.
+As our model was generated from synthetic data, the ground truth structure is known at each time point. In addition to validating the model by assessing its comparison to SAXS data, we could approximate the model accuracy by comparing the snapshot model to the PDB structure, although this comparison is not perfect as the PDB structure was used to inform the structure of *rigid bodies* in the snapshot model. To do so, we wrote a function (`RMSD`) that calculates the RMSD between each structural model and the orignal PDB.
 
 \code{.py}
 # 4b - RMSD

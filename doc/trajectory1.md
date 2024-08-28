@@ -81,4 +81,3 @@ Now that we have a trajectory model, we can plot the directed acyclic graph (lef
 
 Finally, now that the set of spatiotemporal models has been constructed, we can [assess the spatiotemporal integrative models.] (@ref trajectory_assess)
 
-

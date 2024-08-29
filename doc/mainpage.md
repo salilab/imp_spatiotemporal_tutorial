@@ -21,7 +21,7 @@ In general, integrative modeling proceeds through five steps (i. gathering infor
 
 \image html Overview.png width=600px
 
-This tutorial will walk you through the links below, which contain a breakdown of each of these modeling steps.
+This tutorial will walk you through the links below, which contain a breakdown of each of these modeling steps for the hypothetical assembly mechanism of the Bmi1/Ring1b-UbcH5c complex. We note that all experimental data besides the static structure used in this study is purely hypothetical, and, thus, the model should not be interpreted to be meaningful about the actual assembly mechanism of the complex.
 
 - \subpage gatherinfo
 

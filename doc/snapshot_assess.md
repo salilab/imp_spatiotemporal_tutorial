@@ -71,7 +71,7 @@ print("")
 print("")
 \endcode
 
-We then check the number of models in each sampling run by running `count_rows_and_generate_report`, which writes the `independent_samples_stat.txt` file. Empirically, we have found checking the overall number of models in each independent sample that pass filtering serves a good first check on sampling convergence.
+We then check the number of models in each sampling run by running `count_rows_and_generate_report`, which writes the `independent_samples_stat.txt` file. Empirically, we have found that ensuring the overall number of models in each independent sample after filtering is roughly equal serves a good first check on sampling convergence.
 
 \code{.py}
 # 5 calling count_rows_and_generate_report

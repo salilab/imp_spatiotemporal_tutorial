@@ -73,7 +73,7 @@ After running `spatiotemporal.create_DAG`, a variety of outputs are written:
 - `pdf.txt`: the probability distribution function for the set of trajectories.
 - `labeled_pdf.txt`: Each row has 2 columns and represents a different trajectory model. The first column labels a single trajectory as a series of snapshots, where each snapshot is written as `{state}_{time}|` in sequential order. The second column is the probability distribution function corresponding to that trajectory.
 - `dag_heatmap.eps` and `dag_heatmap`: image of the directed acyclic graph from the set of models.
-- `path*.txt`: files where each row includes a `{state}_{time}` string, so that rows correspond to the states visited over that trajectory model. Files are numbered from most likely to least likely.
+- `path*.txt`: files where each row includes a `{state}_{time}` string, so that rows correspond to the states visited over that trajectory model. Files are numbered from the most likely path to the least likely path.
 
 Now that we have a trajectory model, we can plot the directed acyclic graph (left) and the series of centroid models from each snapshot along the most likely trajectory (right). Each row corresponds to a different time point in the assembly process (0 min, 1 min, and 2 min). Each node is shaded according to its weight in the final model (\f$W(X_{N,t}N_{t})\f$). Proteins are colored as A - blue, B - orange, and C - purple.
 

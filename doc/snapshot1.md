@@ -170,7 +170,7 @@ prepare_protein_library.prepare_protein_library(times, exp_comp, expected_subcom
                                                 template_topology=template_topology, template_dict=template_dict)
 \endcode
 
-From the output of prepare_protein_library, we see that there are 3 snapshot models at each time point (it is possible to have more snapshot models than copy numbers if multiple copies of the protein exist in the complex). We then call `generate_all_snapshots`, which creates a directory for each snapshot, copies the necessary files into that directory, and submits a job script to run sampling. The job script will likely need to be customized for the user's computer or cluster.
+From the output of `prepare_protein_library`, we see that there are 3 snapshot models at each time point (it is possible to have more snapshot models than copy numbers if multiple copies of the protein exist in the complex). We then wrote `generate_all_snapshots`, which creates a directory for each snapshot, copies the necessary files into that directory, and submits a job script to run sampling. The job script will likely need to be customized for the user's computer or cluster.
 
 \code{.py}
 # 2a - parameters for generate_all_snapshots
@@ -189,7 +189,7 @@ number_of_runs = 50
 generate_all_snapshots(state_dict, main_dir, items_to_copy, job_template, number_of_runs)
 \endcode
 
-Finally, we note that sometimes errors such as the one below can arrise during sampling. These errors are caused by issues generating forward GMM files, which is done stochastically. If such issues arrise, remove all files in the `forward_densities` folder for that snapshot and resubmit the corresponding jobs.
+Finally, we note that sometimes errors such as the one below can arise during sampling. These errors are caused by issues generating forward GMM files, which is done stochastically. If such issues arrise, remove all files in the `forward_densities` folder for that snapshot and resubmit the corresponding jobs.
 
 \code{.py}
   File "/imp/main/20240607-af6f9d6a95/lib/release8/IMP/isd/gmm_tools.py", line 35, in decorate_gmm_from_text

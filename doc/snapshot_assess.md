@@ -28,7 +28,7 @@ print("")
 print("")
 \endcode
 
-In the second step, we want to determine the median value of EM cross correlation for each snapshot. The `general_rule_calculation` looks through the `general_rule_column` for each `{state}_{time}_stat.txt` file and determines both the median value and the number of structures generated to determine that median value.
+In the second step, we want to determine the median value of EM cross correlation for each snapshot. We wrote `general_rule_calculation` to look through the `general_rule_column` for each `{state}_{time}_stat.txt` file and determine both the median value and the number of structures generated.
 
 \code{.py}
 # 2 calling general_rule_calculation and related parameters
@@ -53,7 +53,7 @@ print("")
 
 # Plotting data, clustering models, and determining sampling precision
 
-Next, scores can be plotted for analysis. Here, the `create_histograms` function runs `imp_sampcon plot_score` to plot distributions for various scores of interest. Each of these plots are saved to `histograms{state}_{time}/{score}.png`, where score is an object listed in the `score_list`. These plots are useful for debugging the modeling protocol, and should appear roughly Gaussian.
+Next, scores can be plotted for analysis. Here, we wrote the `create_histograms` function to run `imp_sampcon plot_score` so that it plots distributions for various scores of interest. Each of these plots are saved to `histograms{state}_{time}/{score}.png`, where score is an object listed in the `score_list`. These plots are useful for debugging the modeling protocol, and should appear roughly Gaussian.
 
 \code{.py}
 # 4 calling create_histograms and related parameters
@@ -71,7 +71,7 @@ print("")
 print("")
 \endcode
 
-We then check the number of models in each sampling run by running `count_rows_and_generate_report`, which writes the `independent_samples_stat.txt` file. Empirically, we have found that ensuring the overall number of models in each independent sample after filtering is roughly equal serves a good first check on sampling convergence.
+We then check the number of models in each sampling run though our function, `count_rows_and_generate_report`, which writes the `independent_samples_stat.txt` file. Empirically, we have found that ensuring the overall number of models in each independent sample after filtering is roughly equal serves a good first check on sampling convergence.
 
 \code{.py}
 # 5 calling count_rows_and_generate_report

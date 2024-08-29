@@ -166,7 +166,7 @@ template_dict = {'A': ['Ubi-E2-D3'], 'B': ['BMI-1'], 'C': ['E3-ubi-RING2']}
 nmodels = 3
 
 # 1b - calling prepare_protein_library
-IMP.spatiotemporal.prepare_protein_library.prepare_protein_library(times, exp_comp, expected_subcomplexes, nmodels,
+prepare_protein_library.prepare_protein_library(times, exp_comp, expected_subcomplexes, nmodels,
                                                 template_topology=template_topology, template_dict=template_dict)
 \endcode
 

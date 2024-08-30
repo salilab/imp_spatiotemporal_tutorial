@@ -121,7 +121,7 @@ print("")
 
 The output of `forward_model_copy_number` is written in `forward_model_copy_number/`. The folder contains `CN_prot_{prot}.txt` files for each protein, which have the mean and standard deviation of protein copy number at each time point.
 
-Here, we plot the comparison between the experimental data used in model construction and the set of trajectory models. This analysis includes comparisons between experimental and modeled protein copy numbers for proteins A (a), B (b), and C (c), as well as the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory (d). Here, we see the model is in good agreement with the data used to construct it.
+Here, we plot the comparison between the experimental data used in model construction and the set of trajectory models. This analysis includes the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory (a), as well as comparisons between experimental and modeled protein copy numbers for proteins A (b), B (c), and C (d). Here, we see the model is in good agreement with the data used to construct it.
 
 \image html Spatiotemporal_Assessment_Used.png width=1200px
 

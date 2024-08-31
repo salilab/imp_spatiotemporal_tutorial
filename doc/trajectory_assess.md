@@ -43,7 +43,7 @@ nodesA, graphA, graph_probA, graph_scoresA = IMP.spatiotemporal.create_DAG(state
                                                                            draw_dag=False)
 
 os.chdir(main_dir)
-nodesB, graphB, graph_probB, graph_scoresB = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
+nodesB, graphB, graph_probB, graph_scoresB = IMP.spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
                                                                            input_dir=input, scorestr='_scoresB.log',
                                                                            output_dir=outputB,
                                                                            spatio_temporal_rule=False,
@@ -52,7 +52,7 @@ nodesB, graphB, graph_probB, graph_scoresB = spatiotemporal.create_DAG(state_dic
                                                                            draw_dag=False)
 
 ## 1 - analysis
-analysis.temporal_precision(outputA + 'labeled_pdf.txt', outputB + 'labeled_pdf.txt',
+IMP.spatiotemporal.analysis.temporal_precision(outputA + 'labeled_pdf.txt', outputB + 'labeled_pdf.txt',
                                 output_fn='.' + analysis_output + 'temporal_precision.txt')
 # here is some difficulty accessing this directory (additional dot for output_fn should be added as described above)
 os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
@@ -78,7 +78,7 @@ Next, we calculate the precision of the model, using `analysis.precision`. Here,
 # precision is calculated from .labeled_pdf.txt in Trajectories_Modeling dir
 trajectories_modeling_input_dir = "../Trajectories_Modeling/output/"
 
-analysis.precision(trajectories_modeling_input_dir + 'labeled_pdf.txt', output_fn=analysis_output + 'precision.txt')
+IMP.spatiotemporal.analysis.precision(trajectories_modeling_input_dir + 'labeled_pdf.txt', output_fn=analysis_output + 'precision.txt')
 
 os.chdir(main_dir)  # it is crucial that after each step, directory is changed back to main
 print("Step 2: calculation of precision of the model IS COMPLETED")

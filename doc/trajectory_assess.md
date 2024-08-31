@@ -34,7 +34,7 @@ outputB = "../output_modelB/"
 analysis_output = "./analysis_output_precision/"
 os.makedirs(analysis_output, exist_ok=True)
 
-nodesA, graphA, graph_probA, graph_scoresA = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
+nodesA, graphA, graph_probA, graph_scoresA = IMP.spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
                                                                            input_dir=input, scorestr='_scoresA.log',
                                                                            output_dir=outputA,
                                                                            spatio_temporal_rule=False,

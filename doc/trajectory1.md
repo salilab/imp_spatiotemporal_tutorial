@@ -47,7 +47,7 @@ exp_comp = {'A': 'exp_compA.csv', 'B': 'exp_compB.csv', 'C': 'exp_compC.csv'}
 input = './data/'
 output = "../output/"
 
-nodes, graph, graph_prob, graph_scores = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
+nodes, graph, graph_prob, graph_scores = IMP.spatiotemporal.spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
                                                                    input_dir=input, scorestr='_scores.log',
                                                                    output_dir=output, spatio_temporal_rule=True,
                                                                    expected_subcomplexes=expected_subcomplexes,

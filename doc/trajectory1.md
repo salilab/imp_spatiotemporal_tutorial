@@ -5,11 +5,11 @@ Now, we have snapshot models for various intermediate states along our process o
 
 # Background behind integrative spatiotemporal modeling
 
-## Representing the model
+## Representing the model {#trajectory_representation}
 
 We choose to represent dynamic processes as a trajectory of snapshot models, with one snapshot at each time point. In this case, we modeled snapshots at 3 time points (0, 1, and 2 minutes), so a single trajectory model will consist of 3 snapshots, one at each 0, 1, and 2 minutes. The modeling procedure described here will produce a set of scored trajectory models, which can be displayed as a directed acyclic graph, where nodes in the graph represent the snapshot model and edges represent connections between snapshots at neighboring time points.
 
-## Scoring the model
+## Scoring the model {#trajectory_scoring}
 
 To score trajectories, we incorporate both the scores of individual snapshots, as well as the scores of transitions between them. Under the assumption that the process is Markovian (*i.e.* memoryless), the weight of a trajectory takes the form:
 
@@ -19,11 +19,11 @@ W(\chi) \propto   \displaystyle\prod^{T}_{t=0} P( X_{N,t}, N_{t} | D_{t}) \cdot 
 
 where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$P(X_{N,t}, N_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1})\f$ is the transition score. Trajectory weights (\f$W(\chi)\f$) are normalized so that the sum of all trajectory weights is 1.0. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
 
-## Searching for good scoring models
+## Searching for good scoring models {#trajectory_searching}
 
 Trajectories are constructed by enumerating all connections between adjacent snapshots and scoring these trajectories according to the equation above. This procedure results in a set of weighted trajectories.
 
-# Code for integrative spatiotemporal modeling
+# Code for integrative spatiotemporal modeling {#trajectory_example}
 
 Navigate to `Trajectories/Trajectories_Modeling`. The `create_trajectories.py` script runs the above steps to create a spatiotemporal integrative model from the previously sampled snapshots.
 

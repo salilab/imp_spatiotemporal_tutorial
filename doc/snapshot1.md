@@ -9,7 +9,7 @@ Navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two 
 
 Here, we will describe the process of modeling a single snapshot model, as performed by running `static_snapshot.py`.
 
-## Representing the model
+## Representing the model {#snapshot_representation}
 
 The second step in integrative modeling is representing the data and the model. In general, the *representation* of a system is defined by all the variables that need to be determined.
 
@@ -66,7 +66,7 @@ root_hier, dof = bs.execute_macro(max_rb_trans=1.0,
                                   max_srb_trans=1.0, max_srb_rot=0.5)
 \endcode
 
-## Scoring the model
+## Scoring the model {#snapshot_scoring}
 
 After building the model representation, we choose a scoring function to score the model based on input information. This scoring function is represented as a series of restraints that serve as priors.
 
@@ -124,7 +124,7 @@ output_objects.append(emr)
 emr.add_to_model()
 \endcode
 
-## Searching for good scoring models
+## Searching for good scoring models {#snapshot_searching}
 
 After building a scoring function that scores alternative models based on their fit to the input information, we aim to search for good scoring models. For complicated systems, stochastic sampling techniques such as Monte Carlo (MC) sampling are often the most efficient way to compute good scoring models. Here, we generate a random initial configuration and then perform temperature replica exchange MC sampling with 16 temperatures from different initial configurations. By performing multiple runs of replica exchange MC from different initial configurations, we can later ensure that our sampling is sufficiently converged.
 
@@ -148,7 +148,7 @@ rex.execute_macro()
 
 After performing sampling, a variety of outputs will be created. These outputs include `.rmf` files, which contain multi-resolution models output by IMP, and `.out` files which contains a variety of information about the run such as the value of the restraints and the MC acceptance rate.
 
-# Generalizing modeling to all snapshots
+# Generalizing modeling to all snapshots {#snapshot_combine}
 
 Next, we will describe the process of modeling a multiple static snapshots, as performed by running `start_sim.py`.
 

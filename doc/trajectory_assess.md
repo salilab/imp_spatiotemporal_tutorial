@@ -5,7 +5,7 @@ Now that the set of spatiotemporal models has been constructed, we must evaluate
 
 Navigate to `Trajectories/Trajectories_Assessment` and run `trajectories_assessment.py`. This code will perform the following steps to assess the model.
 
-# Sampling precision
+# Sampling precision {#trajectory_sampling_precision}
 
 To begin, we calculate the sampling precision of the models. The sampling precision is calculated by using `spatiotemporal.create_DAG` to reconstruct the set of trajectory models using 2 independent sets of samplings for snapshot models. Then, the overlap between these snapshot models is evaluated using `analysis.temporal_precision`, which takes in two `labeled_pdf` files.
 
@@ -68,7 +68,7 @@ Temporal precision between ../outputA/labeled_pdf.txt and ../outputB/labeled_pdf
 1.0
 \endcode
 
-# Model precision
+# Model precision {#trajectory_precision}
 
 Next, we calculate the precision of the model, using `analysis.precision`. Here, the model precision calculates the number of trajectories with high weights. The precision ranges from 1.0 to 1/d, where d is the number of trajectories. Values approaching 1.0 indicate the model set can be described by a single trajectory, while values close to 1/d indicate that all trajectories have similar weights.
 
@@ -93,7 +93,7 @@ Precision of ../Trajectories_Modeling/output/labeled_pdf.txt:
 1.0
 \endcode
 
-# Comparison against data used in model construction
+# Comparison against data used in model construction {#trajectory_comparison}
 
 We then evaluate the model against data used in model construction. First, we calculate the cross-correlation between the original EM map and the forward density projected from each snapshot model. We wrote the `ccEM` function to perform this comparison for all snapshots.
 
@@ -125,7 +125,7 @@ Here, we plot the comparison between the experimental data used in model constru
 
 \image html Spatiotemporal_Assessment_Included.png width=1200px
 
-# Validation against data not used in model construction
+# Validation against data not used in model construction {#trajectory_validation}
 
 Finally, we aim to compare the model to data not used in model construction. Specifically, we reserved SAXS data for model validation. We aimed to compare the forward scattering profile from the centroid model of each snapshot to the experimental profile. To make this comparison, we wrote functions that converted each centroid RMF to a PDB (`convert_rmfs`), copied the experimental SAXS profiles to the appropriate folder (`copy_SAXS_dat_files`), and ran [FoXS](https://integrativemodeling.org/tutorials/foxs/foxs.html) on each PDB to evaluate its agreement to the experimental profile (`process_foxs`).
 
@@ -170,7 +170,7 @@ To quantitatively compare the model to SAXS data, we used the \f$\chi^2\f$ to co
 
 Next, we can evaluate the accuracy of the model by comparing the RMSD to the PDB to the sampling precision of each snapshot model. We note that this is generally not possible, because in most biological applications the ground truth is not known. In this case, if the average RMSD to the PDB structure is smaller than the sampling precision, the PDB structure lies within the precision of the model. We find that the RMSD is within 1.5 Å of the sampling precision at all time points, indicating that the model lies within 1.5 Å of the ground truth.
 
-# Next steps
+# Next steps {#Conclusion}
 
 After assessing our model, we can must decide if the model is sufficient to answer biological questions of interest. If the model does not have sufficient precision for the desired application, assessment of the current model can be used to inform which new experiments may help improve the next iteration of the model. The [integrative spatiotemporal modeling procedure](@ref steps) can then be repeated iteratively, analogous to [integrative modeling of static structures](@ref procedure).
 

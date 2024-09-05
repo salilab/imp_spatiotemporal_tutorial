@@ -1,7 +1,7 @@
 Step 1: gather information for both snapshot and trajectory modeling {#gatherinfo}
 ====================================
 
-# Gathering information
+# Gathering information {#gathering}
 
 In the first step, information about the process of interest is gathered. This information can theoretically be applied to either modeling static snapshots or modeling trajectories, and can be used for representing the model, scoring the model, sampling alternative models, filtering sampled models, or validating the models.
 

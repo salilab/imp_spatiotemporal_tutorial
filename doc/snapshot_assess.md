@@ -3,7 +3,7 @@ Snapshot modeling step 5: assessment {#snapshot_assess}
 
 Now, we have a variety of alternative snapshot models. In general, we would like to assess these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. Here, we will focus specifically on estimating the sampling precision of the model, while quantitative comparisons between the model and experimental data will be reserved for the final step, when we assess [trajectories](https://integrativemodeling.org/tutorials/spatiotemporal/trajectory_assess.html). To assess these snapshot models, we navigate to the `Snapshots/Snapshots_Assessment` folder and run `snapshot_assessment.py`. This script performs the following analysis.
 
-# Filtering good scoring models
+# Filtering good scoring models {#snapshot_filter}
 
 Initially, we want to filter the various alternative models to select those that meet certain parameter thresholds. In this case, we filter the structural models in each snapshot by the median cross correlation with EM data. We note that this filtering criteria is subjective, and developing a Bayesian method to objectively way different restraints for filtering remains an interesting future development in integrative modeling.
 
@@ -51,7 +51,7 @@ print("")
 print("")
 \endcode
 
-# Plotting data, clustering models, and determining sampling precision
+# Plotting data, clustering models, and determining sampling precision {#snapshot_sampling_precision}
 
 Next, scores can be plotted for analysis. Here, we wrote the `create_histograms` function to run `imp_sampcon plot_score` so that it plots distributions for various scores of interest. Each of these plots are saved to `histograms{state}_{time}/{score}.png`, where score is an object listed in the `score_list`. These plots are useful for debugging the modeling protocol, and should appear roughly Gaussian.
 
@@ -127,7 +127,7 @@ These codes write a table that include the KS two sample test statistic (D), the
 
 \image html Snapshot_sampling.png width=600px
 
-# Visualizing models
+# Visualizing models {#snapshot_visualization}
 
 The resulting RMF files and localization densities from this analysis can be viewed in [UCSF Chimera](https://www.rbvi.ucsf.edu/chimera/) (version>=1.13) or [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/).
 

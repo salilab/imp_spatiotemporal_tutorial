@@ -46,7 +46,7 @@ plot(expA(:,1),expA(:,2),'Linewidth',3,'Color',grey);
 plot(model_time,modelA(:,1),'--o','MarkerFaceColor',blue1,'MarkerSize',16,'Linewidth',3,'Color',blue1);
 errorbar(expA(:,1),expA(:,2),expA(:,3),'Linewidth',3,'Color',grey);
 errorbar(model_time,modelA(:,1),modelA(:,2),'--o','MarkerFaceColor',blue1,'MarkerSize',16,'Linewidth',3,'Color',blue1);
-legend({' exp',' model'},'location','north');
+legend({' experiment',' model'},'location','north');
 set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3);
 axis([-0.1 2.6 -1 3])
 legend boxoff;
@@ -60,7 +60,7 @@ plot(expB(:,1),expB(:,2),'Linewidth',3,'Color',grey);
 plot(model_time,modelB(:,1),'--o','MarkerFaceColor',blue1,'MarkerSize',16,'Linewidth',3,'Color',blue1);
 errorbar(expB(:,1),expB(:,2),expB(:,3),'Linewidth',3,'Color',grey);
 errorbar(model_time,modelB(:,1),modelB(:,2),'--o','MarkerFaceColor',blue1,'MarkerSize',16,'Linewidth',3,'Color',blue1);
-legend({' exp',' model'},'location','north');
+legend({' experiment',' model'},'location','north');
 set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3);
 axis([-0.1 2.6 -1 3])
 legend boxoff;
@@ -74,7 +74,7 @@ plot(expC(:,1),expC(:,2),'Linewidth',3,'Color',grey);
 plot(model_time,modelC(:,1),'--o','MarkerFaceColor',blue1,'MarkerSize',16,'Linewidth',3,'Color',blue1);
 errorbar(expC(:,1),expC(:,2),expC(:,3),'Linewidth',3,'Color',grey);
 errorbar(model_time,modelC(:,1),modelC(:,2),'--o','MarkerFaceColor',blue1,'MarkerSize',16,'Linewidth',3,'Color',blue1);
-legend({' exp',' model'},'location','north');
+legend({' experiment',' model'},'location','north');
 set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3);
 axis([-0.1 2.6 -1 3])
 legend boxoff;

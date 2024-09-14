@@ -40,7 +40,7 @@ plot(x,y_p,'--','MarkerFaceColor',color5,'MarkerSize',8,'Linewidth',3,'Color',co
 plot(x,y_V,'--','MarkerFaceColor',color3,'MarkerSize',8,'Linewidth',3,'Color',color3);
 plot(x,y_pop,'--','MarkerFaceColor',color4,'MarkerSize',8,'Linewidth',3,'Color',color4);
 plot(x2,y2,'--k','MarkerSize',8,'Linewidth',3);
-legend({' \chi^2 p-value',' Cramer''s V',' % clustered'},'location','west');
+legend({' \it\chi^2\rm p-value',' Cramer''s \itV\rm',' % clustered'},'location','west');
 set(gca,'FontSize',36,'FontName','Helvetica','Linewidth',3);
 axis([0 24 0 1]);
 legend boxoff;

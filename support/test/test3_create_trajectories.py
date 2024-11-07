@@ -3,6 +3,7 @@
 import unittest
 import os
 import IMP.spatiotemporal as spatiotemporal
+from IMP.spatiotemporal import analysis
 import IMP.test
 
 # General paths
@@ -13,7 +14,7 @@ old_pdf_path = os.path.join(TOPDIR, 'modeling', 'Trajectories', 'Trajectories_Mo
 
 
 # Paths for expected and generated files
-expected_pdf_path = os.path.join(old_pdf_path, "pdf.txt")
+expected_pdf_path = os.path.join(old_pdf_path, "labeled_pdf.txt")
 
 # parameters
 state_dict = {'0min': 3, '1min': 3, '2min': 1}
@@ -48,24 +49,28 @@ class TestSpatiotemporalDAG(unittest.TestCase):
                 exp_comp_map=exp_comp,
                 draw_dag=False # there is no need for heatmap
             )
-        # Check if the pdf.txt file was created
-        generated_pdf_path = os.path.join(output, "pdf.txt")
-        print(generated_pdf_path)
-        os.system('ls '+output)
-        self.assertTrue(os.path.exists(generated_pdf_path), "pdf.txt should exist in the output directory")
+            # Check if the labeled_pdf.txt file was created
+            generated_pdf_path = os.path.join(output, "labeled_pdf.txt")
+            self.assertTrue(os.path.exists(generated_pdf_path), "labeled_pdf.txt should exist in the output directory")
 
-        # Check if the content of the generated pdf.txt matches the expected content
-        with open(generated_pdf_path, 'r') as generated_file:
-            generated_content = generated_file.read()
-
-        with open(expected_pdf_path, 'r') as expected_file:
-            expected_content = expected_file.read()
-
-        # Compare the file contents
-        self.assertEqual(generated_content, expected_content,
-                         "The content of pdf.txt does not match the expected content")
-
-    # Do we need clear out also generated files? I think GitHub Actions delete them after running test
+            # Use temporal_precision to check between old and new model
+            analysis.temporal_precision(expected_pdf_path,generated_pdf_path,output_fn=output+'trj_test.txt')
+            f=open(output+'trj_test.txt','r')
+            # First line is description
+            f.readline()
+            # 2nd line is the temporal precision
+            trj_comp=float(f.readline())
+            f.close()
+            self.assertAlmostEqual(trj_comp, 1.0, delta=1e-5)
+            # Test the precision of the trajecotry
+            analysis.precision(generated_pdf_path,output_fn=output+'precision.txt')
+            f = open(output + 'precision.txt', 'r')
+            # First line is description
+            f.readline()
+            # 2nd line is the precision
+            precision = float(f.readline())
+            f.close()
+            self.assertAlmostEqual(precision, 1.0, delta=1e-5)
 
 if __name__ == '__main__':
     unittest.main()

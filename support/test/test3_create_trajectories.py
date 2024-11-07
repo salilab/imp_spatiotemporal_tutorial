@@ -3,18 +3,17 @@
 import unittest
 import os
 import IMP.spatiotemporal as spatiotemporal
+import IMP.test
 
 # General paths
 TOPDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 data_path = os.path.join(TOPDIR, 'modeling', 'Trajectories', 'Trajectories_Modeling', 'data')
 old_pdf_path = os.path.join(TOPDIR, 'modeling', 'Trajectories', 'Trajectories_Modeling', 'output')
 
-# Path where the test output of spatiotemporal.create_DAG should be saved
-output = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'output'))
+
 
 # Paths for expected and generated files
 expected_pdf_path = os.path.join(old_pdf_path, "pdf.txt")
-generated_pdf_path = os.path.join(output, "pdf.txt")
 
 # parameters
 state_dict = {'0min': 3, '1min': 3, '2min': 1}
@@ -31,22 +30,28 @@ class TestSpatiotemporalDAG(unittest.TestCase):
     def test_create_dag_and_check_pdf(self):
         """Test if spatiotemporal.create_DAG creates pdf.txt and if the content matches the expected file."""
 
-        # Call the function to generate output
-        nodes, graph, graph_prob, graph_scores = spatiotemporal.create_DAG(
-            state_dict,
-            out_pdf=True,
-            npaths=npaths,
-            input_dir=data_path,
-            scorestr='_scores.log',
-            output_dir=output,
-            spatio_temporal_rule=True,
-            expected_subcomplexes=expected_subcomplexes,
-            score_comp=True,
-            exp_comp_map=exp_comp,
-            draw_dag=False # there is no need for heatmap
-        )
+        # create output directory
+        with IMP.test.temporary_directory() as tmpdir:
+            output = os.path.join(tmpdir, 'output/')
 
+            # Call the function to generate output
+            nodes, graph, graph_prob, graph_scores = spatiotemporal.create_DAG(
+                state_dict,
+                out_pdf=True,
+                npaths=npaths,
+                input_dir=data_path,
+                scorestr='_scores.log',
+                output_dir=output,
+                spatio_temporal_rule=True,
+                expected_subcomplexes=expected_subcomplexes,
+                score_comp=True,
+                exp_comp_map=exp_comp,
+                draw_dag=False # there is no need for heatmap
+            )
         # Check if the pdf.txt file was created
+        generated_pdf_path = os.path.join(output, "pdf.txt")
+        print(generated_pdf_path)
+        os.system('ls '+output)
         self.assertTrue(os.path.exists(generated_pdf_path), "pdf.txt should exist in the output directory")
 
         # Check if the content of the generated pdf.txt matches the expected content

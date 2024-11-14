@@ -8,7 +8,7 @@ Here, we describe how to build models of static snapshots using IMP. We note tha
 
 # Snapshot modeling step 2: representation, scoring, and search process {#snapshots2}
 
-Navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two python scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for models of a single static snapshot. The second, `start_sim.py`, automates the creation of multiple static snapshots at each time point, which score well according to protein copy number data.
+Navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two python scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for models of a single static snapshot. The second, `start_sim.py`, automates the creation of a snapshot model for each heterogeneity model.
 
 ## Modeling one snapshot
 
@@ -22,7 +22,7 @@ For our model of a protein complex, we use a combination of two representations.
 
 Beads and Gaussians in our model belong to either a *rigid body* or *flexible string*. The positions of all beads and Gaussians in a single rigid body are constrained during sampling and do not move relative to each other. Meanwhile, flexible beads can move freely during sampling, but are restrained by sequence connectivity.
 
-To begin, we built a topology file with the representation for the model of the complete system, `spatiotemporal_topology.txt`, located in `Heterogeneity/Heterogeneity_Modeling/`. Later, we will use this complete topology as a template to build topologies of each snapshot. Based on our observation of the structure of the complex, we chose to represent each protein with at least 2 separate rigid bodies, and left the first 28 residues of protein C as flexible beads. Rigid bodies were described with 1 bead for every residue, and 10 residues per Gaussian. Flexible beads were described with 1 bead for every residue and 1 residue per Gaussian. A more complete description of the options available in topology files is available in the the [TopologyReader](@ref IMP::pmi::topology::TopologyReader) documentation.
+To begin, we built a topology file with the representation for the model of the complete system, `spatiotemporal_topology.txt`, located in `Heterogeneity/Heterogeneity_Modeling/`. This complete topology was used as a template to build topologies of each snapshot. Based on our observation of the structure of the complex, we chose to represent each protein with at least 2 separate rigid bodies, and left the first 28 residues of protein C as flexible beads. Rigid bodies were described with 1 bead for every residue, and 10 residues per Gaussian. Flexible beads were described with 1 bead for every residue and 1 residue per Gaussian. A more complete description of the options available in topology files is available in the the [TopologyReader](@ref IMP::pmi::topology::TopologyReader) documentation.
 
 \code{.txt}
 |molecule_name | color | fasta_fn | fasta_id | pdb_fn | chain | residue_range | pdb_offset | bead_size | em_residues_per_gaussian | rigid_body | super_rigid_body | chain_of_super_rigid_bodies | 

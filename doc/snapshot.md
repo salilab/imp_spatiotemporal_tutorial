@@ -16,7 +16,7 @@ Here, we will describe the process of modeling a single snapshot model, as perfo
 
 ### Representing the model {#snapshot_representation}
 
-The second step in integrative modeling involves representing the data and the model. In general, the *representation* of a system is defined by all the variables that need to be determined.
+We begin by representing the data and the model. In general, the *representation* of a system is defined by all the variables that need to be determined.
 
 For our model of a protein complex, we use a combination of two representations. The first is a series of *spherical beads*, which can correspond to portions of the biomolecules of interest, such as atoms or groups of atoms. The second is a series of *3D Gaussians*, which help calculate the overlap between our model and the density from ET data.
 

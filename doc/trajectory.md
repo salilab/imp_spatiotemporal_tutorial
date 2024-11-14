@@ -1,4 +1,4 @@
-Trajectory modeling steps 2-4: representation, scoring, and search process {#trajectory1}
+Trajectory modeling steps 2-4: representation, scoring, and search process {#trajectory}
 ====================================
 
 Now, we have snapshot models for various intermediate states along our process of interest. In this step, we will combine these snapshot models to produce trajectories, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).

@@ -25,11 +25,11 @@ In general, integrative modeling proceeds through three steps (i. gathering info
 
 This tutorial will walk you through the links below, which contain a breakdown of each of these modeling steps for the hypothetical assembly mechanism of the Bmi1/Ring1b-UbcH5c complex. We note that all experimental data besides the static structure used in this study is purely hypothetical, and, thus, the model should not be interpreted to be meaningful about the actual assembly mechanism of the complex.
 
-- \subpage heterogeneity
+- [modeling of heterogeneity] (@ref heterogeneity)
 
-- \subpage snapshot
+- [modeling of snapshots] (@ref snapshots)
 
-- \subpage trajectory
+- [modeling of trajectories] (@ref trajectories)
 
 To work through this example, a variety of python packages will be necessary in addition to [IMP](https://integrativemodeling.org/). These packages are [numpy](https://numpy.org/), [os](https://docs.python.org/3/library/os.html), [warnings](https://docs.python.org/3/library/warnings.html), [sys](https://docs.python.org/3/library/sys.html), [itertools](https://docs.python.org/3/library/itertools.html), [pandas](https://pandas.pydata.org/), [matplotlib](https://matplotlib.org/), [pyRMSD](https://pypi.org/project/pyRMSD/), and [graphviz](https://graphviz.org/). Optionally, [UCSF Chimera](https://www.rbvi.ucsf.edu/chimera/), [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/), [gnuplot](http://www.gnuplot.info/), and [MATLAB](https://www.mathworks.com/products/matlab.html) can be used for visualizing structures or plotting data.
 

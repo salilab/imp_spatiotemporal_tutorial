@@ -1,4 +1,4 @@
-Step 1: gather information for both snapshot and trajectory modeling {#gatherinfo}
+Step 1: gather information for both snapshot and trajectory modeling {#heterogeneity}
 ====================================
 
 # Gathering information {#gathering}

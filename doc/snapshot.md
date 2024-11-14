@@ -1,4 +1,4 @@
-Snapshot modeling steps 2-4: representation, scoring, and search process {#snapshot1}
+Snapshot modeling steps 2-4: representation, scoring, and search process {#snapshot}
 ====================================
 
 Here, we describe how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials of [actin](https://integrativemodeling.org/tutorials/actin/) and [RNA PolII](https://integrativemodeling.org/tutorials/rnapolii_stalk/).

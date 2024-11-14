@@ -8,7 +8,7 @@ Analyzing snapshots consists of series of different functions:
 - create_histogram: create different "score histograms" to visualize score distributions after filtering
 - count_rows_and_generate_report: counts number of rmfs in each of two independent samples to check if distribution is
 similar
-- create_density_dictionary: based on .config file, it creates density dictionaries used in exhaust function
+- create_density_dictionary: based on topology file, it creates density dictionaries used in exhaust function
 - exhaust (most important part of this code): based on all filtered frames for each snapshot it checks if sampling of
 snapshots is exhaustive (output plots) and generate centroid models of the most dominant cluster for each snapshot
 - extract_exhaust_data: from exhaust output for each snapshot KS values and sampling precision (two most important
@@ -445,10 +445,11 @@ def create_density_dictionary_files(state_dict, main_dir, custom_base_path = Non
     else:
         base_path = "../Snapshots_Modeling"
 
+    # Loop over each time. Write density_ranges file for each state, based on the topology file
     for time in state_dict.keys():
         for state in range(1, state_dict[time] + 1):
             input_file = os.path.join(base_path,
-                                      f'{state}_{time}_topol.txt')  # path needs to be changed!! Maybe also some parameters
+                                      f'{state}_{time}_topol.txt')
             output_file = os.path.join(main_dir, f'{state}_{time}_density_ranges.txt')
 
             # Using time-state loop we call all three function one after another (only in case we can access topology files)

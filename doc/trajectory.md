@@ -1,11 +1,13 @@
 Modeling of Trajectories {#trajectories}
 ====================================
 
+Here, we describe the final modeling problem in our composite workflow, how to build models of trajectory models using IMP.
+
 # Trajectory modeling step 1: gather information {#trajectories1}
 
 # Trajectory modeling step 2: representation, scoring, and search process {#trajectories2}
 
-Now, we have snapshot models for various intermediate states along our process of interest. In this step, we will combine these snapshot models to produce trajectories, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).
+Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectories based on their fit to the input information, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).
 
 ## Background behind integrative spatiotemporal modeling
 

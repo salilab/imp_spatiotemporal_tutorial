@@ -1,7 +1,7 @@
 Modeling of snapshots {#snapshots}
 ====================================
 
-Here, we describe how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials of [actin](https://integrativemodeling.org/tutorials/actin/) and [RNA PolII](https://integrativemodeling.org/tutorials/rnapolii_stalk/).
+Here, we describe the second modeling problem in our composite workflow, how to build models of static snapshots using IMP. We note that this process is similar to previous tutorials of [actin](https://integrativemodeling.org/tutorials/actin/) and [RNA PolII](https://integrativemodeling.org/tutorials/rnapolii_stalk/).
 
 # Snapshot modeling step 1: gather information {#snapshots1}
 

@@ -22,7 +22,7 @@ def run_sim(state, time, nframes, shuffle=True):
     https://integrativemodeling.org/tutorials/actin/pmidesign.html
     """
     # Topology file
-    topology_file = os.path.join(TOPDIR, 'modeling', 'Snapshots', 'Snapshots_Modeling', f"{state}_{time}_topol.txt")
+    topology_file = os.path.join(TOPDIR, 'modeling', 'Heterogeneity', 'Heterogeneity_Modeling', f"{state}_{time}_topol.txt")
     # Paths to input data for topology file
     pdb_dir = os.path.join(TOPDIR, 'modeling', 'Input_Information', 'PDB')
     fasta_dir = os.path.join(TOPDIR, 'modeling', 'Input_Information', 'FASTA')

@@ -9,7 +9,7 @@ import IMP.test
 
 TOPDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 csv_path = os.path.join(TOPDIR, 'modeling', 'Input_Information', 'gen_FCS')
-topology_path = os.path.join(TOPDIR, 'modeling', 'Snapshots', 'Snapshots_Modeling')
+topology_path = os.path.join(TOPDIR, 'modeling', 'Heterogeneity', 'Heterogeneity_Modeling')
 
 times = ["0min", "1min", "2min"]
 exp_comp = {

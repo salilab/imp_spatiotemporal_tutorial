@@ -30,3 +30,5 @@ From the output of `prepare_protein_library`, we see that there are 3 snapshot m
 
 # Heterogeneity modeling step 3: assessment {#heterogeneity_assess}
 
+\image html Heterogeneity_Assessment.png width=600px
+

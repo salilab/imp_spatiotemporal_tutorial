@@ -13,7 +13,9 @@ The PDB structure of the complex informs the final state of our model and constr
 
 # Heterogeneity modeling step 2: representation, scoring function, and search process {#heterogeneity2}
 
-Next, we represent, score and search for heterogeneity models models. These operations are performed by the `heterogeneity_modeling.py` in the `Heterogeneity/Heterogeneity_Modeling` folder. A single heterogeneity model is a set of protein copy numbers, scored according to its fit to experimental copy number data at that time point. As ET and SAXS data, are only available at 0 minutes, 1 minute, and 2 minutes, we choose to create heterogeneity models at these three time points. We then use `prepare_protein_library`, [documented here](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html), to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex (`spatiotemporal_topology.txt`) to generate a topology file for each of these snapshot models. The choices made in this topology file are important for the representation, scoring function, and search process for snapshot models, and are [discussed later.] (@ref snapshot_representation) For heterogeneity modeling, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the PDB structure. 
+Next, we represent, score and search for heterogeneity models models. These operations are performed by the `heterogeneity_modeling.py` in the `Heterogeneity/Heterogeneity_Modeling` folder. A single heterogeneity model is a set of protein copy numbers, scored according to its fit to experimental copy number data at that time point.
+
+As ET and SAXS data, are only available at 0 minutes, 1 minute, and 2 minutes, we choose to create heterogeneity models at these three time points. We then use `prepare_protein_library`, [documented here](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html), to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex (`spatiotemporal_topology.txt`) to generate a topology file for each of these snapshot models. The choices made in this topology file are important for the representation, scoring function, and search process for snapshot models, and are [discussed later.] (@ref snapshot_representation) For heterogeneity modeling, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the PDB structure. 
 
 \code{.py}
 # 1a - parameters for prepare_protein_library:
@@ -37,5 +39,8 @@ From the output of `prepare_protein_library`, we see that there are 3 heterogene
 
 # Heterogeneity modeling step 3: assessment {#heterogeneity_assess}
 
-\image html Heterogeneity_Assessment.png width=600px
+Now, we have a variety of heterogeneity models. In general, there are four ways to assess a model: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. Here, we will focus specifically on comparing the model to experimental data, as other assessments will be performed later, when the [trajectory models are assessed.] (@ref trajectory_assess)
 
+In the `Heterogeneity/Heterogeneity_Assessment` folder, there is a single script, `plot_heterogeneity.m`. This script plots the modeled and experimental copy numbers simultaneously. From these plots, we observe that the range of possible experimental copy numbers are well sampled by the heterogeneity models, indicating that we are prepared for [snapshot modeling] (@ref snapshots)
+
+\image html Heterogeneity_Assessment.png width=600px

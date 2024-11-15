@@ -5,6 +5,7 @@ Here, we describe the second modeling problem in our composite workflow, how to 
 
 # Snapshot modeling step 1: gather information {#snapshots1}
 
+\image html Input_snapshot.png width=600px
 
 # Snapshot modeling step 2: representation, scoring, and search process {#snapshots2}
 

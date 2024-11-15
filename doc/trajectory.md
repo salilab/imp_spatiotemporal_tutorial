@@ -5,6 +5,8 @@ Here, we describe the final modeling problem in our composite workflow, how to b
 
 # Trajectory modeling step 1: gather information {#trajectories1}
 
+\image html Input_trajectories.png width=600px
+
 # Trajectory modeling step 2: representation, scoring, and search process {#trajectories2}
 
 Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectories based on their fit to the input information, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).

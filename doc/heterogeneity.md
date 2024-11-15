@@ -3,6 +3,8 @@ Modeling of heterogeneity {#heterogeneity}
 
 # Heterogeneity modeling step 1: gather information {#heterogeneity1}
 
+\image html Input_heterogeneity.png width=600px
+
 # Heterogeneity modeling step 2: representation, scoring, and search process {#heterogeneity2}
 
 We first must select which snapshots to model. Here, we choose only to model snapshots at 0 minutes, 1 minute, and 2 minutes because ET and SAXS data are only available at those time points. We know this complex has three protein chains (A, B, and C), and we choose to model these chains based on their protein copy number data. We then use `prepare_protein_library`, [documented here](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1prepare__protein__library.html), to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex (`spatiotemporal_topology.txt`) to generate a topology file for each of these snapshot models. Here, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the PDB structure. 

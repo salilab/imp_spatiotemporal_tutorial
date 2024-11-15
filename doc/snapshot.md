@@ -5,11 +5,15 @@ Here, we describe the second modeling problem in our composite workflow, how to 
 
 # Snapshot modeling step 1: gather information {#snapshots1}
 
+We begin snapshot modeling with the first step of integrative modeling, gathering information. Snapshot modeling utilizes structural information about the complex. In this case, we utilize heterogeneity models, the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), synthetically generated electron tomography (ET) density maps during the assembly process, and physical theories.
+
 \image html Input_snapshot.png width=600px
+
+The heterogeneity models inform protein copy numbers for the snapshot models. The PDB structure of the complex informs the structure of the individual proteins. The time-dependent ET data informs the size and shape of the assembling complex. Physical theories inform connectivity and excluded volume.
 
 # Snapshot modeling step 2: representation, scoring, and search process {#snapshots2}
 
-Navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two python scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for models of a single static snapshot. The second, `start_sim.py`, automates the creation of a snapshot model for each heterogeneity model.
+Next, we represent, score and search for snapshot models. To do so, navigate to the `Snapshots/Snapshots_Modeling/` folder. Here, you will find two python scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for models of a single static snapshot. The second, `start_sim.py`, automates the creation of a snapshot model for each heterogeneity model.
 
 ## Modeling one snapshot
 

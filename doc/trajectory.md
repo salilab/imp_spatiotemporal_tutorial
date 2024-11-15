@@ -5,7 +5,11 @@ Here, we describe the final modeling problem in our composite workflow, how to b
 
 # Trajectory modeling step 1: gather information {#trajectories1}
 
+We begin trajectory modeling with the first step of integrative modeling, gathering information. Trajectory modeling utilizes dynamic information about the bimolecular process. In this case, we utilize heterogeneity models, snapshot models, physical theories, and synthetically generated small-angle X-ray scattering (SAXS) profiles.
+
 \image html Input_trajectories.png width=600px
+
+Heterogeneity models inform the possible compositional states at each time point and measure how well a compositional state agrees with input information. Snapshot models provide structural models for each heterogeneity model and measure how well those structural models agree with input information about their structure. Physical theories of macromolecular dynamics inform transitions between states. SAXS data informs the size and shape of the assembling complex and is left for validation.
 
 # Trajectory modeling step 2: representation, scoring, and search process {#trajectories2}
 

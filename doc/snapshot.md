@@ -197,7 +197,7 @@ Now, we have a variety of alternative snapshot models. In general, we would like
 
 ## Filtering good scoring models {#snapshot_filter}
 
-Initially, we want to filter the various alternative models to select those that meet certain parameter thresholds. In this case, we filter the structural models comprising each snapshot model by the median cross correlation with EM data. We note that this filtering criteria is subjective, and developing a Bayesian method to objectively weigh different restraints for filtering remains an interesting future development in integrative modeling.
+Initially, we want to filter the various alternative structural models to only select those that meet certain parameter thresholds. In this case, we filter the structural models comprising each snapshot model by the median cross correlation with EM data. We note that this filtering criteria is subjective, and developing a Bayesian method to objectively weigh different restraints for filtering remains an interesting future development in integrative modeling.
 
 The current filtering procedure involves three steps. In the first step, we look through the `stat.*.out` files to write out the cross correlation with EM data for each model, which, in this case, is labeled column `3`, `GaussianEMRestraint_None_CCC`. In other applications, the column that corresponds to each type of experimental data may change, depending on the scoring terms for each model. For each snapshot model, a new file is written with this data (`{state}_{time}_stat.txt`).
 

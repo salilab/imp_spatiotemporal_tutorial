@@ -33,24 +33,29 @@ Temporal precision is calculated by using the sequence of three functions:
 -analysis (from IMP.spatiotemporal)
 """
 # 1 - copy_files_for_data (copy all relevant files into 'data' directory)
-def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir2 = None):
+def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir2 = None, custom_source_dir3 = None):
     """
-    Copies three types of files important to generate two independent trajectory models (A and B):
+    Copies three types of files important to generate trajectory models:
     -.config files created with start_sim.py in Snapshot_Modeling (source_dir1)
     -time-dependent stoichiometry data for each timepoint. Data should be presented in .csv file. With this function all
     csv file in source_dir2 will be copied. These .csv files will be used in the exp_comp dictionary in create_DAG
     function
     -scoresA and scoresB for each snapshot created with imp sampcon exhaust
-    (source_dir1 + snapshot + good_scoring_models)
+    (source_dir1 + snapshot + good_scoring_models) are merged into total score .txt using merge_scores helper function.
+    All copied files are gathered in newly created './data/' directory, where everything is prepared for create_DAG
+    function.
+
 
     :param state_dict (dict): state_dict: dictionary that defines the spatiotemporal model.
            The keys are strings that correspond to each time point in the
            stepwise temporal process. Keys should be ordered according to the
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
-    :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config
-    files and scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
+    :param custom_source_dir1 (optional - str): Custom path to heterogeneity modeling dir (heterogeneity_modeling.py),
+    to copy .config files
     :param custom_source_dir2 (optional - str): Custom path to stoichiometry data dir
+    :param custom_source_dir3 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config
+    files and to access scoresA/scoresB (custom_source_dir3 + snapshot{state}_{time} + 'good_scoring_models')
     """
     # Create the destination directory for all the data copied in this function
     destination_dir = './data/'
@@ -60,13 +65,19 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
     if custom_source_dir1:
         source_dir1 = custom_source_dir1
     else:
-        source_dir1 = '../../Snapshots/Snapshots_Modeling/'
+        source_dir1 = '../../Heterogeneity/Heterogeneity_Modeling/'
 
     # path to stoichiometry data dir
     if custom_source_dir2:
         source_dir2 = custom_source_dir1
     else:
         source_dir2 = '../../Input_Information/gen_FCS/'
+
+    # path to snapshot modeling dir
+    if custom_source_dir3:
+        source_dir3 = custom_source_dir3
+    else:
+        source_dir3 = '../../Snapshots/Snapshots_Modeling/'
 
     # Copy all .config files from the first source directory to the destination directory
     try:
@@ -94,7 +105,7 @@ def copy_files_for_data(state_dict, custom_source_dir1 = None, custom_source_dir
     try:
         for time in state_dict.keys():
             for state in range(1, state_dict[time] + 1):
-                snapshot_dir = os.path.join(source_dir1, f'snapshot{state}_{time}')
+                snapshot_dir = os.path.join(source_dir3, f'snapshot{state}_{time}')
                 good_scoring_models_dir = os.path.join(snapshot_dir, 'good_scoring_models')
                 if os.path.isdir(good_scoring_models_dir):
                     for score_file in ['scoresA.txt', 'scoresB.txt']:

@@ -34,7 +34,7 @@ def merge_scores(fileA, fileB, outputFile):
     with open(outputFile, 'w') as output:
         output.writelines(merged_data)
 
-def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_source_dir2 = None):
+def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_source_dir2 = None, custom_source_dir3 = None):
     """
     Copies three types of files important to generate trajectory models:
     -.config files created with start_sim.py in Snapshot_Modeling (source_dir1)
@@ -52,26 +52,34 @@ def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_sou
            stepwise temporal process. Keys should be ordered according to the
            steps in the spatiotemporal process. The values are integers that
            correspond to the number of possible states at that timepoint.
-    :param custom_source_dir1 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config
-    files and to access scoresA/scoresB (custom_source_dir1 + snapshot{state}_{time} + 'good_scoring_models')
+    :param custom_source_dir1 (optional - str): Custom path to heterogeneity modeling dir (heterogeneity_modeling.py),
+    to copy .config files
     :param custom_source_dir2 (optional - str): Custom path to stoichiometry data dir
+    :param custom_source_dir3 (optional - str): Custom path to snapshot modeling dir (start_sim.py), to copy .config
+    files and to access scoresA/scoresB (custom_source_dir3 + snapshot{state}_{time} + 'good_scoring_models')
     """
 
     # Create the destination directory if it does not exist (./data/). Here all the
     destination_dir = './data/'
     os.makedirs(destination_dir, exist_ok=True)
 
-    # Path to snapshot modeling dir
+    # Path to heterogeneity modeling dir
     if custom_source_dir1:
         source_dir1 = custom_source_dir1
     else:
-        source_dir1 = '../../Snapshots/Snapshots_Modeling/'
+        source_dir1 = '../../Heterogeneity/Heterogeneity_Modeling/'
 
     # Path to stoichiometry data dir
     if custom_source_dir2:
         source_dir2 = custom_source_dir2
     else:
         source_dir2 = '../../Input_Information/gen_FCS/'
+
+    # Path to snapshot modeling dir
+    if custom_source_dir3:
+        source_dir3 = custom_source_dir3
+    else:
+        source_dir3 = '../../Snapshots/Snapshots_Modeling/'
 
     # Copy all .config files from the first source directory to the destination directory
     try:
@@ -100,8 +108,8 @@ def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_sou
         for state in range(1, state_dict[time] + 1):
             dir_name = f"snapshot{state}_{time}"
             good_scoring_path = "good_scoring_models"
-            file_a = os.path.join(source_dir1, dir_name, good_scoring_path, "scoresA.txt")
-            file_b = os.path.join(source_dir1, dir_name, good_scoring_path, "scoresB.txt")
+            file_a = os.path.join(source_dir3, dir_name, good_scoring_path, "scoresA.txt")
+            file_b = os.path.join(source_dir3, dir_name, good_scoring_path, "scoresB.txt")
             output_file = os.path.join(destination_dir, f"{state}_{time}_scores.log") # name of the output file
 
             try:
@@ -110,7 +118,7 @@ def create_data_and_copy_files(state_dict, custom_source_dir1 = None, custom_sou
                     merge_scores(file_a, file_b, output_file) # call helper function to merge files
                     print(f"Scores for snapshot{state}_{time} have been merged and saved")
                 else:  # many things can go wrong here, so it is good to know where is the problem
-                    print(f"Path doesn't exist: {source_dir1}")
+                    print(f"Path doesn't exist: {source_dir3}")
                     print(f"Files not found in directory: {dir_name}")
                     print(f"Files not found in directory: {file_a}")
                     print(f"Files not found in directory: {file_b}")

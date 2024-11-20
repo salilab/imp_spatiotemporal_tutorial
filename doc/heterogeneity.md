@@ -5,11 +5,11 @@ Here, we describe the first modeling problem in our composite workflow, how to b
 
 # Heterogeneity modeling step 1: gathering of information {#heterogeneity1}
 
-We begin heterogeneity modeling with the first step of integrative modeling, gathering information. Heterogeneity modeling will rely on copy number information about the complex. In this case, we utilize the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), and synthetically generated protein copy numbers during the assembly process.
+We begin heterogeneity modeling with the first step of integrative modeling, gathering information. Heterogeneity modeling will rely on copy number information about the complex. In this case, we utilize the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), and synthetically generated protein copy numbers during the assembly process, which could be generated from experiments such as flourescence correlation spectroscopy (FCS).
 
 \image html Input_heterogeneity.png width=600px
 
-The PDB structure of the complex informs the final state of our model and constrains the maximum copy number for each protein, while the protein copy number data informs the stoichiometry of the complex during assembly.
+The PDB structure of the complex informs the final state of our model and constrains the maximum copy number for each protein, while the protein copy number data gives time-dependent information about the protein copy number in the assembling complex.
 
 # Heterogeneity modeling step 2: representation, scoring function, and search process {#heterogeneity2}
 

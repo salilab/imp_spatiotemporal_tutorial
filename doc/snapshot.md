@@ -5,11 +5,11 @@ Here, we describe the second modeling problem in our composite workflow, how to 
 
 # Snapshot modeling step 1: gathering of information {#snapshots1}
 
-We begin snapshot modeling with the first step of integrative modeling, gathering information. Snapshot modeling utilizes structural information about the complex. In this case, we utilize heterogeneity models, the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), synthetically generated electron tomography (ET) density maps during the assembly process, and physical theories.
+We begin snapshot modeling with the first step of integrative modeling, gathering information. Snapshot modeling utilizes structural information about the complex. In this case, we utilize heterogeneity models, the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), synthetically generated electron tomography (ET) density maps during the assembly process, and physical principles.
 
 \image html Input_snapshot.png width=600px
 
-The heterogeneity models inform protein copy numbers for the snapshot models. The PDB structure of the complex informs the structure of the individual proteins. The time-dependent ET data informs the size and shape of the assembling complex. Physical theories inform connectivity and excluded volume.
+The heterogeneity models inform protein copy numbers for the snapshot models. The PDB structure of the complex informs the structure of the individual proteins. The time-dependent ET data informs the size and shape of the assembling complex. physical principles inform connectivity and excluded volume.
 
 # Snapshot modeling step 2: representation, scoring function, and search process {#snapshots2}
 
@@ -193,7 +193,7 @@ IndexError: list index out of range
 
 # Snapshot modeling step 3: assessment {#snapshot_assess}
 
-Now, we have a variety of alternative snapshot models. In general, we would like to assess these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. Here, we will focus specifically on estimating the sampling precision of the model, while quantitative comparisons between the model and experimental data will be reserved for the final step, when we assess [trajectories](https://integrativemodeling.org/tutorials/spatiotemporal/trajectory_assess.html). To assess these snapshot models, we navigate to the `Snapshots/Snapshots_Assessment` folder and run `snapshot_assessment.py`. This script performs the following analysis.
+Now, we have a variety of alternative snapshot models. In general, we would like to assess these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. Here, we will focus specifically on estimating the sampling precision of the model, while quantitative comparisons between the model and experimental data will be reserved for the final step, when we assess [trajectories](@ref trajectory_assess). To assess these snapshot models, we navigate to the `Snapshots/Snapshots_Assessment` folder and run `snapshot_assessment.py`. This script performs the following analysis.
 
 ## Filtering good scoring models {#snapshot_filter}
 

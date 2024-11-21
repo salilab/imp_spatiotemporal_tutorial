@@ -77,11 +77,10 @@ From the output of `prepare_protein_library`, we see that there are 3 heterogene
 
 Now, we have a variety of heterogeneity models. In general, there are four ways to assess a model: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. Here, we will focus specifically on comparing the model to experimental data, as other assessments will be performed later, when the trajectory models are assessed.
 
-Next, we must plot the modeled and experimental copy numbers simultaneously for each protein.
+Next, we can plot the modeled and experimental copy numbers simultaneously for each protein, as shown below for proteins A (a), B (b), and C (c).
 
-\code{.py}
-#TODO: plotting script
-\endcode
+<img src="images/Heterogeneity_Assessment.png" width="300px" />
+
 From these plots, we observe that the range of possible experimental copy numbers are well sampled by the heterogeneity models, indicating that we are prepared for snapshot modeling.
 
 Modeling of snapshots {#snapshots}

@@ -23,8 +23,6 @@ nmodels = 3
 prepare_protein_library.prepare_protein_library(times, exp_comp, expected_subcomplexes, nmodels,
                                                 template_topology=template_topology, template_dict=template_dict)
 
-#TODO: plotting script
-
 def merge_scores(fileA, fileB, outputFile):
     """
     For each function merges scoresA.txt and scoresB.txt into {state}_{time}_scores.log

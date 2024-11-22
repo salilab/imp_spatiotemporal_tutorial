@@ -1,7 +1,7 @@
-IMP spatiotemporal tutorial {#mainpage}
+IMP spatiotemporal tutorial {#notebook}
 ========
 
-# Introduction {#introduction}
+# Introduction {#notebook_introduction}
 
 Biomolecules are constantly in motion; therefore, a complete depiction of their function must include their dynamics instead of just static structures. We have developed an integrative spatiotemporal approach to model dynamic systems.
 
@@ -15,7 +15,7 @@ If you use this tutorial or its accompanying method, please site the correspondi
 - Latham, A.P.; Tempkin, J.O.B.; Otsuka, S.; Zhang, W.; Ellenberg, J.; Sali, A. bioRxiv, 2024, https://doi.org/10.1101/2024.08.06.606842.
 - Latham, A.P.; Rožič, M.; Webb, B.M., Sali, A. in preparation. (tutorial)
 
-# Integrative spatiotemporal modeling workflow {#steps}
+# Integrative spatiotemporal modeling workflow {#notebook_steps}
 
 In general, integrative modeling proceeds through three steps (i. gathering information; ii. choosing the model representation, scoring alternative models, and searching for good scoring models; and iii. assessing the models). In integrative spatiotemporal modeling, these three steps are repeated for each modeling problem in the composite workflow (i. modeling of heterogeneity, ii. modeling of snapshots, and iii. modeling of a trajectory).
 
@@ -27,12 +27,12 @@ Finally, this notebook is intended to present an abbreviated version of this pro
 
 
 
-Modeling of heterogeneity {#heterogeneity}
+Modeling of heterogeneity {#notebook_heterogeneity}
 ====================================
 
 Here, we describe the first modeling problem in our composite workflow, how to build models of heterogeneity modeling using IMP. In this tutorial, heterogeneity modeling only includes protein copy number; however, in general, other types of information, such as the coarse location in the final state, could also be included in heterogeneity models.
 
-# Heterogeneity modeling step 1: gathering of information {#heterogeneity1}
+# Heterogeneity modeling step 1: gathering of information {#notebook_heterogeneity1}
 
 We begin heterogeneity modeling with the first step of integrative modeling, gathering information. Heterogeneity modeling will rely on copy number information about the complex. In this case, we utilize the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), and synthetically generated protein copy numbers during the assembly process, which could be generated from experiments such as flourescence correlation spectroscopy (FCS).
 
@@ -40,7 +40,7 @@ We begin heterogeneity modeling with the first step of integrative modeling, gat
 
 The PDB structure of the complex informs the final state of our model and constrains the maximum copy number for each protein, while the protein copy number data gives time-dependent information about the protein copy number in the assembling complex.
 
-# Heterogeneity modeling step 2: representation, scoring function, and search process {#heterogeneity2}
+# Heterogeneity modeling step 2: representation, scoring function, and search process {#notebook_heterogeneity2}
 
 Next, we represent, score and search for heterogeneity models models. A single heterogeneity model is a set of protein copy numbers, scored according to its fit to experimental copy number data at that time point. As ET and SAXS data, are only available at 0 minutes, 1 minute, and 2 minutes, we choose to create heterogeneity models at these three time points. We then use `prepare_protein_library`, to calculate the protein copy numbers for each snapshot model and to use the topology file of the full complex (`spatiotemporal_topology.txt`) to generate a topology file for each of these snapshot models. The choices made in this topology file are important for the representation, scoring function, and search process for snapshot models, and are discussed later. For heterogeneity modeling, we choose to model 3 protein copy numbers at each time point, and restrict the final time point to have the same protein copy numbers as the PDB structure.
 
@@ -73,7 +73,7 @@ From the output of `prepare_protein_library`, we see that there are 3 heterogene
 - *.config, a file with a list of proteins represented in the heterogeneity model
 - *_topol.txt, a topology file for snapshot modeling corresponding to this heterogeneity model.
 
-# Heterogeneity modeling step 3: assessment {#heterogeneity_assess}
+# Heterogeneity modeling step 3: assessment {#notebook_heterogeneity_assess}
 
 Now, we have a variety of heterogeneity models. In general, there are four ways to assess a model: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. Here, we will focus specifically on comparing the model to experimental data, as other assessments will be performed later, when the trajectory models are assessed.
 
@@ -83,12 +83,12 @@ Next, we can plot the modeled and experimental copy numbers simultaneously for e
 
 From these plots, we observe that the range of possible experimental copy numbers are well sampled by the heterogeneity models, indicating that we are prepared for snapshot modeling.
 
-Modeling of snapshots {#snapshots}
+Modeling of snapshots {#notebook_snapshots}
 ====================================
 
 Here, we describe the second modeling problem in our composite workflow, how to build models of static snapshot models using IMP. We note that this process is similar to previous tutorials of [actin](https://integrativemodeling.org/tutorials/actin/) and [RNA PolII](https://integrativemodeling.org/tutorials/rnapolii_stalk/).
 
-# Snapshot modeling step 1: gathering of information {#snapshots1}
+# Snapshot modeling step 1: gathering of information {#notebook_snapshots1}
 
 We begin snapshot modeling with the first step of integrative modeling, gathering information. Snapshot modeling utilizes structural information about the complex. In this case, we utilize heterogeneity models, the X-ray crystal structure of the fully assembled Bmi1/Ring1b-UbcH5c complex from the protein data bank (PDB), synthetically generated electron tomography (ET) density maps during the assembly process, and physical principles.
 
@@ -96,14 +96,14 @@ We begin snapshot modeling with the first step of integrative modeling, gatherin
 
 The heterogeneity models inform protein copy numbers for the snapshot models. The PDB structure of the complex informs the structure of the individual proteins. The time-dependent ET data informs the size and shape of the assembling complex. physical principles inform connectivity and excluded volume.
 
-# Snapshot modeling step 2: representation, scoring function, and search process {#snapshots2}
+# Snapshot modeling step 2: representation, scoring function, and search process {#notebook_snapshots2}
 
 Next, we represent, score and search for snapshot models. This step is quite computationally expensive. Therefore, we will not run the modeling protocol in this notebook, though the scripts are available in `modeling/Snapshots/Snapshots_Modeling/`. Here, we will simply describe the important steps made by two scripts. The first, `static_snapshot.py`, uses IMP to represent, score, and search for a single static snapshot model. The second, `start_sim.py`, automates the creation of a snapshot model for each heterogeneity model.
 
 ## Modeling one snapshot {#autotoc1v1}
 Here, we will describe the process of modeling a single snapshot model, as performed by running `static_snapshot.py`.
 
-### Representing the model {#snapshot_representation}
+### Representing the model {#notebook_snapshot_representation}
 
 We begin by representing the data and the model. In general, the *representation* of a system is defined by all the variables that need to be determined.
 
@@ -150,7 +150,7 @@ Then, we prepare for later sampling steps by setting which Monte Carlo moves wil
                                   max_srb_trans=1.0, max_srb_rot=0.5)
 \endcode
 
-### Scoring the model {#snapshot_scoring}
+### Scoring the model {#notebook_snapshot_scoring}
 
 After building the model representation, we choose a scoring function to score the model based on input information. This scoring function is represented as a series of restraints that serve as priors.
 
@@ -196,7 +196,7 @@ output_objects.append(emr)
 emr.add_to_model()
 \endcode
 
-### Searching for good scoring models {#snapshot_searching}
+### Searching for good scoring models {#notebook_snapshot_searching}
 
 After building a scoring function that scores alternative models based on their fit to the input information, we aim to search for good scoring models. For complicated systems, stochastic sampling techniques such as Monte Carlo (MC) sampling are often the most efficient way to compute good scoring models. Here, we generate a random initial configuration and then perform temperature replica exchange MC sampling with 16 temperatures from different initial configurations. By performing multiple runs of replica exchange MC from different initial configurations, we can later ensure that our sampling is sufficiently converged.
 
@@ -217,7 +217,7 @@ After building a scoring function that scores alternative models based on their 
 
 After performing sampling, a variety of outputs will be created. These outputs include `.rmf` files, which contain multi-resolution models output by IMP, and `.out` files which contains a variety of information about the run such as the value of the restraints and the MC acceptance rate.
 
-## Generalizing modeling to all snapshots {#snapshot_combine}
+## Generalizing modeling to all snapshots {#notebook_snapshot_combine}
 
 Next, we will describe the process of computing multiple static snapshot models, as performed by running `start_sim.py`.
 
@@ -238,11 +238,11 @@ number_of_runs = 50
 
 \endcode
 
-# Snapshot modeling step 3: assessment {#snapshot_assess}
+# Snapshot modeling step 3: assessment {#notebook_snapshot_assess}
 
 The above code would variety of alternative snapshot models. In general, we would like to assess these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model. In this portion of the tutorial, we focus specifically on estimating the sampling precision of the model, while quantitative comparisons between the model and experimental data will be reserved for the final step, when we assess trajectories. Again, this assessment process is quite computationally intensive, so, instead of running the script explicitly, we will walk you through the `snapshot_assessment.py` script, which is located in the `modeling/Snapshots/Snapshots_Assessment` folder.
 
-## Filtering good scoring models {#snapshot_filter}
+## Filtering good scoring models {#notebook_snapshot_filter}
 
 Initially, we want to filter the various alternative structural models to only select those that meet certain parameter thresholds. In this case, we filter the structural models comprising each snapshot model by the median cross correlation with EM data. We note that this filtering criteria is subjective, and developing a Bayesian method to objectively weigh different restraints for filtering remains an interesting future development in integrative modeling.
 
@@ -285,7 +285,7 @@ print("")
 print("")
 \endcode
 
-## Plotting data, clustering models, and determining sampling precision {#snapshot_sampling_precision}
+## Plotting data, clustering models, and determining sampling precision {#notebook_snapshot_sampling_precision}
 
 Next, scores can be plotted for analysis. Here, we wrote the `create_histograms` function to run `imp_sampcon plot_score` so that it plots distributions for various scores of interest. Each of these plots are saved to `histograms{state}_{time}/{score}.png`, where score is an object listed in the `score_list`. These plots are useful for debugging the modeling protocol, and should appear roughly Gaussian.
 
@@ -355,7 +355,7 @@ These codes write a table that include the KS two sample test statistic (D), the
 
 <img src="images/Snapshot_sampling.png" width="300px" />
 
-## Visualizing models {#snapshot_visualization}
+## Visualizing models {#notebook_snapshot_visualization}
 
 The resulting RMF files and localization densities from this analysis can be viewed in [UCSF Chimera](https://www.rbvi.ucsf.edu/chimera/) (version>=1.13) or [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/).
 
@@ -365,12 +365,12 @@ Here, we plotted each centroid model (A - blue, B - orange, and C - purple) from
 
 Finally, now that snapshot models were assessed, we can perform modeling of a trajectory.
 
-Modeling of a Trajectory {#trajectories}
+Modeling of a Trajectory {#notebook_trajectories}
 ====================================
 
 Here, we describe the final modeling problem in our composite workflow, how to build models of trajectory models using IMP.
 
-# Trajectory modeling step 1: gathering of information {#trajectories1}
+# Trajectory modeling step 1: gathering of information {#notebook_trajectories1}
 
 We begin trajectory modeling with the first step of integrative modeling, gathering information. Trajectory modeling utilizes dynamic information about the bimolecular process. In this case, we utilize heterogeneity models, snapshot models, physical theories, and synthetically generated small-angle X-ray scattering (SAXS) profiles.
 
@@ -378,16 +378,16 @@ We begin trajectory modeling with the first step of integrative modeling, gather
 
 Heterogeneity models inform the possible compositional states at each time point and measure how well a compositional state agrees with input information. Snapshot models provide structural models for each heterogeneity model and measure how well those structural models agree with input information about their structure. Physical theories of macromolecular dynamics inform transitions between states. SAXS data informs the size and shape of the assembling complex and is left for validation.
 
-# Trajectory modeling step 2: representation, scoring function, and search process {#trajectories2}
+# Trajectory modeling step 2: representation, scoring function, and search process {#notebook_trajectories2}
 
 Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectory models based on their fit to the input information, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).
 
 ## Background behind integrative spatiotemporal modeling {#autotoc1v42}
-### Representing the model {#trajectory_representation}
+### Representing the model {#notebook_trajectory_representation}
 
 We choose to represent dynamic processes as a trajectory of snapshot models, with one snapshot model at each time point. In this case, we computed snapshot models at 3 time points (0, 1, and 2 minutes), so a single trajectory model will consist of 3 snapshot models, one at each 0, 1, and 2 minutes. The modeling procedure described here will produce a set of scored trajectory models, which can be displayed as a directed acyclic graph, where nodes in the graph represent the snapshot model and edges represent connections between snapshot models at neighboring time points.
 
-### Scoring the model {#trajectory_scoring}
+### Scoring the model {#notebook_trajectory_scoring}
 
 To score trajectory models, we incorporate both the scores of individual snapshot models, as well as the scores of transitions between them. Under the assumption that the process is Markovian (*i.e.* memoryless), the weight of a trajectory model takes the form:
 
@@ -397,7 +397,7 @@ $$
 
 where $t$ indexes times from 0 until the final modeled snapshot ($T$); $P(X_{N,t}, N_{t} | D_{t})$ is the snapshot model score; and \f$W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1})\f$ is the transition score. Trajectory model weights ($W(\chi)$) are normalized so that the sum of all trajectory models' weights is 1.0. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
 
-### Searching for good scoring models {#trajectory_searching}
+### Searching for good scoring models {#notebook_trajectory_searching}
 
 Trajectory models are constructed by enumerating all connections between adjacent snapshot models and scoring these trajectory models according to the equation above. This procedure results in a set of weighted trajectory models.
 
@@ -569,11 +569,11 @@ Now that we have a trajectory model, we can plot the directed acyclic graph (lef
 
 \image html Spatiotemporal_Model.png width=600px
 
-# Trajectory modeling step 3: assessment {#trajectory_assess}
+# Trajectory modeling step 3: assessment {#notebook_trajectory_assess}
 
 Now that the set of spatiotemporal models has been constructed, we must evaluate these models. We can evaluate these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model.
 
-## Sampling precision {#trajectory_sampling_precision}
+## Sampling precision {#notebook_trajectory_sampling_precision}
 
 To begin, we calculate the sampling precision of the models. The sampling precision is calculated by using `spatiotemporal.create_DAG` to reconstruct the set of trajectory models using 2 independent sets of samplings for snapshot models. Then, the overlap between these snapshot models is evaluated using `analysis.temporal_precision`, which takes in two `labeled_pdf` files.
 
@@ -709,7 +709,7 @@ print("Step 1: calculation of temporal precision IS COMPLETED")
 print("")
 print("")
 \endcode
-## Model precision {#trajectory_precision}
+## Model precision {#notebook_trajectory_precision}
 
 Next, we calculate the precision of the model, using `analysis.precision`. Here, the model precision calculates the number of trajectory models with high weights. The precision ranges from 1.0 to 1/d, where d is the number of trajectory models. Values approaching 1.0 indicate the model set can be described by a single trajectory model, while values close to 1/d indicate that all trajectory models have similar weights.
 
@@ -728,7 +728,7 @@ print("Step 2: calculation of precision of the model IS COMPLETED")
 print("")
 print("")
 \endcode
-## Comparison against data used in model construction {#trajectory_comparison}
+## Comparison against data used in model construction {#notebook_trajectory_comparison}
 
 We then evaluate the model against data used in model construction. First, we can calculate the cross-correlation between the original EM map and the forward density projected from each snapshot model. This calculation is too computationally expensive for this notebook, but can be found in `modeling/Trajectories/Trajectories_Assessment`, where we wrote the `ccEM` function to perform this comparison for all snapshot models.
 
@@ -876,7 +876,7 @@ Here, we plot the comparison between the experimental data used in model constru
 
 <img src="images/Spatiotemporal_Assessment_Included.png" width="600px" />
 
-## Validation against data not used in model construction {#trajectory_validation}
+## Validation against data not used in model construction {#notebook_trajectory_validation}
 
 Finally, we aim to compare the model to data not used in model construction. Specifically, we reserved SAXS data for model validation. We aimed to compare the forward scattering profile from the centroid structural model of each snapshot model to the experimental profile. To make this comparison, we wrote functions that converted each centroid RMF to a PDB (`convert_rmfs`), copied the experimental SAXS profiles to the appropriate folder (`copy_SAXS_dat_files`), and ran [FoXS](https://integrativemodeling.org/tutorials/foxs/foxs.html) on each PDB to evaluate its agreement to the experimental profile (`process_foxs`).
 
@@ -1060,7 +1060,7 @@ To quantitatively compare the model to SAXS data, we used the $\chi^2$ to compar
 Next, we can evaluate the accuracy of the model by comparing the RMSD to the PDB to the sampling precision of each snapshot model. We note that this is generally not possible, because in most biological applications the ground truth is not known. In this case, if the average RMSD to the PDB structure is smaller than the sampling precision, the PDB structure lies within the precision of the model. We find that the RMSD is within 1.5 Å of the sampling precision at all time points, indicating that the model lies within 1.5 Å of the ground truth.
 
 
-# Next steps {#Conclusion}
+# Next steps {#notebook_Conclusion}
 
 After assessing our model, we can must decide if the model is sufficient to answer biological questions of interest. If the model does not have sufficient precision for the desired application, assessment of the current model can be used to inform which new experiments may help improve the next iteration of the model. The [integrative spatiotemporal modeling procedure](https://integrativemodeling.org/tutorials/spatiotemporal/index.html#steps) can then be repeated iteratively, analogous to [integrative modeling of static structures](https://integrativemodeling.org/2.21.0/doc/manual/intro.html#procedure).
 

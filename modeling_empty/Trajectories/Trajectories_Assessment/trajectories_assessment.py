@@ -830,7 +830,7 @@ if __name__ == "__main__":
     nodesA, graphA, graph_probA, graph_scoresA = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
                                                                            input_dir=input, scorestr='_scoresA.log',
                                                                            output_dir=outputA,
-                                                                           spatio_temporal_rule=False,
+                                                                           spatio_temporal_rule=True,
                                                                            expected_subcomplexes=expected_subcomplexes,
                                                                            score_comp=True, exp_comp_map=exp_comp,
                                                                            draw_dag=False)
@@ -839,7 +839,7 @@ if __name__ == "__main__":
     nodesB, graphB, graph_probB, graph_scoresB = spatiotemporal.create_DAG(state_dict, out_pdf=True, npaths=3,
                                                                            input_dir=input, scorestr='_scoresB.log',
                                                                            output_dir=outputB,
-                                                                           spatio_temporal_rule=False,
+                                                                           spatio_temporal_rule=True,
                                                                            expected_subcomplexes=expected_subcomplexes,
                                                                            score_comp=True, exp_comp_map=exp_comp,
                                                                            draw_dag=False)

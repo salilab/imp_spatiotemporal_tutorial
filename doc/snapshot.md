@@ -9,7 +9,7 @@ We begin snapshot modeling with the first step of integrative modeling, gatherin
 
 \image html Input_snapshot.png width=600px
 
-The heterogeneity models inform protein copy numbers for the snapshot models. The PDB structure of the complex informs the structure of the individual proteins. The time-dependent ET data informs the size and shape of the assembling complex. physical principles inform connectivity and excluded volume.
+The heterogeneity models inform protein copy numbers for the snapshot models. The PDB structure of the complex informs the structure of the individual proteins. The time-dependent ET data informs the size and shape of the assembling complex. Physical principles inform connectivity and excluded volume.
 
 # Snapshot modeling step 2: representation, scoring function, and search process {#snapshots2}
 
@@ -152,7 +152,6 @@ rex=IMP.pmi.macros.ReplicaExchange(mdl,
         monte_carlo_steps=200, # Number of MC steps between writing frames.
         number_of_best_scoring_models=0,
         number_of_frames=500) # number of frames to be saved
-# In our case, for each snapshot we generated 25000 frames altogether (50*500)
 rex.execute_macro()
 \endcode
 

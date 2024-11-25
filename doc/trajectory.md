@@ -68,7 +68,7 @@ nodes, graph, graph_prob, graph_scores = IMP.spatiotemporal.create_DAG(state_dic
 \endcode
 
 The inputs we included are:
-- state_dict (dict): a dictionary that defines the spatiotemporal model. Keys are strings for each time point in the spatiotemporal process and values are integers corresponding to the number of snapshot models computed at that time point
+- state_dict (dict): a dictionary that defines the spatiotemporal model. Keys are strings for each time point in the spatiotemporal process and values are integers corresponding to the number of snapshot models computed at that time point.
 - out_pdf (bool): whether to write the probability distribution function (pdf).
 - npaths (int): Number of states two write to a file (path*.txt).
 - input_dir (str): directory with the input information.
@@ -93,7 +93,7 @@ Now that we have a trajectory model, we can plot the directed acyclic graph (lef
 
 # Trajectory modeling step 3: assessment {#trajectory_assess}
 
-Now that the set of spatiotemporal models has been constructed, we must evaluate these models. We can evaluate these models in at least 4 ways: estimate the sampling precision, compare the model to data used to construct it, validate the model against data not used to construct it, and quantify the precision of the model.
+Now that the set of spatiotemporal models has been constructed, we must evaluate these models. We can evaluate these models in at least 4 ways: estimating the sampling precision, comparing the model to data used to construct it, validating the model against data not used to construct it, and quantifying the precision of the model.
 
 Navigate to `Trajectories/Trajectories_Assessment` and run `trajectories_assessment.py`. This code will perform the following steps to assess the model.
 

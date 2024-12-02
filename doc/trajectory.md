@@ -5,11 +5,11 @@ Here, we describe the final modeling problem in our composite workflow, how to b
 
 # Trajectory modeling step 1: gathering of information {#trajectories1}
 
-We begin trajectory modeling with the first step of integrative modeling, gathering information. Trajectory modeling utilizes dynamic information about the bimolecular process. In this case, we utilize heterogeneity models, snapshot models, physical theories, and synthetically generated small-angle X-ray scattering (SAXS) profiles.
+We begin trajectory modeling with the first step of integrative modeling, gathering information. Trajectory modeling utilizes dynamic information about the bimolecular process. In this case, we utilize snapshot models, physical theories, and synthetically generated small-angle X-ray scattering (SAXS) profiles.
 
 \image html Input_trajectories.png width=600px
 
-Heterogeneity models inform the possible compositional states at each time point and measure how well a compositional state agrees with input information. Snapshot models provide structural models for each heterogeneity model and measure how well those structural models agree with input information about their structure. Physical theories of macromolecular dynamics inform transitions between states. SAXS data informs the size and shape of the assembling complex and is left for validation.
+Snapshot models inform transitions between sampled time points, and their scores inform trajectory scores. Physical theories of macromolecular dynamics inform transitions between sampled time points. SAXS data informs the size and shape of the assembling complex and is left for validation.
 
 # Trajectory modeling step 2: representation, scoring function, and search process {#trajectories2}
 
@@ -26,10 +26,10 @@ We choose to represent dynamic processes as a trajectory of snapshot models, wit
 To score trajectory models, we incorporate both the scores of individual snapshot models, as well as the scores of transitions between them. Under the assumption that the process is Markovian (*i.e.* memoryless), the weight of a trajectory model takes the form:
 
 \f[
-W(\chi) \propto   \displaystyle\prod^{T}_{t=0} P( X_{N,t}, N_{t} | D_{t}) \cdot \displaystyle\prod^{T-1}_{t=0} W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1}),
+W(\chi) \propto   \displaystyle\prod^{T}_{t=0} P( X_{t} | D_{t}) \cdot \displaystyle\prod^{T-1}_{t=0} W(X_{t+1} | X_{t},D_{t,t+1})
 \f]
 
-where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$P(X_{N,t}, N_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{N,t+1},N_{t+1} | X_{N,t},N_{t}, D_{t,t+1})\f$ is the transition score. Trajectory model weights (\f$W(\chi)\f$) are normalized so that the sum of all trajectory models' weights is 1.0. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
+where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$P(X_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{t+1} | X_{t}, D_{t,t+1})\f$ is the transition score. Trajectory model weights (\f$W(\chi)\f$) are normalized so that the sum of all trajectory models' weights is 1.0. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
 
 ### Searching for good scoring models {#trajectory_searching}
 

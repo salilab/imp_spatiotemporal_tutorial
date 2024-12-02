@@ -7,10 +7,10 @@ Integrative spatiotemporal modeling in IMP {#mainpage}
 
 Biomolecules are constantly in motion; therefore, a complete depiction of their function must include their dynamics instead of just static structures. We have developed an integrative spatiotemporal approach to model dynamic systems.
 
-Our approach applies a composite workflow, consisting of three modeling problems to compute (i) heterogeneity models, (ii) snapshot models, and (iii) trajectory models.
+Our approach applies a composite workflow, consisting of three modeling problems to compute (i) heterogeneity models, (ii) snapshot models, and (iii) a trajectory model.
 Heterogeneity models describe the possible biomolecular compositions of the system at each time point. Optionally, other auxiliary variables can be considered, such as the coarse location in the final state when modeling an assembly process.
 For each heterogeneity model, one snapshot model is produced. A snapshot model is a set of alternative standard static integrative structure models based on the information available for the corresponding time point.
-Then, trajectory models are created by connecting alternative snapshot models at adjacent time points. These trajectory models can be scored based on both the scores of static structures and the transitions between them, allowing for the creation of trajectories that are in agreement with the input information by construction.
+Then, a set of trajectories ranked by their agreement with input information is computed by connecting alternative snapshot models at adjacent time points (*i.e.*, the “trajectory model”). This trajectory model can be scored based on both the scores of static structures and the transitions between them, allowing for the creation of trajectories that are in agreement with the input information by construction.
 
 If you use this tutorial or its accompanying method, please site the corresponding publications:
 

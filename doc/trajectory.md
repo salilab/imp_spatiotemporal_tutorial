@@ -1,7 +1,7 @@
 Modeling of a Trajectory {#trajectories}
 ====================================
 
-Here, we describe the final modeling problem in our composite workflow, how to build models of trajectory models using IMP.
+Here, we describe the final modeling problem in our composite workflow, how to build a trajectory model using IMP.
 
 # Trajectory modeling step 1: gathering of information {#trajectories1}
 
@@ -13,27 +13,27 @@ Snapshot models inform transitions between sampled time points, and their scores
 
 # Trajectory modeling step 2: representation, scoring function, and search process {#trajectories2}
 
-Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectory models based on their fit to the input information, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).
+Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectories based on their fit to the input information, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).
 
 ## Background behind integrative spatiotemporal modeling
 
 ### Representing the model {#trajectory_representation}
 
-We choose to represent dynamic processes as a trajectory of snapshot models, with one snapshot model at each time point. In this case, we computed snapshot models at 3 time points (0, 1, and 2 minutes), so a single trajectory model will consist of 3 snapshot models, one at each 0, 1, and 2 minutes. The modeling procedure described here will produce a set of scored trajectory models, which can be displayed as a directed acyclic graph, where nodes in the graph represent the snapshot model and edges represent connections between snapshot models at neighboring time points.
+We choose to represent dynamic processes as a trajectory of snapshot models, with one snapshot model at each time point. In this case, we computed snapshot models at 3 time points (0, 1, and 2 minutes), so a single trajectory will consist of 3 snapshot models, one at each 0, 1, and 2 minutes. The modeling procedure described here will produce a set of scored trajectories, which can be displayed as a directed acyclic graph, where nodes in the graph represent the snapshot model and edges represent connections between snapshot models at neighboring time points.
 
 ### Scoring the model {#trajectory_scoring}
 
-To score trajectory models, we incorporate both the scores of individual snapshot models, as well as the scores of transitions between them. Under the assumption that the process is Markovian (*i.e.* memoryless), the weight of a trajectory model takes the form:
+To score trajectories, we incorporate both the scores of individual snapshot models, as well as the scores of transitions between them. Under the assumption that the process is Markovian (*i.e.* memoryless), the weight of a trajectory takes the form:
 
 \f[
 W(\chi) \propto   \displaystyle\prod^{T}_{t=0} P( X_{t} | D_{t}) \cdot \displaystyle\prod^{T-1}_{t=0} W(X_{t+1} | X_{t},D_{t,t+1})
 \f]
 
-where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$P(X_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{t+1} | X_{t}, D_{t,t+1})\f$ is the transition score. Trajectory model weights (\f$W(\chi)\f$) are normalized so that the sum of all trajectory models' weights is 1.0. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
+where \f$t\f$ indexes times from 0 until the final modeled snapshot (\f$T\f$); \f$P(X_{t} | D_{t})\f$ is the snapshot model score; and \f$W(X_{t+1} | X_{t}, D_{t,t+1})\f$ is the transition score. Trajectory weights (\f$W(\chi)\f$) are normalized so that the sum of all trajectory weights is 1.0. Transition scores are currently based on a simple metric that either allows or disallows a transition. Transitions are only allowed if all proteins in the first snapshot model are included in the second snapshot model. In the future, we hope to include more detailed transition scoring terms, which may take into account experimental information or physical models of macromolecular dynamics.
 
 ### Searching for good scoring models {#trajectory_searching}
 
-Trajectory models are constructed by enumerating all connections between adjacent snapshot models and scoring these trajectory models according to the equation above. This procedure results in a set of weighted trajectory models.
+Trajectories are constructed by enumerating all connections between adjacent snapshot models and scoring these trajectories according to the equation above. This procedure results in a set of weighted trajectories.
 
 ## Code for integrative spatiotemporal modeling {#trajectory_example}
 
@@ -50,7 +50,7 @@ state_dict = {'0min': 3, '1min': 3, '2min': 1}
 create_data_and_copy_files(state_dict)
 \endcode
 
-We then build the spatiotemporal graph by running `spatiotemporal.create_DAG`, [documented here](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1create__DAG.html). This function represents, scores, and searches for trajectory models.
+We then build the spatiotemporal graph by running `spatiotemporal.create_DAG`, [documented here](https://integrativemodeling.org/nightly/doc/ref/namespaceIMP_1_1spatiotemporal_1_1create__DAG.html). This function represents, scores, and searches for trajectories.
 
 \code{.py}
 # then trajectory model is created based on the all copied data
@@ -81,13 +81,13 @@ The inputs we included are:
 - draw_dag (bool): whether to write out an image of the directed acyclic graph.
 
 After running `spatiotemporal.create_DAG`, a variety of outputs are written:
-- `cdf.txt`: the cumulative distribution function for the set of trajectory models.
-- `pdf.txt`: the probability distribution function for the set of trajectory models.
-- `labeled_pdf.txt`: Each row has 2 columns and represents a different trajectory model. The first column labels a single trajectory model as a series of snapshot models, where each snapshot model is written as `{state}_{time}|` in sequential order. The second column is the probability distribution function corresponding to that trajectory model.
-- `dag_heatmap.eps` and `dag_heatmap`: image of the directed acyclic graph from the set of models.
-- `path*.txt`: files where each row includes a `{state}_{time}` string, so that rows correspond to the states visited over that trajectory model. Files are numbered from the most likely path to the least likely path.
+- `cdf.txt`: the cumulative distribution function for the set of trajectories.
+- `pdf.txt`: the probability distribution function for the set of trajectories.
+- `labeled_pdf.txt`: Each row has 2 columns and represents a different trajectory. The first column labels a single trajectory as a series of snapshot models, where each snapshot model is written as `{state}_{time}|` in sequential order. The second column is the probability distribution function corresponding to that trajectory.
+- `dag_heatmap.eps` and `dag_heatmap`: image of the directed acyclic graph from the set of trajectories.
+- `path*.txt`: files where each row includes a `{state}_{time}` string, so that rows correspond to the states visited over that trajectory. Files are numbered from the most likely path to the least likely path.
 
-Now that we have a trajectory model, we can plot the directed acyclic graph (left) and the series of centroid models from each snapshot model along the most likely trajectory model (right). Each row corresponds to a different time point in the assembly process (0 min, 1 min, and 2 min). Each node is shaded according to its weight in the final model (\f$W(X_{N,t}N_{t})\f$). Proteins are colored as A - blue, B - orange, and C - purple.
+Now that we have a trajectory model, we can plot the directed acyclic graph (left) and the series of centroid models from each snapshot model along the most likely trajectory (right). Each row corresponds to a different time point in the assembly process (0 min, 1 min, and 2 min). Each node is shaded according to its weight in the final model (\f$W(X_{t})\f$). Proteins are colored as A - blue, B - orange, and C - purple.
 
 \image html Spatiotemporal_Model.png width=600px
 
@@ -99,7 +99,7 @@ Navigate to `Trajectories/Trajectories_Assessment` and run `trajectories_assessm
 
 ## Sampling precision {#trajectory_sampling_precision}
 
-To begin, we calculate the sampling precision of the models. The sampling precision is calculated by using `spatiotemporal.create_DAG` to reconstruct the set of trajectory models using 2 independent sets of samplings for snapshot models. Then, the overlap between these snapshot models is evaluated using `analysis.temporal_precision`, which takes in two `labeled_pdf` files.
+To begin, we calculate the sampling precision of the models. The sampling precision is calculated by using `spatiotemporal.create_DAG` to reconstruct the set of trajectories using 2 independent sets of samplings for snapshot models. Then, the overlap between these snapshot models is evaluated using `analysis.temporal_precision`, which takes in two `labeled_pdf` files.
 
 \code{.py}
 # state_dict - universal parameter
@@ -153,7 +153,7 @@ print("")
 print("")
 \endcode
 
-The output of `analysis.temporal_precision` is written in `analysis_output_precision/temporal_precision.txt`, shown below. The temporal precision can take values between 1.0 and 0.0, and indicates the overlap between the two models in trajectory space. Hence, values close to 1.0 indicate a high sampling precision, while values close to 0.0 indicate a low sampling precision. Here, the value close to 1.0 indicates that sampling does not affect the weights of the trajectory models.
+The output of `analysis.temporal_precision` is written in `analysis_output_precision/temporal_precision.txt`, shown below. The temporal precision can take values between 1.0 and 0.0, and indicates the overlap between the two models in trajectory space. Hence, values close to 1.0 indicate a high sampling precision, while values close to 0.0 indicate a low sampling precision. Here, the value close to 1.0 indicates that sampling does not affect the weights of the trajectories.
 
 \code{.txt}
 Temporal precision between ../outputA/labeled_pdf.txt and ../outputB/labeled_pdf.txt:
@@ -162,7 +162,7 @@ Temporal precision between ../outputA/labeled_pdf.txt and ../outputB/labeled_pdf
 
 ## Model precision {#trajectory_precision}
 
-Next, we calculate the precision of the model, using `analysis.precision`. Here, the model precision calculates the number of trajectory models with high weights. The precision ranges from 1.0 to 1/d, where d is the number of trajectory models. Values approaching 1.0 indicate the model set can be described by a single trajectory model, while values close to 1/d indicate that all trajectory models have similar weights.
+Next, we calculate the precision of the model, using `analysis.precision`. Here, the model precision calculates the number of trajectories with high weights. The precision ranges from 1.0 to 1/d, where d is the number of trajectories. Values approaching 1.0 indicate the model set can be described by a single trajectory, while values close to 1/d indicate that all trajectories have similar weights.
 
 \code{.py}
 ## 2 - calculation of precision of the model
@@ -178,7 +178,7 @@ print("")
 print("")
 \endcode
 
-The `analysis.precision` function reads in the `labeled_pdf` of the complete model, and writes the output file to `analysis_output_precision/precision.txt`, shown below. The value close to 1.0 indicates that the set of models can be sufficiently represented by a single trajectory model.
+The `analysis.precision` function reads in the `labeled_pdf` of the complete model, and writes the output file to `analysis_output_precision/precision.txt`, shown below. The value close to 1.0 indicates that the set of models can be sufficiently represented by a single trajectory.
 
 \code{.txt}
 Precision of ../Trajectories_Modeling/output/labeled_pdf.txt:
@@ -200,7 +200,7 @@ print("")
 
 The output of `ccEM` is written in `ccEM_output/`. It contains forward densities for each snapshot model (`MRC_{state}_{time}.mrc`) and `ccEM_calculations.txt`, which contains the cross-correlation to the experimental EM profile for each snapshot model.
 
-After comparing the model to EM data, we aimed to compare the model to copy number data, and wrote the `forward_model_copy_number` function to evaluate the copy numbers from our set of trajectory models.
+After comparing the model to EM data, we aimed to compare the model to copy number data, and wrote the `forward_model_copy_number` function to evaluate the copy numbers from our set of trajectories.
 
 \code{.py}
 # 3b - comparison of the model to data used in modeling (copy number)
@@ -213,7 +213,7 @@ print("")
 
 The output of `forward_model_copy_number` is written in `forward_model_copy_number/`. The folder contains `CN_prot_{prot}.txt` files for each protein, which have the mean and standard deviation of protein copy number at each time point.
 
-Here, we plot the comparison between the experimental data used in model construction and the set of trajectory models. This analysis includes the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory model (a), as well as comparisons between experimental and modeled protein copy numbers for proteins A (b), B (c), and C (d). Here, we see the model is in good agreement with the data used to construct it.
+Here, we plot the comparison between the experimental data used in model construction and the set of trajectories. This analysis includes the cross-correlation coefficient between the experimental EM density and the forward density of the set of sufficiently good scoring modeled structures in the highest weighted trajectory (a), as well as comparisons between experimental and modeled protein copy numbers for proteins A (b), B (c), and C (d). Here, we see the model is in good agreement with the data used to construct it.
 
 \image html Spatiotemporal_Assessment_Included.png width=1200px
 
@@ -252,11 +252,11 @@ print("")
 
 The output of this function is written in `RMSD_calculation_output`. The function outputs `rmsd_{state}_{time}.png` files, which plots the RMSD for each structural model within each snapshot model. This data is then summarized in `RMSD_analysis.txt`, which includes the minimum RMSD, average RMSD, and number of structural models in each snapshot model.
 
-Here, we plot the results for assessing the spatiotemporal model with data not used to construct it. Comparisons are made between the centroid structure of the most populated cluster in each snapshot model at each time point and the experimental SAXS profile for 0 (a), 1 (b), and 2 (c) minutes. Further, we plot both the sampling precision (dark red) and the RMSD to the PDB structure (light red) for each snapshot model in the highest trajectory model (d).
+Here, we plot the results for assessing the spatiotemporal model with data not used to construct it. Comparisons are made between the centroid structure of the most populated cluster in each snapshot model at each time point and the experimental SAXS profile for 0 (a), 1 (b), and 2 (c) minutes. Further, we plot both the sampling precision (dark red) and the RMSD to the PDB structure (light red) for each snapshot model in the highest trajectory (d).
 
 \image html Spatiotemporal_Assessment_Unused.png width=1200px
 
-To quantitatively compare the model to SAXS data, we used the \f$\chi^2\f$ to compare each snapshot model to the experimental profile. We note that the \f$\chi^2\f$ are substantially lower for the models along the highest trajectory model (1_0min, 1_1min, and 1_2min) than for other models, indicating that the highest weighted trajectory model is in better agreement with the experimental SAXS data than other possible trajectory models.
+To quantitatively compare the model to SAXS data, we used the \f$\chi^2\f$ to compare each snapshot model to the experimental profile. We note that the \f$\chi^2\f$ are substantially lower for the models along the highest trajectory (1_0min, 1_1min, and 1_2min) than for other models, indicating that the highest weighted trajectory is in better agreement with the experimental SAXS data than other possible trajectories.
 
 \image html Chi2_Table.png width=600px
 

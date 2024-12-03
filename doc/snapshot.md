@@ -40,7 +40,7 @@ To begin, we built a topology file with the representation for the model of the 
 |E3-ubi-RING2|green|3rpg.fasta.txt|E3-ubi-RING2|3rpg.pdb|C|45,116|-15|1|10|6|3||
 \endcode
 
-Next, we must prepare `static_snapshot.py` to read in this topology file. We begin by defining the input variables, `state` and `time`, which define which topology to use, as well as the paths to other pieces of input information.
+Next, we must prepare `static_snapshot.py` to read in this topology file. We begin by defining the input variables, `state` and `time`, which define which heterogeneity model to use, as well as the paths to other pieces of input information.
 
 \code{.py}
 # Running parameters to access correct path of ET_data for EM restraint

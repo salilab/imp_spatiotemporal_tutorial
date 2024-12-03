@@ -70,7 +70,7 @@ nodes, graph, graph_prob, graph_scores = IMP.spatiotemporal.create_DAG(state_dic
 The inputs we included are:
 - state_dict (dict): a dictionary that defines the spatiotemporal model. Keys are strings for each time point in the spatiotemporal process and values are integers corresponding to the number of snapshot models computed at that time point.
 - out_pdf (bool): whether to write the probability distribution function (pdf).
-- npaths (int): Number of states two write to a file (path*.txt).
+- npaths (int): Number of states to write to a file (path*.txt).
 - input_dir (str): directory with the input information.
 - scorestr (str): final characters at the end of the score files.
 - output_dir (str): directory to which model will be written. Will be created if it does not exist.

@@ -43,4 +43,4 @@ Now, we have a variety of heterogeneity models. In general, there are four ways 
 
 \image html Heterogeneity_Assessment.png width=600px
 
-In the `Heterogeneity/Heterogeneity_Assessment` folder, there is a single script, `plot_heterogeneity.m`. This script plots the modeled and experimental copy numbers simultaneously, as shown below for proteins A (a), B (b), and C (c). From these plots, we observe that the range of possible experimental copy numbers are well sampled by the heterogeneity models, indicating that we are prepared for [snapshot modeling.] (@ref snapshots)
+In the `Heterogeneity/Heterogeneity_Assessment` folder, there is a single script, `plot_heterogeneity.py`. This script plots the modeled and experimental copy numbers simultaneously, as shown below for proteins A (a), B (b), and C (c). From these plots, we observe that the range of possible experimental copy numbers are well sampled by the heterogeneity models, indicating that we are prepared for [snapshot modeling.] (@ref snapshots)

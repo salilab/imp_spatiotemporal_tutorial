@@ -20,20 +20,8 @@ else
   IMP_CONDA="imp"
 fi
 
-if [ ${python_version} = "2.7" ]; then
-  pip="pip<=19.3.1"
-else
-  pip="pip"
-fi
-
-conda create --yes -q -n python${python_version} -c salilab python=${python_version} scipy matplotlib pandas scikit-learn ${pip} ${IMP_CONDA}
+conda create --yes -q -n python${python_version} -c salilab python=${python_version} scipy matplotlib pandas scikit-learn pip ${IMP_CONDA}
 eval "$(conda shell.bash hook)"
 conda activate python${python_version}
 
-if [ ${python_version} = "2.7" ]; then
-  # pytest-flake8 1.1.0 tries to import contextlib.redirect_stdout, which
-  # isn't present in Python 2
-  pip install pytest-cov coverage 'pytest-flake8<1.1'
-else
-  pip install pytest-cov coverage pytest-flake8
-fi
+pip install pytest-cov coverage pytest-flake8

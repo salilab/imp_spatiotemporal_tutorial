@@ -1,7 +1,7 @@
 # IMP spatiotemporal tutorial
 
 Tutorial for computing spatiotemporal integrative models in IMP. For more information please check out the related publications:
-* Latham bioRxiv, 2024, https://doi.org/10.1101/2024.08.06.606842.
+* [Latham AP, Zhang W, Tempkin JOB, Otsuka S, Ellenberg J, Sali A. Proc. Natl. Acad. Sci. U.S.A. 2024; 122 (11), e2415674122](https://www.pnas.org/doi/abs/10.1073/pnas.2415674122).
 * Latham et al. in preparation. (tutorial paper)
 
 ### This tutorial explores scripts that:

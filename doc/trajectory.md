@@ -13,7 +13,7 @@ Snapshot models inform transitions between sampled time points, and their scores
 
 # Trajectory modeling step 2: representation, scoring function, and search process {#trajectories2}
 
-Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectories based on their fit to the input information, as described in full [here](https://www.biorxiv.org/content/10.1101/2024.08.06.606842v1.abstract).
+Trajectory modeling connects alternative snapshot models at adjacent time points, followed by scoring the trajectories based on their fit to the input information, as described in full [here](https://www.pnas.org/doi/10.1073/pnas.2415674122).
 
 ## Background behind integrative spatiotemporal modeling
 

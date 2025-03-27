@@ -1,8 +1,8 @@
 # IMP spatiotemporal tutorial
 
 Tutorial for computing spatiotemporal integrative models in IMP. For more information please check out the related publications:
-* Latham bioRxiv, 2024, https://doi.org/10.1101/2024.08.06.606842.
-* Latham et al. in preparation. (tutorial paper)
+* Latham, AP; Zhang, W; Tempkin, JOB; Otsuka, S; Ellenberg, J; Sali, A. Integrative spatiotemporal modeling of biomolecular processes: application to the assembly of the Nuclear Pore Complex, Proc. Natl. Acad. Sci. U.S.A., 2025, 122, e2415674122.
+* Latham, AP; Rožič, M; Webb, BM; Sali, A. Tutorial on integrative spatiotemporal modeling by integrative modeling platform, Protein Sci., 2025, 34, e70107.
 
 ### This tutorial explores scripts that:
 * Generates snapshot models at various timepoints along a dynamic process

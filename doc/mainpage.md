@@ -12,10 +12,10 @@ Heterogeneity models describe the possible biomolecular compositions of the syst
 For each heterogeneity model, one snapshot model is produced. A snapshot model is a set of alternative standard static integrative structure models based on the information available for the corresponding time point.
 Then, a set of trajectories ranked by their agreement with input information is computed by connecting alternative snapshot models at adjacent time points (*i.e.*, the “trajectory model”). This trajectory model can be scored based on both the scores of static structures and the transitions between them, allowing for the creation of trajectories that are in agreement with the input information by construction.
 
-If you use this tutorial or its accompanying method, please site the corresponding publications:
+If you use this tutorial or its accompanying method, please cite the corresponding publications:
 
-- Latham, A.P.; Tempkin, J.O.B.; Otsuka, S.; Zhang, W.; Ellenberg, J.; Sali, A. bioRxiv, 2024, https://doi.org/10.1101/2024.08.06.606842.
-- Latham, A.P.; Rožič, M.; Webb, B.M., Sali, A. in preparation. (tutorial)
+- [Latham, AP; Zhang, W; Tempkin, JOB; Otsuka, S; Ellenberg, J; Sali, A. Integrative spatiotemporal modeling of biomolecular processes: application to the assembly of the Nuclear Pore Complex, Proc. Natl. Acad. Sci. U.S.A., 2025, 122, e2415674122.](https://www.pnas.org/doi/10.1073/pnas.2415674122)
+- [Latham, AP; Rožič, M; Webb, BM; Sali, A. Tutorial on integrative spatiotemporal modeling by integrative modeling platform, Protein Sci., 2025, 34, e70107.](https://onlinelibrary.wiley.com/doi/10.1002/pro.70107)
 
 # Integrative spatiotemporal modeling workflow {#steps}
 
